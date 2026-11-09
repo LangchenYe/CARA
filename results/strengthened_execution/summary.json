@@ -1,0 +1,25 @@
+{
+  "complete": true,
+  "cases": 12,
+  "all_exact": true,
+  "total_median_cpu_seconds": {
+    "eager": 24.77632586399986,
+    "compact": 18.84325735299994,
+    "components": 15.624389390999923,
+    "compiled_no_unique_maps": 15.497790011000006,
+    "no_late_matching": 15.466719709000117,
+    "no_forecast": 19.273913014999906,
+    "no_matching_reuse": 16.27129911999964,
+    "compiled": 15.738986169000142
+  },
+  "speedup_over_eager": {
+    "eager": 1.0,
+    "compact": 1.3148642721294332,
+    "components": 1.5857468246581017,
+    "compiled_no_unique_maps": 1.5987005790125006,
+    "no_late_matching": 1.6019121268217242,
+    "no_forecast": 1.285484989203682,
+    "no_matching_reuse": 1.5227011488926772,
+    "compiled": 1.574200879139208
+  }
+}

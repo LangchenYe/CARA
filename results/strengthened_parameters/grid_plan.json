@@ -1,0 +1,1198 @@
+{
+  "specification": {
+    "study": "Full-window CARA development parameters",
+    "phase": "development",
+    "origins": [
+      216,
+      228,
+      240
+    ],
+    "streams": [
+      0,
+      1
+    ],
+    "cohorts": [
+      "azure2019",
+      "borg2019_d",
+      "borg2019_e",
+      "huawei2025"
+    ],
+    "cases_per_configuration": 24,
+    "proposal_allowance_seconds": 2.0,
+    "method": "CARA",
+    "mutable_limit": [
+      8,
+      10,
+      12
+    ],
+    "frontier_engine": [
+      "swap",
+      "anneal"
+    ],
+    "frontier_objective": "joint",
+    "frontier_fraction": [
+      0.25,
+      0.5
+    ],
+    "configurations": 12,
+    "historical_rows": {
+      "build": 121,
+      "selection": 25,
+      "audit": 25
+    },
+    "ranking": {
+      "metrics": [
+        "VR",
+        "VS",
+        "PAR",
+        "raw"
+      ],
+      "reference": "FFD",
+      "normalization_floor": 1e-08,
+      "within_cohort": "For each metric, (mean reference - mean method) / max(abs(mean reference), normalization_floor), averaging the six prescribed cohort decisions before division.",
+      "primary": "Descending equal-weight average over the four cohorts and four normalized native loss metrics.",
+      "ties": [
+        "Ascending cohort-macro mean released moved fraction",
+        "Ascending cohort-macro mean complete decision CPU",
+        "Ascending configuration identifier"
+      ],
+      "reporting": "Report every configuration, every cohort and native metric, admission, released movement, proposal/Selection/Audit/complete timing and overshoot. All outcomes include rejected-action incumbent fallbacks; there are no significance claims."
+    },
+    "scope": "Development targets end at or before264. No formal evaluation target or result is read. Only CARA residual width and frontier allocation/engine vary; baseline parameters remain unchanged. The adopted family executor and structural cost guard are inherited unchanged from the selected base configuration."
+  },
+  "protocol": {
+    "name": "Complete-window CARA evaluation",
+    "forecast": "Trailing 24-hour mean, repeated over the 24-hour target; identical for all methods in a case.",
+    "incumbent": "Common FFD placement constructed from the current forecast for each case.",
+    "historical_roles": {
+      "build": {
+        "older": 192,
+        "newer": 64
+      },
+      "selection": {
+        "older": 64,
+        "newer": 32
+      },
+      "audit": {
+        "older": 32,
+        "newer": 0
+      }
+    },
+    "window_hours": 8,
+    "window_stride": 1,
+    "row_caps": null,
+    "expected_rows": {
+      "build": 121,
+      "selection": 25,
+      "audit": 25
+    },
+    "target_hours": 24,
+    "development": {
+      "origins": [
+        216,
+        228,
+        240
+      ],
+      "target_end_exclusive": 264,
+      "default_streams": [
+        0
+      ]
+    },
+    "primary": {
+      "first_origin": 288,
+      "last_origin": 312,
+      "stride": 1,
+      "streams": [
+        0,
+        1,
+        2
+      ],
+      "cases": 300,
+      "distinct_target_hours_per_cohort": 48
+    },
+    "longitudinal": {
+      "first_origin": 264,
+      "stride": 24,
+      "streams": [
+        0,
+        1,
+        2
+      ],
+      "cohort_days": 26,
+      "cases": 78,
+      "distinct_cohort_target_hours": 624,
+      "partial_final_days": "Excluded; every evaluated target has 24 observed hours for every cohort VM."
+    },
+    "evaluation_union": {
+      "unique_cases": 354,
+      "cases_shared_by_both_views": 24,
+      "reuse": "A cohort/origin/stream is executed once per method and reused in every applicable analysis view."
+    },
+    "decision_cohorts": {
+      "azure2019": {
+        "vms": 150,
+        "capacity": 4.0,
+        "common_start": "2019-01-01T00:00:00",
+        "minimum_hours": 355,
+        "maximum_hours": 719,
+        "longitudinal_origins": [
+          264,
+          288,
+          312
+        ]
+      },
+      "borg2019_d": {
+        "vms": 127,
+        "capacity": 1.0,
+        "common_start": "2019-05-01T00:00:00",
+        "minimum_hours": 508,
+        "maximum_hours": 745,
+        "longitudinal_origins": [
+          264,
+          288,
+          312,
+          336,
+          360,
+          384,
+          408,
+          432,
+          456,
+          480
+        ]
+      },
+      "borg2019_e": {
+        "vms": 68,
+        "capacity": 1.0,
+        "common_start": "2019-05-01T00:00:00",
+        "minimum_hours": 506,
+        "maximum_hours": 745,
+        "longitudinal_origins": [
+          264,
+          288,
+          312,
+          336,
+          360,
+          384,
+          408,
+          432,
+          456,
+          480
+        ]
+      },
+      "huawei2025": {
+        "vms": 575,
+        "capacity": 4.0,
+        "common_start": "2025-01-01T00:00:00",
+        "minimum_hours": 344,
+        "maximum_hours": 743,
+        "longitudinal_origins": [
+          264,
+          288,
+          312
+        ]
+      }
+    },
+    "hourly_query_sources": {
+      "azure2019": {
+        "series": 10800,
+        "minimum_hours": 188,
+        "maximum_hours": 719,
+        "complete_eight_hour_windows": 181,
+        "nan_cpu_values": 0
+      },
+      "borg2019_d_trace": {
+        "series": 414,
+        "minimum_hours": 189,
+        "maximum_hours": 744,
+        "complete_eight_hour_windows": 182,
+        "nan_cpu_values": 0
+      },
+      "borg2019_e_trace": {
+        "series": 618,
+        "minimum_hours": 188,
+        "maximum_hours": 649,
+        "complete_eight_hour_windows": 181,
+        "nan_cpu_values": 0
+      },
+      "huawei2025": {
+        "series": 174,
+        "minimum_hours": 212,
+        "maximum_hours": 743,
+        "complete_eight_hour_windows": 205,
+        "nan_cpu_values": 10
+      }
+    },
+    "hourly_scope": "Complete-series query execution in original CPU units. No source provides 192 history hours plus a 24-hour target for every series, so these objects are not enlarged placement-quality cohorts under the same protocol.",
+    "development_rule": "Method and parameter choices use only the development cases. Freeze the method before the evaluation union is run; retain all evaluation cases and methods.",
+    "temporal_interpretation": "Primary targets overlap. Longitudinal targets do not overlap within a cohort, but this is a sequence of paired decision contexts with a current common incumbent, not a stateful deployment rollout. Random streams repeat search, not observed workloads.",
+    "native_metrics": [
+      "hosts",
+      "Util",
+      "VR",
+      "VS",
+      "PAR",
+      "raw",
+      "PICP",
+      "MPIW",
+      "WinklerScore"
+    ],
+    "prediction_intervals": {
+      "history_hours": 24,
+      "simulations_per_host": 100,
+      "confidence": 0.95,
+      "host_seed": "42 + active canonical host index",
+      "scale": "Per-VM preceding-24-hour sample standard deviation, ddof=1; no target fitting."
+    },
+    "proposal_allowance_seconds": 2.0,
+    "budget_scope": "Per-method historical representation construction, RNG and controller setup, and proposal processing consume the same process-CPU allowance. Selection and historical admission are reported separately and in the complete decision cost. Atomic operations already begun may finish after the allowance, with observed overshoot retained.",
+    "solver_scope": "Scenario-MIP runs separately with one worker. Model construction is charged before the remaining allowance is passed to HiGHS as a wall-time limit; actual construction, solver CPU, solver wall time, and overshoot are reported.",
+    "evaluation_access": "Target slices and outcomes are computed only after all methods in the case have frozen their actions and historical admission decisions. Search inputs contain only the declared history. Shared interval diagnostics are then computed for every terminal placement, including incumbent fallbacks."
+  },
+  "cases": [
+    {
+      "dataset": "azure2019",
+      "origin": 216,
+      "seed_index": 0,
+      "seed": 186216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 228,
+      "seed_index": 0,
+      "seed": 186228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 240,
+      "seed_index": 0,
+      "seed": 186240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 216,
+      "seed_index": 0,
+      "seed": 196216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 228,
+      "seed_index": 0,
+      "seed": 196228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 240,
+      "seed_index": 0,
+      "seed": 196240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 216,
+      "seed_index": 0,
+      "seed": 206216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 228,
+      "seed_index": 0,
+      "seed": 206228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 240,
+      "seed_index": 0,
+      "seed": 206240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 216,
+      "seed_index": 0,
+      "seed": 216216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 228,
+      "seed_index": 0,
+      "seed": 216228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 240,
+      "seed_index": 0,
+      "seed": 216240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 216,
+      "seed_index": 1,
+      "seed": 286216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 228,
+      "seed_index": 1,
+      "seed": 286228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 240,
+      "seed_index": 1,
+      "seed": 286240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 216,
+      "seed_index": 1,
+      "seed": 296216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 228,
+      "seed_index": 1,
+      "seed": 296228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 240,
+      "seed_index": 1,
+      "seed": 296240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 216,
+      "seed_index": 1,
+      "seed": 306216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 228,
+      "seed_index": 1,
+      "seed": 306228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 240,
+      "seed_index": 1,
+      "seed": 306240,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 216,
+      "seed_index": 1,
+      "seed": 316216,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 228,
+      "seed_index": 1,
+      "seed": 316228,
+      "views": [
+        "development"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 240,
+      "seed_index": 1,
+      "seed": 316240,
+      "views": [
+        "development"
+      ]
+    }
+  ],
+  "base_config": {
+    "cpu_limit": 2.0,
+    "top_p": 16,
+    "mutable_limit": 10,
+    "broad_fraction": 0.25,
+    "broad_batch": 32,
+    "migration_fraction": 0.2,
+    "diagnostic": false,
+    "sketch_preview": false,
+    "score_mode": "gain",
+    "mode": "cara",
+    "objective_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "selection_guard_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "frontier_fraction": 0.5,
+    "frontier_seed": true,
+    "projected_views": "auto",
+    "archive_mode": "balanced",
+    "seed_schedule": "coverage",
+    "anneal_temperature_fraction": 0.01,
+    "shared_queries": true,
+    "batch_queries": true,
+    "record_seed_assignments": false,
+    "record_query_paths": "seed0",
+    "selection_dispersion": 0.0,
+    "query_cache_views": 2048,
+    "query_cache_bytes": 33554432,
+    "query_batch_values": 1048576,
+    "family_execution": "certified",
+    "family_forecast_strategy": "leaf",
+    "family_score_strategy": "leaf",
+    "family_score_min_hosts": 128,
+    "family_score_min_leaves": 32,
+    "family_migration_reuse": true,
+    "frontier_engine": "swap",
+    "frontier_objective": "joint",
+    "family_factor_matching": true,
+    "family_defer_physical": true,
+    "family_matching_backend": "compiled"
+  },
+  "configurations": [
+    {
+      "id": "w08_swap_f25",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 8,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.25,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w08_swap_f50",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 8,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w08_anneal_f25",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 8,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.25,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "anneal",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w08_anneal_f50",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 8,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "anneal",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w10_swap_f25",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 10,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.25,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w10_swap_f50",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 10,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w10_anneal_f25",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 10,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.25,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "anneal",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w10_anneal_f50",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 10,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "anneal",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w12_swap_f25",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 12,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.25,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w12_swap_f50",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 12,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w12_anneal_f25",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 12,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.25,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "anneal",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    },
+    {
+      "id": "w12_anneal_f50",
+      "settings": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 12,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "anneal",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled"
+      }
+    }
+  ],
+  "workers": 6,
+  "execution": "Ordinary complete-window decision runner, one configuration at a time. Configuration files and the ranking rule are written before outcomes; the commands are not launched by preparation."
+}

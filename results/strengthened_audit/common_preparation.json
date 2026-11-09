@@ -1,0 +1,55 @@
+{
+  "cache_hit": true,
+  "compiler": "/usr/bin/cc",
+  "flags": [
+    "-std=c99",
+    "-O3",
+    "-ffp-contract=off",
+    "-fno-fast-math"
+  ],
+  "build_and_load_cpu_seconds": 8.876199999985346e-05,
+  "build_and_load_wall_seconds": 8.97249992704019e-05,
+  "native_runtime": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 0.00029157899916754104,
+    "build_and_load_parent_cpu_seconds": 0.0002918039999999511,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/workspace/scratch/e0830ab6e578/work/cara/cara-native-aggregate/ea064522b82bbb9434f3.so"
+  },
+  "fused_runtime": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 5.665600110660307e-05,
+    "build_and_load_parent_cpu_seconds": 5.663399999988883e-05,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/workspace/scratch/e0830ab6e578/work/cara/cara-paired-kernels/fused_canonical-8acfc61ddd36406c8821.so"
+  },
+  "prefix_runtime": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 8.092200005194172e-05,
+    "build_and_load_parent_cpu_seconds": 8.112100000001732e-05,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/workspace/scratch/e0830ab6e578/work/cara/cara-paired-kernels/prefix_canonical-976d8bfdb321c14745cc.so"
+  },
+  "library": "/workspace/scratch/e0830ab6e578/work/cara/cara-window-kernels/51f98245fcadfe7da64b.so"
+}

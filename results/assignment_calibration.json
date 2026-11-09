@@ -1,0 +1,536 @@
+{
+  "scope": "Independent synthetic kernel calibration; no benchmark rows or quality outcomes used.",
+  "protocol": "25 complete origin-count signatures per family; 3 serial rotated repetitions; process CPU; native base compilation, state setup, validation and all replay calls included; C compilation prewarmed; direct includes candidate matrix construction.",
+  "sizes": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    256
+  ],
+  "kinds": [
+    "cycle",
+    "dense"
+  ],
+  "seed": 791104,
+  "direct_up_to_size": 64,
+  "records": [
+    {
+      "kind": "cycle",
+      "size": 8,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.0001164339999999986,
+        "replay": 0.001094939000000017
+      },
+      "trials": [
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0001164339999999986,
+            "replay": 0.0010990060000000135
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0007923790000000097,
+            "direct": 0.00012975300000001022
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.00011610300000003404,
+            "replay": 0.001094939000000017
+          }
+        }
+      ],
+      "replay_speedup": 0.10633834396253744,
+      "all_exact": true
+    },
+    {
+      "kind": "cycle",
+      "size": 16,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.0001588260000000008,
+        "replay": 0.0010381349999999956
+      },
+      "trials": [
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.001052335999999987,
+            "direct": 0.00025974699999997686
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.00014179100000000222,
+            "replay": 0.0009016210000000191
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0010381349999999956,
+            "direct": 0.0001588260000000008
+          }
+        }
+      ],
+      "replay_speedup": 0.1529916629340129,
+      "all_exact": true
+    },
+    {
+      "kind": "cycle",
+      "size": 32,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.00023024199999999162,
+        "replay": 0.0008352029999999511
+      },
+      "trials": [
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.00023024199999999162,
+            "replay": 0.0008151630000000076
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0008352029999999511,
+            "direct": 0.00024178000000002475
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0002278790000000419,
+            "replay": 0.0010002089999999741
+          }
+        }
+      ],
+      "replay_speedup": 0.27567190251951335,
+      "all_exact": true
+    },
+    {
+      "kind": "cycle",
+      "size": 64,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.0006064929999999857,
+        "replay": 0.0009162930000000125
+      },
+      "trials": [
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.001283870999999992,
+            "direct": 0.0006136230000000076
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0005843999999999849,
+            "replay": 0.0009162930000000125
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0008204099999999936,
+            "direct": 0.0006064929999999857
+          }
+        }
+      ],
+      "replay_speedup": 0.6618985411871284,
+      "all_exact": true
+    },
+    {
+      "kind": "cycle",
+      "size": 128,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.002166574000000032,
+        "replay": 0.000979638000000005
+      },
+      "trials": [
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.002054186999999985,
+            "replay": 0.000979638000000005
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0009305549999999996,
+            "direct": 0.002511256999999989
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.002166574000000032,
+            "replay": 0.0009946899999999648
+          }
+        }
+      ],
+      "replay_speedup": 2.211606736365904,
+      "all_exact": true
+    },
+    {
+      "kind": "cycle",
+      "size": 256,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.013008576999999966,
+        "replay": 0.0012947170000000008
+      },
+      "trials": [
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0014193220000000006,
+            "direct": 0.013008576999999966
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.01422464699999998,
+            "replay": 0.0012947170000000008
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0011721940000000153,
+            "direct": 0.012561833000000022
+          }
+        }
+      ],
+      "replay_speedup": 10.047428897589171,
+      "all_exact": true
+    },
+    {
+      "kind": "dense",
+      "size": 8,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.00013271799999997613,
+        "replay": 0.0008860789999999841
+      },
+      "trials": [
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0008860789999999841,
+            "direct": 0.00013271799999997613
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.00012180200000000418,
+            "replay": 0.0008536209999999711
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0009443560000000351,
+            "direct": 0.00013602299999998513
+          }
+        }
+      ],
+      "replay_speedup": 0.14978122718175074,
+      "all_exact": true
+    },
+    {
+      "kind": "dense",
+      "size": 16,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.0001675289999999996,
+        "replay": 0.0008306459999999904
+      },
+      "trials": [
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0001668680000000422,
+            "replay": 0.0008306459999999904
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0008569150000000136,
+            "direct": 0.0001840430000000226
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0001675289999999996,
+            "replay": 0.0007863199999999515
+          }
+        }
+      ],
+      "replay_speedup": 0.20168519441495117,
+      "all_exact": true
+    },
+    {
+      "kind": "dense",
+      "size": 32,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.00031763299999998384,
+        "replay": 0.0008834039999999765
+      },
+      "trials": [
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0008927579999999935,
+            "direct": 0.0002925060000000257
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0003390449999999823,
+            "replay": 0.0008834039999999765
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0007689040000000147,
+            "direct": 0.00031763299999998384
+          }
+        }
+      ],
+      "replay_speedup": 0.3595557638407708,
+      "all_exact": true
+    },
+    {
+      "kind": "dense",
+      "size": 64,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.0010268080000000457,
+        "replay": 0.0011490000000000111
+      },
+      "trials": [
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0009495530000000474,
+            "replay": 0.0011943469999999845
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0011490000000000111,
+            "direct": 0.0010820910000000072
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.0010268080000000457,
+            "replay": 0.0010505129999999752
+          }
+        }
+      ],
+      "replay_speedup": 0.8936536118364106,
+      "all_exact": true
+    },
+    {
+      "kind": "dense",
+      "size": 128,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.00681971800000003,
+        "replay": 0.0016336510000000137
+      },
+      "trials": [
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.012230069999999982,
+            "direct": 0.00681971800000003
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.005819510000000028,
+            "replay": 0.0015644180000000119
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.0016336510000000137,
+            "direct": 0.006927048000000047
+          }
+        }
+      ],
+      "replay_speedup": 4.1745256483789825,
+      "all_exact": true
+    },
+    {
+      "kind": "dense",
+      "size": 256,
+      "signatures": 25,
+      "medians": {
+        "direct": 0.049059793999999934,
+        "replay": 0.00553068000000001
+      },
+      "trials": [
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.049059793999999934,
+            "replay": 0.005774271999999914
+          }
+        },
+        {
+          "order": [
+            "replay",
+            "direct"
+          ],
+          "cpu_seconds": {
+            "replay": 0.005265065000000013,
+            "direct": 0.050664061999999954
+          }
+        },
+        {
+          "order": [
+            "direct",
+            "replay"
+          ],
+          "cpu_seconds": {
+            "direct": 0.04813630000000002,
+            "replay": 0.00553068000000001
+          }
+        }
+      ],
+      "replay_speedup": 8.870481387460465,
+      "all_exact": true
+    }
+  ]
+}

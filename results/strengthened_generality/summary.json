@@ -1,0 +1,15 @@
+{
+  "complete": true,
+  "settings": 19,
+  "all_exact": true,
+  "all_core_bounds_hold": true,
+  "sum_of_setting_median_cpu_seconds": {
+    "components": 39.95947596399927,
+    "sparse": 37.76045025499974,
+    "static": 36.783475805999956,
+    "replay": 34.21802728699967,
+    "locked": 34.25742321900083,
+    "compiled_no_unique_maps": 33.91601984700014,
+    "compiled": 30.98736457600043
+  }
+}

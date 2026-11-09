@@ -1,0 +1,26 @@
+{
+  "study": "Full-window CARA development parameters",
+  "phase": "development",
+  "origins": [216, 228, 240],
+  "streams": [0, 1],
+  "cohorts": ["azure2019", "borg2019_d", "borg2019_e", "huawei2025"],
+  "cases_per_configuration": 24,
+  "proposal_allowance_seconds": 2.0,
+  "method": "CARA",
+  "mutable_limit": [8, 10, 12],
+  "frontier_engine": ["swap", "anneal"],
+  "frontier_objective": "joint",
+  "frontier_fraction": [0.25, 0.5],
+  "configurations": 12,
+  "historical_rows": {"build": 121, "selection": 25, "audit": 25},
+  "ranking": {
+    "metrics": ["VR", "VS", "PAR", "raw"],
+    "reference": "FFD",
+    "normalization_floor": 1e-8,
+    "within_cohort": "For each metric, (mean reference - mean method) / max(abs(mean reference), normalization_floor), averaging the six prescribed cohort decisions before division.",
+    "primary": "Descending equal-weight average over the four cohorts and four normalized native loss metrics.",
+    "ties": ["Ascending cohort-macro mean released moved fraction", "Ascending cohort-macro mean complete decision CPU", "Ascending configuration identifier"],
+    "reporting": "Report every configuration, every cohort and native metric, admission, released movement, proposal/Selection/Audit/complete timing and overshoot. All outcomes include rejected-action incumbent fallbacks; there are no significance claims."
+  },
+  "scope": "Development targets end at or before264. No formal evaluation target or result is read. Only CARA residual width and frontier allocation/engine vary; baseline parameters remain unchanged. The adopted family executor and structural cost guard are inherited unchanged from the selected base configuration."
+}

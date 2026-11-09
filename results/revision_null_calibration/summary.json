@@ -1,0 +1,69 @@
+{
+  "protocol": {
+    "experiment": "bounded-loss null calibration",
+    "laws": [
+      "symmetric",
+      "rare_positive",
+      "single_null"
+    ],
+    "replicates_per_law": 1024,
+    "start_replica": 0,
+    "seed": 20271113,
+    "row_cap": 1024,
+    "inspection_batch": 32,
+    "alpha": "1/20",
+    "targets": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "gain_bounds": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "anchor": 2,
+    "confidence": 0.95,
+    "certificate": "cara.certification.certify_fresh_mixture",
+    "law_definitions": {
+      "symmetric": "All four gains equal: +1/2 or -1/2, each with probability 1/2.",
+      "rare_positive": "All four gains equal: +15/16 with probability 1/16, otherwise -1/16.",
+      "single_null": "Coordinate 1 is symmetric +/-1/2; other coordinates equal +1/4."
+    },
+    "inference": "Each independent stream is one replicate; all tested joint strict-gain claims are false."
+  },
+  "groups": {
+    "symmetric": {
+      "replicates": 1024,
+      "false_admissions": 12,
+      "false_admission_fraction": 0.01171875,
+      "one_sided_clopper_pearson_confidence": 0.95,
+      "one_sided_clopper_pearson_upper": 0.018917867089388803,
+      "mean_rows": 1014.375,
+      "median_rows": 1024.0,
+      "run_cpu_seconds": 29.736847722
+    },
+    "rare_positive": {
+      "replicates": 1024,
+      "false_admissions": 18,
+      "false_admission_fraction": 0.017578125,
+      "one_sided_clopper_pearson_confidence": 0.95,
+      "one_sided_clopper_pearson_upper": 0.025955418266561194,
+      "mean_rows": 1011.03125,
+      "median_rows": 1024.0,
+      "run_cpu_seconds": 34.301745619
+    },
+    "single_null": {
+      "replicates": 1024,
+      "false_admissions": 14,
+      "false_admission_fraction": 0.013671875,
+      "one_sided_clopper_pearson_confidence": 0.95,
+      "one_sided_clopper_pearson_upper": 0.02129116859231291,
+      "mean_rows": 1014.75,
+      "median_rows": 1024.0,
+      "run_cpu_seconds": 18.30598993599999
+    }
+  }
+}

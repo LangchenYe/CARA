@@ -1,0 +1,29 @@
+{
+  "complete": true,
+  "sources": 4,
+  "all_exact": true,
+  "total_median_cpu_seconds": {
+    "eager": 52.316909975000044,
+    "compact": 10.791731255999991,
+    "sparse": 4.877815106000128,
+    "no_factorization": 7.011204357000054,
+    "no_late_matching": 3.8886664919999703,
+    "no_progressive": 4.47935690599985,
+    "no_score": 6.317801598000017,
+    "no_matching_reuse": 3.852983547000008,
+    "compiled_no_unique_maps": 4.536687813000015,
+    "compiled": 3.773728810000023
+  },
+  "speedup_over_compact": {
+    "eager": 0.20627615929833942,
+    "compact": 1.0,
+    "sparse": 2.2124108891961165,
+    "no_factorization": 1.539212196150783,
+    "no_late_matching": 2.775175314777309,
+    "no_progressive": 2.409214421281114,
+    "no_score": 1.708146590012617,
+    "no_matching_reuse": 2.8008765478385182,
+    "compiled_no_unique_maps": 2.3787687627691647,
+    "compiled": 2.8596997291917026
+  }
+}

@@ -1,0 +1,659 @@
+{
+  "source": "results/icde2027_shared_streaming",
+  "source_study": {
+    "phase": "validation",
+    "validation_environments": [
+      {
+        "law": "complementary",
+        "seed": 246001
+      },
+      {
+        "law": "complementary",
+        "seed": 246002
+      },
+      {
+        "law": "complementary",
+        "seed": 246003
+      },
+      {
+        "law": "complementary",
+        "seed": 246004
+      },
+      {
+        "law": "complementary",
+        "seed": 246005
+      },
+      {
+        "law": "complementary",
+        "seed": 246006
+      },
+      {
+        "law": "complementary",
+        "seed": 246007
+      },
+      {
+        "law": "complementary",
+        "seed": 246008
+      },
+      {
+        "law": "complementary",
+        "seed": 246009
+      },
+      {
+        "law": "complementary",
+        "seed": 246010
+      },
+      {
+        "law": "complementary",
+        "seed": 246011
+      },
+      {
+        "law": "complementary",
+        "seed": 246012
+      },
+      {
+        "law": "complementary",
+        "seed": 246013
+      },
+      {
+        "law": "complementary",
+        "seed": 246014
+      },
+      {
+        "law": "complementary",
+        "seed": 246015
+      },
+      {
+        "law": "complementary",
+        "seed": 246016
+      },
+      {
+        "law": "complementary",
+        "seed": 246017
+      },
+      {
+        "law": "complementary",
+        "seed": 246018
+      },
+      {
+        "law": "complementary",
+        "seed": 246019
+      },
+      {
+        "law": "complementary",
+        "seed": 246020
+      },
+      {
+        "law": "complementary",
+        "seed": 246021
+      },
+      {
+        "law": "complementary",
+        "seed": 246022
+      },
+      {
+        "law": "complementary",
+        "seed": 246023
+      },
+      {
+        "law": "complementary",
+        "seed": 246024
+      },
+      {
+        "law": "complementary",
+        "seed": 246025
+      },
+      {
+        "law": "complementary",
+        "seed": 246026
+      },
+      {
+        "law": "complementary",
+        "seed": 246027
+      },
+      {
+        "law": "complementary",
+        "seed": 246028
+      },
+      {
+        "law": "complementary",
+        "seed": 246029
+      },
+      {
+        "law": "complementary",
+        "seed": 246030
+      },
+      {
+        "law": "complementary",
+        "seed": 246031
+      },
+      {
+        "law": "complementary",
+        "seed": 246032
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247001
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247002
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247003
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247004
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247005
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247006
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247007
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247008
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247009
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247010
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247011
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247012
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247013
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247014
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247015
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247016
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247017
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247018
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247019
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247020
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247021
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247022
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247023
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247024
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247025
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247026
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247027
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247028
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247029
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247030
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247031
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247032
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248001
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248002
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248003
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248004
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248005
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248006
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248007
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248008
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248009
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248010
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248011
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248012
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248013
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248014
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248015
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248016
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248017
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248018
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248019
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248020
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248021
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248022
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248023
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248024
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248025
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248026
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248027
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248028
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248029
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248030
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248031
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248032
+      }
+    ],
+    "methods": [
+      "CARA",
+      "Swap",
+      "Broad",
+      "Anneal",
+      "Joint-SA",
+      "Best-seed",
+      "No-batch",
+      "No-footprint"
+    ],
+    "search_config": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 8,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.25,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576
+    },
+    "base_environment_law": {
+      "vms": 48,
+      "horizon": 8,
+      "capacity": 1.0,
+      "phase_groups": 4,
+      "mean_range": [
+        0.15,
+        0.23
+      ],
+      "amplitude_range": [
+        0.03,
+        0.09
+      ],
+      "common_loading_range": [
+        0.015,
+        0.035
+      ],
+      "group_loading_range": [
+        0.04,
+        0.1
+      ],
+      "idiosyncratic_scale_range": [
+        0.015,
+        0.035
+      ],
+      "factor_ar": 0.55,
+      "groups": "independently permuted balanced phase and shock groups",
+      "nonnegativity": "clip the sampled Gaussian demand at zero"
+    },
+    "scene_laws": {
+      "complementary": {
+        "amplitude_multiplier": 1.0,
+        "common_multiplier": 1.0,
+        "group_multiplier": 1.0,
+        "burst_probability": 0.0,
+        "burst_amplitude": [
+          0.0,
+          0.0
+        ]
+      },
+      "bursty_common": {
+        "amplitude_multiplier": 1.0,
+        "common_multiplier": 3.0,
+        "group_multiplier": 1.25,
+        "burst_probability": 0.12,
+        "burst_amplitude": [
+          0.1,
+          0.25
+        ]
+      },
+      "weak_complementarity": {
+        "amplitude_multiplier": 0.1,
+        "common_multiplier": 2.0,
+        "group_multiplier": 0.25,
+        "burst_probability": 0.0,
+        "burst_amplitude": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "roles": {
+      "fit": 11,
+      "build": 12,
+      "selection": 13,
+      "proposal": 14,
+      "certification": 15,
+      "evaluation": 16
+    },
+    "counts": {
+      "fit": 128,
+      "build": 64,
+      "selection": 128,
+      "certification": 8192,
+      "evaluation": 16384
+    },
+    "fresh_metrics": [
+      "J",
+      "V",
+      "R",
+      "raw_fixed_H"
+    ],
+    "native_metrics": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "margins": [
+      0.01,
+      0.01,
+      0.0,
+      0.001
+    ],
+    "anchor": "R",
+    "minimum_anchor_gain": 0.005,
+    "alpha": 0.05,
+    "primary_cap": 8192,
+    "inspection_batch": 32,
+    "replay_batch": 32,
+    "fixed_caps": [
+      2048,
+      4096,
+      8192
+    ],
+    "sampling": "Separate seeded streams for common, group, noise, burst occurrence and magnitude. Consecutive scene prefixes are invariant to batch partition. Roles are distinct; scenes are conditionally iid.",
+    "timing": "Every inspected paired batch is generated and replayed on demand. Fixed caps use the same 32-scene replay shape but inspect evidence only at the cap. Total CPU includes acquisition, replay and exact statistical arithmetic; action bounds are separately timed.",
+    "controls": "No-footprint reuses CARA's frozen candidate and changes only V/R supports to 1; other named controls run their own predeclared search before certification.",
+    "source_sha256": {
+      "run_streaming_validation.py": "54ba3597bc4f0a742e49fed438de36cef8e8b778d6132462cf1376bf1725eea9",
+      "cara/__init__.py": "7db60b5063745d7f55fcbc1769b43cfc21259e26295f6ca7d2701f7095d119f1",
+      "cara/admission.py": "d68df14eae7c054786d4b12a0935924981e00a0531a585c9553ed2b6226bc735",
+      "cara/baseline_anneal.py": "f0256c63c5067dc8b07e1aad2a57cbed7201db9fbe82e06c5b823a7b73b8a481",
+      "cara/baseline_solver.py": "57e70c70c59064e6daeb98bd95337815e3d3716dd8733fcfa0ba7f1df9799547",
+      "cara/certification.py": "376ac15e1366f273052f1af1aa75db1c4995f6ed749efbb5a01b1acb49e9a015",
+      "cara/data.py": "328c849597101f40ea5b3c573a7b10a8ef562f54e179bec1fa0fc3a1d482ffd8",
+      "cara/migration.py": "61bddc0ce53983161b72d1fb2a454e33476e020801b2331aa6debd00ebfab1b6",
+      "cara/migration_envelope.py": "d1a8766f3022e1cbd4b2d5ac50c06d1f40066ca12ae6814ead951355f39d57b1",
+      "cara/query_engine.py": "c85a21742bb1966db2358f14683a802b70f1713064294df49503c77c9cc6a127",
+      "cara/query_feedback.py": "95570e469ce157d77fdbc671cfe6f9e1c71d9569d2ec803e5502935a51d2402e",
+      "cara/refinement.py": "b974c077d5a378c23f5105726de0a4e617ad0753f07b478968309f69c47e534c",
+      "cara/repair.py": "803c8a1a9a4c17a5dab34f9b9071496f5dc1676b8f0f86cb343fd064cb0dd3eb",
+      "cara/scene_stream.py": "a857de29edd7fcf68b4531a5c247169f0bf14154e72a8ffc802070b21db36c48",
+      "cara/synthetic.py": "f8f93e89c97a667f8d6653050650c13e3d665a50cd565129ff685b9df7268b38",
+      "cara/workload_views.py": "e0686166f6c1a69b9d8803b93cf436684f7228eb42b1d2b10dd125853865da9b"
+    }
+  },
+  "source_actions_digest": "5907380b44f52f0a213a1e42d24ca32945c7046191e903a6fd49bc3db9913a34",
+  "contracts": 96,
+  "selected": 90,
+  "no_action_fallbacks": 6,
+  "search_rerun": false,
+  "arms": {
+    "CARA": [
+      "graph",
+      8192,
+      32
+    ],
+    "NoGraph": [
+      "count",
+      8192,
+      32
+    ],
+    "NoBoolean": [
+      "no_boolean",
+      8192,
+      32
+    ],
+    "Global": [
+      "global",
+      8192,
+      32
+    ],
+    "Fixed2048": [
+      "graph",
+      2048,
+      2048
+    ],
+    "Fixed4096": [
+      "graph",
+      4096,
+      4096
+    ],
+    "Fixed8192": [
+      "graph",
+      8192,
+      8192
+    ]
+  },
+  "repetitions": 3,
+  "keep_evaluation_arrays": false,
+  "population_support": {
+    "demand_interval": [
+      0.0,
+      1.0
+    ],
+    "source": "SceneStream.next applies np.clip(values, 0., 1.) to every generated scene; this fixed population bound is not estimated from observed samples."
+  },
+  "execution": "All arms regenerate their actual 48-VM iid scene prefixes and use identical fused canonical paired queries plus native directed-evidence evaluation with exact fallback. Complete support, reader construction, generation, replay and evidence CPU are timed; common kernel compilation and immutable environment construction are separate.",
+  "verification": "All 8192 certification loss rows per selected action are independently reconstructed and byte-compared with native losses. Every arm's full semantic result is compared with the Decimal-filter/exact-integer-fallback array oracle outside timing. All 16384 independent Evaluation rows are regenerated for each of 96 environments, including six fallbacks.",
+  "statistics": "One action, support and thresholds frozen before fresh evidence. Conditional iid laws are synthetic controls; no iid or future-law claim is attached to overlapping historical trace windows. Repetitions reuse prefixes for CPU measurements and are not independent statistical trials.",
+  "environment": {
+    "python": "3.12.14",
+    "system": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "numerical_threads": 1
+  },
+  "source_code": {
+    "run_frozen_fresh.py": "2da4c4be5742aa204780b239cc65c7ed2fb4591088182ed44d9ccf461f8d986c",
+    "run_streaming_validation.py": "54ba3597bc4f0a742e49fed438de36cef8e8b778d6132462cf1376bf1725eea9",
+    "cara/action_query.py": "88a193e01ad9579399d49c3081d5130d510c875078914cdfdb6aa05c7cd22faf",
+    "cara/certification.py": "376ac15e1366f273052f1af1aa75db1c4995f6ed749efbb5a01b1acb49e9a015",
+    "cara/interval_certificate.py": "8ee29b24e5ab00387f01c0905169b8fe8bbe3f0f9c6a9add8eb7e8b671cf24e8",
+    "cara/migration_envelope.py": "d1a8766f3022e1cbd4b2d5ac50c06d1f40066ca12ae6814ead951355f39d57b1",
+    "cara/scene_stream.py": "a857de29edd7fcf68b4531a5c247169f0bf14154e72a8ffc802070b21db36c48",
+    "cara/synthetic.py": "f8f93e89c97a667f8d6653050650c13e3d665a50cd565129ff685b9df7268b38",
+    "cara/fused_canonical.py": "700b90de4af8218ff6f92266f0f21a4218795d7d9a27aadebfe790e5bef71382",
+    "cara/kernels/fused_canonical.c": "3309cbb60c285fa723364c55e0233876d5ab6a181bbfa3b5b3870e4194503565",
+    "cara/native_evidence.py": "9a741adb37c1cd2858135fdfb2aff48f93b0a7aa1a0e4fa99cd092912a41c093",
+    "cara/batch_evidence.py": "5fdf043a341c0f0a72aa83657109cf0309b8b54681cb6219a2f03f5b23f5eaa0",
+    "cara/native_aggregate.py": "b4bbacea80bd7d1757bb168f1f5ade80c4cbd8567e5f446f68fd73984e4bdf4c",
+    "cara/kernels/aggregate.c": "deecc3055458c0cebaaa845e0d898d8aa63ef2efebac70be6f322f3005b9178f",
+    "cara/data.py": "328c849597101f40ea5b3c573a7b10a8ef562f54e179bec1fa0fc3a1d482ffd8",
+    "cara/query_engine.py": "4dbbaba26073986bd2d5d8aea27d147115f79902a34b8abc8c38ceabcd4bbdb2",
+    "cara/workload_views.py": "e0686166f6c1a69b9d8803b93cf436684f7228eb42b1d2b10dd125853865da9b",
+    "cara/refinement.py": "fe6d67b19a452647b593eb37c53ca016034d865ad1bc6677ffa5862a4c74b16c",
+    "cara/native_runtime.py": "be028556b4b82af63d25b131dc39e7d0eb5c829125557ef9295ea84a0b4e6dd1",
+    "cara/error_budget.py": "18ae4cbd8ef2b4e4b864a7f7a0683b96b44f464df176d76963c2b516f87036ae",
+    "cara/native_canonical.py": "ab9fbbb634dbe250c75735b527add217e531903310d8bda914cac2797d2ed681",
+    "cara/kernels/canonical.c": "a160ce07976c6cb7946c78296c6928b2c4287de502faba0042a680564e2b1019",
+    "cara/admission.py": "d68df14eae7c054786d4b12a0935924981e00a0531a585c9553ed2b6226bc735",
+    "run_interval_validation.py": "03b6a3f6bf97d1c9b8ddf5e89f443af5cb54308fd72ccfd0acb4e2245dd141d5"
+  }
+}

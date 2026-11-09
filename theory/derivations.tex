@@ -1,0 +1,1251 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\F}{\mathcal F}
+\newcommand{\inc}{\pi^{\mathrm I}}
+\newcommand{\act}{\widehat\pi}
+\newcommand{\up}{\operatorname{up}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\title{CARA: Mathematical Derivations}
+\author{}
+\date{}
+\hypersetup{pdftitle={CARA: Mathematical Derivations}}
+\begin{document}
+\maketitle
+This note develops the guarantees used by CARA's family query processor and one-action admission rule. The first part establishes exact preservation of the candidate pool under shared workload views, family-wide matching cores, component matching, progressive certified evaluation, and deferred physical assignment. The second part derives the historical census and fresh expected-gain certificate, including the numerical enclosures needed to preserve their decisions.
+
+\section{Placement, workload profiles, and observation roles}
+Let $N$ workloads occupy $H$ nonempty homogeneous physical hosts with common capacity $C>0$. A placement assigns every workload exactly once. Hosts have no additional affinity or pinning restrictions. The incumbent is $\inc$, and the selected repair is $\act$. A scene $Z_b$ supplies finite nonnegative demands $x_{bit}$ for workload $i\in[N]$ and time $t\in[T]$. Its real-arithmetic load is
+\begin{equation}
+ \ell_{bht}(\pi)=\sum_{i:\pi(i)=h}x_{bit}.
+\end{equation}
+All candidate feasibility checks use the same supplied forecast $\widehat x_{it}$ and the same arithmetic tolerance $\tau$:
+\begin{equation}
+ \sum_{i:\pi(i)=h}\widehat x_{it}\le C+\tau\quad(h\in[H],\ t\in[T]).
+\end{equation}
+This is a structural forecast predicate. The realized workloads need not satisfy it.
+
+Write $q_{bht}=\mathbf1\{\ell_{bht}>C+\tau\}$, $o_{bht}=\mathbf1\{\ell_{bht}>C\}$, $e_{bht}=[\ell_{bht}/C-1]_+$, $a_{bh}=\mathbf1\{\max_t\ell_{bht}>0\}$, and $A_b=\sum_ha_{bh}$. The historical profile contains occurrence $J_b=\max_{h,t}q_{bht}$, affected-host fraction $V_b=H^{-1}\sum_h\max_tq_{bht}$, and the native workload measures
+\begin{align}
+ \mathrm{VR}_b&=\frac{\sum_h T^{-1}\sum_t o_{bht}}{A_b},&
+ u_b&=\frac{\sum_h T^{-1}\sum_t e_{bht}}{A_b},\\
+ n_{bh}&=\sum_t o_{bht},&
+ \mathrm{VS}_b&=\frac{\sum_{h:n_{bh}>0}n_{bh}^{-1}\sum_te_{bht}}{\sum_h\mathbf1\{n_{bh}>0\}},\\
+ p_{bh}&=\max_t\ell_{bht},&
+ \mathrm{PAR}_b&=\frac{\max_hp_{bh}}{A_b^{-1}\sum_hp_{bh}}.
+\end{align}
+Severity is zero when no host overloads. For an all-idle scene the native replay uses $\mathrm{VR}=\mathrm{PAR}=-1$ and $u=\mathrm{VS}=0$. Thus the historical profile is $L_b^{\mathrm{hist}}=(J_b,V_b,\mathrm{VR}_b,u_b,\mathrm{VS}_b,\mathrm{PAR}_b)$. The displayed expressions specify real-arithmetic quantities; the canonical replay described below fixes their stored reduction order as well.
+
+Fresh-scene certification uses the fixed-host profile $L^{\mathrm{fr}}=(J,V,R,u_H)$, where
+\begin{equation}
+ R=\frac1{HT}\sum_{h,t}q_{ht},\qquad u_H=\frac1{HT}\sum_{h,t}e_{ht}.
+ \label{eq:fresh-profile}
+\end{equation}
+Fixed $H$ makes these denominators invariant to idle hosts. In particular, $R$ need not equal native VR, and $u_H$ need not equal active-host-normalized $u$. The gain for any specified loss coordinate is the incumbent loss minus the action loss:
+\begin{equation}
+ G_e(Z)=L_e(\inc,Z)-L_e(\act,Z).
+\end{equation}
+For inference, these two losses are the stored binary64 values, interpreted as exact rationals; $G_e$ does not introduce a second rounded subtraction.
+
+Fit supplies the forecast, Build supplies proposal and allocation feedback, and Selection fixes one candidate. Let $\F_0$ include the environment, these observations, the entire proposal transcript, the chosen physical host matching, the final action, all support bounds, and all inferential targets. Conditional on $\F_0$, fresh scenes are iid. No Certification or Evaluation feedback changes the candidate. The released placement equals $\act$ upon admission and $\inc$ otherwise, including empty-pool and evidence-cap outcomes. The historical gate and fresh certificate concern different objects: the former compares its supplied finite table, whereas the latter concerns expectations under the declared fresh-scene law.
+
+\section{Complete residual queries and retention}
+Fix a feasible seed and two nonempty hosts. Let $U$ be the mutable workloads, and let $B_1,B_2$ be the remaining residents of these hosts. These three sets are pairwise disjoint. Every declared residual assignment has the form
+\begin{equation}
+ (B_1\cup A,\ B_2\cup(U\setminus A)),\qquad A\subseteq U.
+ \label{eq:residual}
+\end{equation}
+A bit vector in $\{0,1\}^{|U|}$ selects precisely one such subset $A$. Conversely, every assignment of the mutable workloads to the two labeled hosts selects that bit vector. Enumerating these vectors therefore covers the complete declared labeled family.
+
+Assignments with an empty host, a failed forecast predicate, or a failed incumbent-relative movement constraint are removed. Every other host has its seed membership and remains forecast feasible. Checking the changed groups is therefore sufficient when the seed has already been checked. Canonicalization identifies equal physical partitions, and a previously scored assignment need not be scored again because its fixed Build profile and movement score do not depend on its generating seed. Completion of the family before a new allocation decision accounts for every eligible distinct action through canonical scoring or a valid exclusion certificate.
+
+If $B_1=B_2=\varnothing$, swapping the two host labels maps $A$ to $U\setminus A$ and leaves the same unordered partition. Since the seed has two nonempty hosts, $U$ contains at least two workloads. The two complementary subsets are distinct, and exactly one contains $\min U$. Fixing that workload to the first side retains exactly one representative from each host-exchange pair. If either background is nonempty, one of its fixed residents identifies that side: host exchange no longer maps the declared family to itself. Restricting $\min U$ in that case could remove a distinct physical action, so the full $2^{|U|}$ enumeration is required.
+
+The family is exact for its declared seed, pair, and mutable set. The controller may examine several such families before its budget is exhausted.
+
+For retention, let $\succ$ be the fixed total Build order, including deterministic placement tie-breaking. Under balanced retention, maintaining the best $P$ after every insertion preserves the best $P$ of the scored union. Indeed, at the instant an action is discarded, at least $P$ distinct actions precede it; subsequent insertions cannot improve its rank. The score must depend only on its fixed incumbent, workload panel, and placement, as is the case here.
+
+\section{Physical matching and incumbent-relative migration}
+Let $I_1,\ldots,I_H$ be the incumbent resident sets and $C_1,\ldots,C_H$ the candidate's unlabeled groups. Set $n_{hk}=|I_h\cap C_k|$. A permutation $\sigma$ installs candidate group $C_{\sigma(h)}$ on old physical host $h$. The unchanged workloads are exactly the disjoint intersections $I_h\cap C_{\sigma(h)}$. Therefore
+\begin{align}
+ \#\mathrm{unchanged}(\sigma)&=\sum_{h=1}^Hn_{h,\sigma(h)},\\
+ m(\act,\inc)&=\min_{\sigma\in S_H}\left(N-\sum_hn_{h,\sigma(h)}\right)
+ =N-\max_{\sigma\in S_H}\sum_hn_{h,\sigma(h)}.
+ \label{eq:matching}
+\end{align}
+The maximizing bipartite matching both determines the physical destinations and minimizes the final movement count. All proposals are matched against the fixed incumbent, rather than merely against the preceding search seed. Consequently $m\le K$ is a constraint on the final action. The matching domain contains every host bijection.
+
+Optional nonuniform movement weights can break ties between maximum-overlap matchings exactly. For finite nonnegative binary64 costs $c_i$, choose a common power-of-two denominator $D_c$ and integers $z_i=D_cc_i$. Let $z_{hk}=\sum_{i\in I_h\cap C_k}z_i$ and $P_c=1+\sum_iz_i$. Optimize the integer objective
+\begin{equation}
+ \max_{\sigma\in S_H}\sum_h(P_cn_{h,\sigma(h)}+z_{h,\sigma(h)}).
+\end{equation}
+The secondary retained-weight difference between any two matchings has magnitude at most $\sum_iz_i=P_c-1$. Increasing retained count by one therefore increases the objective by at least $P_c-(P_c-1)=1$, regardless of that secondary difference. Among equal-count matchings, maximizing retained weight minimizes moved weight because their sum is the fixed total $\sum_iz_i$. Integer assignment arithmetic preserves both comparisons. The unit-cost family processor uses the integer movement count in Eq.~\eqref{eq:matching}; weighted configurations retain this full lexicographic matcher.
+
+\begin{lemma}[Shared memberships and the action footprint]\label{lem:reuse-footprint}
+Let $(I_h)_{h=1}^H$ and $(A_h)_{h=1}^H$ be two partitions of the same finite VM set into $H$ nonempty resident sets on homogeneous hosts. All host bijections are permitted. Let $\sigma$ maximize the total overlap $\sum_{h=1}^H |I_h\cap A_{\sigma(h)}|$, with arbitrary secondary tie breaking, and realize the candidate by assigning resident set $A_{\sigma(h)}$ to incumbent physical host $h$. Write $\mathcal K_I=\{I_h:h\in[H]\}$ and $\mathcal K_a=\{A_h:h\in[H]\}$ for the membership sets. Their overlap fraction is $\rho(a)=|\mathcal K_I\cap\mathcal K_a|/H$. Then every common resident set is paired with itself by every maximizing bijection. Consequently, if $F(a)$ is the set of physical hosts incident to a VM migration, then
+\begin{equation}\label{eq:reuse-footprint}
+ |F(a)|=H-|\mathcal K_I\cap\mathcal K_a|=H\bigl(1-\rho(a)\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $w_{hj}=|I_h\cap A_j|$. Suppose $I_h=A_j=S$. Because the resident sets form partitions and $S$ is nonempty, $w_{hj}=|S|>0$, $w_{h\ell}=0$ for every $\ell\ne j$, and $w_{rj}=0$ for every $r\ne h$. Assume a maximizing bijection does not pair this common resident set with itself. Then $\ell=\sigma(h)\ne j$ and $r=\sigma^{-1}(j)\ne h$. Replace the two pairs $(h,\ell)$ and $(r,j)$ by $(h,j)$ and $(r,\ell)$, leaving all other pairs unchanged. This is another permitted bijection, and its overlap increases by
+\begin{equation}
+ w_{hj}+w_{r\ell}-w_{h\ell}-w_{rj}=|S|+w_{r\ell}>0,
+\end{equation}
+contradicting maximality. Hence every common resident set is preserved. Conversely, a physical host is unchanged precisely when its realized resident set equals its incumbent resident set. Such an equality is a common membership key. Nonempty disjoint resident sets have distinct keys, so the number of unchanged hosts is exactly $|\mathcal K_I\cap\mathcal K_a|$. Finally, a physical host is incident to a migrated VM if and only if its resident set changes: membership inequality supplies a VM entering or leaving it, whereas an entering or leaving VM supplies membership inequality. Subtracting the unchanged-host count from $H$ proves~\eqref{eq:reuse-footprint}.
+\end{proof}
+
+
+\section{Factoring the family matching query}
+\subsection{Count signatures}
+Let $n_r$ count the free mutable workloads whose incumbent host is $r$, and let $a_r(A)$ count those assigned to the first changed group by mask $A$. A symmetry-fixed workload, when present, is included in the fixed background. Write $c_{r0},c_{r1}$ for background overlaps. In the seed's column order the varying overlap entries are
+\begin{equation}
+W(A)_{r0}=c_{r0}+a_r(A),\qquad W(A)_{r1}=c_{r1}+n_r-a_r(A).
+\label{eq:signature-columns}
+\end{equation}
+Every other column is fixed. Thus the vector $a(A)=(a_r(A))_r$ determines the complete overlap matrix and its optimum retained count. There are at most
+\begin{equation}
+S\le\prod_{r:n_r>0}(n_r+1)
+\label{eq:signature-count}
+\end{equation}
+such vectors, compared with $2^{|U|}$ unrestricted masks. Masks in one signature class can have different resident sets and workload scores. Only their matching objective is shared. Relabeling candidate columns canonically is a bijection on perfect matchings and therefore preserves its optimum value.
+
+\subsection{Support components}
+Let $\mathcal B=(R\cup C,E)$ be a bipartite graph on the $H$ incumbent rows and $H$ seed columns. Its edge set contains every pair $(r,c)$ for which $W(A)_{rc}>0$ in some family member. Adding extra edges is allowed. To include the seed itself, the construction starts with every positive seed overlap and adds both possible destinations of each mutable workload. Consequently the graph is fixed before any capacity or score filtering. Let its connected components be $(R_j,C_j)$, with $r_j=|R_j|$ and $c_j=|C_j|$, including isolated vertices, and write $E_j=E\cap(R_j\times C_j)$. For a mask $A$, define
+\begin{equation}
+\begin{split}
+v_j(A)=\max_{M_j}\;&\sum_{(r,c)\in M_j}W(A)_{rc},\\
+& M_j\subseteq R_j\times C_j,\quad |M_j|=\min(r_j,c_j),
+\end{split}
+\label{eq:component-optimum}
+\end{equation}
+where $M_j$ is a matching in the complete rectangular submatrix, including zero entries. Put $v_j(A)=0$ when either vertex set is empty.
+
+\begin{theorem}[Support-component factorization]\label{thm:component}
+For every family member with nonnegative overlaps and unrestricted host bijections,
+\begin{equation}
+\max_{\sigma\in S_H}\sum_{r=1}^H W(A)_{r,\sigma(r)}=\sum_jv_j(A),\qquad
+m(A)=N-\sum_jv_j(A).
+\label{eq:component-factorization}
+\end{equation}
+The statement permits unequal row and column counts within a component. A component containing neither changed column has a constant optimum throughout the family.
+\end{theorem}
+\begin{proof}
+Fix a global perfect matching $M$. Each of its positive edges belongs to one component. In component $j$, these positive edges form a partial matching. If it has fewer than $\min(r_j,c_j)$ edges, an unused row and an unused column both exist and can be joined inside the complete rectangular matrix. Repeating this step extends the partial matching to the cardinality in Eq.~\eqref{eq:component-optimum}. All weights are nonnegative, so the extension cannot decrease its weight. Hence
+\begin{equation}
+\sum_{(r,c)\in M}W(A)_{rc}
+=\sum_j\sum_{(r,c)\in M\cap E_j}W(A)_{rc}
+\le\sum_jv_j(A).
+\end{equation}
+Taking the maximum over global perfect matchings proves one inequality.
+
+Conversely, choose an optimal rectangular matching in every component. Their union leaves $\max(r_j-c_j,0)$ unmatched rows and $\max(c_j-r_j,0)$ unmatched columns in component $j$. Its two types of surplus cannot both be positive. Since $\sum_jr_j=\sum_jc_j=H$,
+\begin{equation}
+\sum_j\max(r_j-c_j,0)=\sum_j\max(c_j-r_j,0).
+\end{equation}
+Pair these remaining rows and columns arbitrarily. Each pair joins different components, because no component has both kinds of surplus. By the graph's construction every such entry of $W(A)$ is zero. The completed perfect matching therefore has weight exactly $\sum_jv_j(A)$, proving the reverse inequality. Finally, all entries outside the two changed columns are constant by Eq.~\eqref{eq:signature-columns}. Any component disjoint from those columns has a fixed submatrix and optimum.
+\end{proof}
+
+In this support construction, an unchanged group identical to an incumbent group is an isolated positive edge and contributes its cardinality directly. When the seed equals the incumbent, every unchanged host has this form, and the varying matching is only $2\times2$. For an intermediate seed, a component can contain more rows or columns; its size is determined by the support graph. Including an unnecessary edge can merge components and increase work, but preserves Theorem~\ref{thm:component}. Omitting a possible positive edge would invalidate its premise.
+
+Let $\mathcal A$ be the components meeting the two changed columns. The fixed components are solved once, and each distinct count signature requires solves only in $\mathcal A$. With a rectangular assignment bound $O(rc\min(r,c))$, the matching work is
+\begin{equation}
+O\!\left(\sum_{j\notin\mathcal A}r_jc_j\min(r_j,c_j)
++S\sum_{j\in\mathcal A}r_jc_j\min(r_j,c_j)\right),
+\label{eq:component-work}
+\end{equation}
+versus $O(SH^3)$ for full matching at each signature. Forming the sparse support reads the workload assignments once; materializing component matrices uses $\sum_jr_jc_j$ cells. The factorization returns the optimum count. The prescribed full matcher supplies the physical destinations of retained candidates by default. Section~\ref{sec:unique-physical-lift} gives a certificate that recovers the same output when the physical optimum is unique.
+
+\subsection{Subtree movement bounds}
+In an aligned mask interval, add each unresolved row count to both varying columns of the forced overlap matrix. A perfect matching uses each incumbent row once and the two changed columns on distinct rows. For the row matched to the first changed column, route all its unresolved workloads to that column; for the row matched to the second, route all its unresolved workloads to the second. These assignments are compatible, and the remaining unresolved workloads can be placed arbitrarily. Thus the relaxed retained count is attained by an unrestricted completion. Capacity and nonempty-host restrictions can only reduce the eligible optimum. Subtracting this relaxed retained count from $N$ is therefore a lower bound on movement for every eligible descendant. Its positive edges are contained in the same support graph, so component factorization applies to this bound as well.
+
+\subsection{Agreement with the prescribed unit-cost matcher}
+The unit-cost physical matcher assigns an overlap $c$ the stored score $w(c)=\operatorname{RN}(c+\operatorname{RN}(c/(2N)))$. For integer $c\le N\le2^{50}$, the inputs $c$ and $2N$ are exactly representable. With $u=2^{-53}$ and $\eta=2^{-1074}$, the elementary rounding bound gives
+\begin{equation}
+\left|w(c)-c\left(1+\frac1{2N}\right)\right|
+\le uc+\frac{(2u+u^2)c}{2N}+(2+u)\eta.
+\end{equation}
+Every assignment selects overlap counts totaling at most $N$, including the subtree relaxation, since each selected entry is bounded by its incumbent row population. With $H\le N$, its total stored-score error is at most $E=u(N+2)+3H\eta<0.126$. Distinct retained integer totals have ideal score gap at least one, while $2E<0.252$. An optimum stored-score assignment consequently maximizes the same integer retained count, under the assignment solver's optimality contract. Equal-count physical mappings may still differ, so a count value alone cannot replace the final physical tie-breaking routine. Section~\ref{sec:unique-physical-lift} treats the case in which the full optimum is proved unique.
+
+\section{A family-wide core for migration matching}\label{sec:migration-core}
+
+Neighborhood removal is an established fixed-edge reduction for a single weighted matching~\cite{grossmann2026hypergraph}. Its monotonicity permits unchanged target edges to be certified against a common family envelope. We derive the positive certificate graph's star structure and a migration-dependent bound that holds for the actual greedy reduction, then combine the resulting shared core with standard local assignment updates~\cite{millstettey2007dynamic,morita2024update}. The original full matcher supplies the final physical action unless the family certificate uniquely determines that same output as shown below.
+
+Weighted matching kernels can instead be bounded by the positive support's feedback-edge number~\cite{korenwein2018reduction}. The dimension bound below uses the seed's migration mass and incumbent occupancies, so it does not require that topological parameter to be small.
+
+\subsection{Matrices and family envelopes}
+Consider a repair family with $H$ original hosts and $H$ candidate groups in a fixed seed-column order. Its nonnegative integer overlap matrix is $W(a)\in\mathbb Z_{\ge0}^{H\times H}$, and the optimum retained count is
+\begin{equation}\label{eq:core-value}
+v(a)=\max_{\sigma\in S_H}\sum_{i=1}^H W_{i,\sigma(i)}(a).
+\end{equation}
+Zero-weight edges are allowed: a zero overlap does not forbid a physical destination. Every row has the same sum $s_i\ge1$ throughout the family, since every original workload belongs to exactly one candidate group. Thus $N=\sum_i s_i$ is fixed. Let $J$ be the set of edited columns and $p=|J|$; CARA has $p=2$. For $j\notin J$, every entry of column $j$ equals its seed value $W^0_{ij}$. We include the seed when constructing family bounds, even when symmetry removal excludes its particular representative from enumeration.
+
+Let $U_{ij}$ bound $W_{ij}(a)$ from above for every family member and for the seed. For an unedited column use $U_{ij}=W^0_{ij}$. For an edited column the bound is also chosen to obey the row budget
+\begin{equation}\label{eq:core-row-budget}
+U_{ij}\le r_i:=s_i-\sum_{k\notin J}W^0_{ik},\qquad j\in J.
+\end{equation}
+This restriction is valid because $r_i$ is the conserved total mass of row $i$ in the edited columns. The ordinary two-host envelope has $U_{i,c}=b_{i,c}+n_i$, where $b_{i,c}$ is the fixed background overlap in edited column $c$ and $n_i$ is the number of mutable workloads originating on host $i$. It satisfies~\eqref{eq:core-row-budget}; taking its maximum with the seed entry preserves the same inequality. The two edited upper bounds need not be simultaneously attainable.
+
+For a positive entry of an unedited column define
+\begin{equation}\label{eq:core-certificate}
+w_{ij}:=W^0_{ij}>0,\qquad R_{ij}:=\max_{k\ne j}U_{ik},\qquad C_{ij}:=\max_{\ell\ne i}U_{\ell j}.
+\end{equation}
+An empty maximum is zero. Call $(i,j)$ certified when
+\begin{equation}\label{eq:core-dominance}
+w_{ij}\ge R_{ij}+C_{ij}.
+\end{equation}
+For a single matrix,~\eqref{eq:core-dominance} is the $b\equiv1$, size-two-edge specialization of neighborhood removal~\cite{grossmann2026hypergraph}. The family form is its monotone consequence: the target weight is fixed, and replacing either competing edge by an upper bound can only make the inequality harder to satisfy. The certificate is therefore shared by every count signature. The proof below also establishes simultaneous fixation and the exact residual value identity needed by the query.
+
+\subsection{Exact reduction and its tie semantics}
+\begin{lemma}[A shared persistent edge]\label{lem:core-persistent}
+For every family member $a$, there is an optimum in~\eqref{eq:core-value} that contains every edge in any matching $T$ of certified edges.
+\end{lemma}
+\begin{proof}
+First consider one certified edge $(i,j)$ and any optimum $M$ for $W(a)$. If $M$ already contains it, no change is necessary. Otherwise, because $M$ is perfect, it contains $(i,k)$ and $(\ell,j)$ for distinct $k\ne j$ and $\ell\ne i$. Replace these two edges by $(i,j)$ and $(\ell,k)$. The new edges have distinct row and column endpoints and match exactly the four previously matched endpoints, so the result $M'$ is again perfect. Its weight change satisfies
+\begin{align}
+W(a;M')-W(a;M)
+&=w_{ij}+W_{\ell k}(a)-W_{ik}(a)-W_{\ell j}(a)\nonumber\\
+&\ge w_{ij}-U_{ik}-U_{\ell j}\nonumber\\
+&\ge w_{ij}-R_{ij}-C_{ij}\nonumber\\
+&\ge0.\label{eq:core-exchange}
+\end{align}
+The first inequality uses nonnegativity of $W_{\ell k}(a)$ and the two valid upper bounds. Since $M$ was optimal, $M'$ is also optimal.
+
+Now process the edges of $T$ one at a time, starting with any optimum. Suppose all earlier edges are already present. The next edge $(i,j)\in T$ shares no endpoint with them. Neither of the two edges removed in the preceding exchange can be an earlier edge: an earlier edge has neither endpoint $i$ nor endpoint $j$. Further, its matched endpoints cannot be the replacement endpoint $k$ or $\ell$, because those endpoints are already occupied by their earlier edge in the current perfect matching. The exchange therefore preserves every previously fixed edge. Induction proves simultaneous existence for all of $T$.
+\end{proof}
+
+Write $I_T$ and $J_T$ for the row and column endpoints of $T$, $R=[H]\setminus I_T$, $C=[H]\setminus J_T$, and $c_T=\sum_{(i,j)\in T}w_{ij}$. Then
+\begin{equation}\label{eq:core-exact}
+v(a)=c_T+\max_{\sigma:R\to C\ \mathrm{bijective}}\sum_{i\in R}W_{i,\sigma(i)}(a).
+\end{equation}
+Indeed, Lemma~\ref{lem:core-persistent} supplies a full optimum containing $T$; deleting $T$ leaves a feasible residual matching, so the full value is at most the right side. Conversely, adjoining $T$ to any residual optimum produces a feasible full matching, proving the reverse inequality. Thus the residual matrix supplies the exact retained count and $N-v(a)$ supplies the exact movement count.
+
+The lemma states existence, not uniqueness. With equality in~\eqref{eq:core-dominance}, a different optimum may omit a certified edge. The non-strict reduction is consequently used for count queries only. Final physical actions retain the original matcher unless the additional strictness and uniqueness conditions in Section~\ref{sec:unique-physical-lift} hold. Both paths preserve its prescribed output.
+
+The same reasoning permits repeated reduction: after removing a certified matching, recompute bounds over the remaining rows and columns and apply the rule again. Each stage preserves the value for every family member. No assertion that repeated reduction finds a smallest possible core is needed.
+
+\subsection{Why a simple greedy pass is sufficient}
+Let $G_{\rm cert}$ be the bipartite graph of all positive certified entries before any removal. Its vertices are the original rows and columns. A greedy pass traverses all certified edges and selects an edge whenever both endpoints remain unused. This is a maximal matching of $G_{\rm cert}$.
+
+\begin{lemma}[Star structure of the certificate graph]\label{lem:core-stars}
+Every nontrivial connected component of $G_{\rm cert}$ is a star. Hence every maximal matching of $G_{\rm cert}$ has maximum cardinality.
+\end{lemma}
+\begin{proof}
+Suppose two certified edges $(i,j)$ and $(i,k)$ share a row, with $j\ne k$. Put $x=w_{ij}>0$ and $y=w_{ik}>0$. The alternative-row maxima in their certificates contain the other positive edge, giving
+\begin{equation}
+x\ge y+C_{ij},\qquad y\ge x+C_{ik}.
+\end{equation}
+Adding yields $0\ge C_{ij}+C_{ik}$. Both maxima are nonnegative, so $C_{ij}=C_{ik}=0$ and $x=y$. Every other entry in columns $j$ and $k$ has upper bound zero. Therefore both columns have degree one in $G_{\rm cert}$. This argument applies to every neighbor of any row of degree at least two. Interchanging rows and columns gives the symmetric statement for a column of degree at least two. No certificate edge can consequently join a row and a column that both have degree at least two. A connected bipartite graph with that property is a star: a path of length three would have a middle edge whose two endpoints each have degree at least two. Each nontrivial star admits exactly one edge in a maximal matching, and at most one in any matching. A maximal matching thus attains the largest possible cardinality component by component.
+\end{proof}
+
+Positivity is essential in this lemma. Zero entries are not inserted into $G_{\rm cert}$; an all-zero matrix would otherwise yield a complete certificate graph rather than stars. Zero residual entries remain legal in the assignment problem.
+
+\subsection{A core bound from the seed's migration count}
+Choose any optimal perfect matching $\sigma^0$ for the seed matrix only as a proof witness. The reduction algorithm does not need to compute this witness. Let
+\begin{align}
+d_i&=W^0_{i,\sigma^0(i)},&
+a_i&=s_i-d_i,&
+b_i&=t_{\sigma^0(i)}-d_i,\nonumber\\
+t_j&=\sum_i W^0_{ij},&
+m_0&=N-\sum_i d_i.
+\label{eq:core-flow}
+\end{align}
+Here $a_i$ counts original residents not retained in their seed-matched group, $b_i$ counts foreign residents in that group, and $m_0$ is the seed's minimum unit migration count. Since the row and column sums both total $N$,
+\begin{equation}\label{eq:core-flow-total}
+\sum_i a_i=m_0,\qquad \sum_i b_i=m_0.
+\end{equation}
+Let $E=\{i:\sigma^0(i)\in J\}$. The matching is bijective, so $|E|=p$.
+
+For every $i\notin E$, its witness edge lies in an unedited column. All other entries in its row have envelope at most $a_i$: fixed entries sum to at most $a_i$, and an edited entry is at most the edited-row budget $r_i\le a_i$. All other entries in its matched column are fixed and sum to $b_i$. Hence
+\begin{equation}\label{eq:core-witness-bounds}
+R_{i,\sigma^0(i)}\le a_i,\qquad C_{i,\sigma^0(i)}\le b_i.
+\end{equation}
+It follows that
+\begin{equation}\label{eq:core-good}
+d_i\ge a_i+b_i
+\quad\Longrightarrow\quad
+(i,\sigma^0(i))\in E(G_{\rm cert}).
+\end{equation}
+Such an edge is positive: if $d_i=0$, the premise would force $a_i=0$, contradicting $s_i=d_i+a_i\ge1$.
+
+\begin{theorem}[Migration-bounded exact core]\label{thm:migration-core}
+Let $T$ be any maximal matching of the positive family certificate graph and let $k=H-|T|$ be the residual dimension. Define
+\begin{equation}
+B=\{i\notin E:d_i<a_i+b_i\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:core-weighted-bound}
+k\le p+|B|,\qquad \sum_{i\in B}(s_i+1)\le3m_0.
+\end{equation}
+In particular, if every incumbent host contains at least $q\ge1$ workloads,
+\begin{equation}\label{eq:core-size-bound}
+k\le\min\left\{H,\ p+\left\lfloor\frac{3m_0}{q+1}\right\rfloor\right\}.
+\end{equation}
+If the seed respects movement budget $K$, the same bound holds with $K$ replacing $m_0$.
+\end{theorem}
+\begin{proof}
+The witness edges with $i\notin E\cup B$ form a matching, since they are a subset of $\sigma^0$. By~\eqref{eq:core-good}, all these $H-p-|B|$ edges belong to $G_{\rm cert}$. Lemma~\ref{lem:core-stars} implies that the maximal matching $T$ is maximum in cardinality, so
+\begin{equation}
+|T|\ge H-p-|B|,\qquad k=H-|T|\le p+|B|.
+\end{equation}
+For any $i\in B$, all counts are integers, so $d_i<a_i+b_i$ gives $d_i+1\le a_i+b_i$. Adding $a_i$ and using $s_i=d_i+a_i$ yields
+\begin{equation}
+s_i+1\le2a_i+b_i.
+\end{equation}
+Summing over $B$ and using nonnegativity together with~\eqref{eq:core-flow-total},
+\begin{align}
+\sum_{i\in B}(s_i+1)
+&\le 2\sum_{i\in B}a_i+\sum_{i\in B}b_i\nonumber\\
+&\le 2\sum_{i=1}^H a_i+\sum_{i=1}^H b_i\nonumber\\
+&=3m_0.
+\end{align}
+If $s_i\ge q$, then $(q+1)|B|\le3m_0$, hence $|B|\le\lfloor3m_0/(q+1)\rfloor$. Combining with the first inequality and the trivial bound $k\le H$ proves~\eqref{eq:core-size-bound}. Finally $m_0\le K$ and monotonicity of the floor expression justify the budget form.
+\end{proof}
+
+The weighted inequality in~\eqref{eq:core-weighted-bound} is useful when incumbent occupancies differ. For example, sort the values $s_i+1$ increasingly as $z_{(1)},\ldots,z_{(H)}$ and put $b^*=\max\{b:\sum_{i=1}^b z_{(i)}\le3m_0\}$. Every set of $b$ rows has mass at least the sum of the $b$ smallest values, so $|B|\le b^*$ and $k\le\min\{H,p+b^*\}$. This does not assume equal host occupancies.
+
+The bound concerns ambiguity in the matching objective, not connectedness of its support. For example, take $H$ hosts with eight residents each and move one resident from every host to the next host on a cycle. The positive overlap support is connected and $m_0=H=N/8$. With $p=2$ and $q=8$, the theorem gives $k\le\min\{H,2+\lfloor H/3\rfloor\}$. In this particular cycle the unedited diagonal entries are seven, whereas their other-row and other-column masses are one each, so the certificate actually removes every unedited diagonal and leaves at most two rows and columns. Support-component decomposition alone cannot discover this reduction.
+
+\paragraph{Sharpness for this reduction rule.}
+The coefficient $3$ in~\eqref{eq:core-size-bound} cannot be replaced by a smaller universal constant for this certificate-based reduction. Fix the number $p$ of edited columns and an integer $t\ge2$. For $H>\max\{p,2\}$, let every host have $q=3t-1$ residents and use cyclic indices to define the seed matrix
+\begin{equation}
+W^0_{ij}=\begin{cases}2t-1,&j=i,\\t,&j=i+1\pmod H,\\0,&\text{otherwise}.\end{cases}
+\end{equation}
+Every row and column sums to $3t-1$. Since $2t-1>t$, selecting the diagonal attains the sum of the individual row maxima and is optimal. Consequently,
+\begin{equation}
+v_0=H(2t-1),\qquad N=H(3t-1),\qquad m_0=N-v_0=Ht,\qquad \frac{m_0}{q+1}=\frac H3.
+\end{equation}
+Take any $p$ edited columns and any family containing this seed. Its envelope obeys $U\ge W^0$. Every positive fixed entry is either a diagonal entry or a cyclic off-diagonal entry. A diagonal entry has another entry of weight $t$ in both its row and its column, while a cyclic off-diagonal entry has a diagonal of weight $2t-1$ in both. Their certificate margins therefore satisfy, respectively,
+\begin{align}
+(2t-1)-(R_{ii}+C_{ii})&\le(2t-1)-2t=-1<0,\\
+t-(R_{i,i+1}+C_{i,i+1})&\le t-2(2t-1)=2-3t<0.
+\end{align}
+No positive fixed edge is certified, so the first reduction pass removes nothing and repeated passes cannot change the matrix. The residual has $k=H$. For any $0\le c<3$, choose $H>p/(1-c/3)$; then
+\begin{equation}
+p+\left\lfloor\frac{c m_0}{q+1}\right\rfloor\le p+\frac{cH}{3}<H=k.
+\end{equation}
+Thus replacing $3$ by $c$ would violate the bound on this family. This is a tightness statement for the specified certificate and residual-dimension guarantee; it is not a lower bound for other matching reductions or algorithms.
+
+The theorem is stated for the full square overlap problem. The exact value identity~\eqref{eq:core-exact} may then be combined with the already established support-component decomposition. A rectangular component can be padded on its smaller side by zero-weight dummy vertices before applying the same matching arguments. The global migration bound should not be restated with a component's local row sums or local movement without a separate derivation.
+
+\subsection{Two-column primal-dual replay on the core}
+For the surviving count queries, we apply standard local assignment updates~\cite{millstettey2007dynamic,morita2024update}. The family compiler supplies the uniformly valid residual matrix; the updater resolves its changed columns while retaining an exact primal-dual state.
+
+Let $C=-W$ be a $k\times k$ minimum-cost matrix, with a perfect matching $M$ and dual values $u_i,v_j$ satisfying
+\begin{equation}\label{eq:core-dual-state}
+u_i+v_j\le C_{ij}\quad\forall i,j,\qquad u_i+v_j=C_{ij}\quad\forall(i,j)\in M.
+\end{equation}
+For every perfect matching $P$, dual feasibility gives
+\begin{equation}
+\sum_{(i,j)\in P}C_{ij}\ge\sum_{(i,j)\in P}(u_i+v_j)=\sum_i u_i+\sum_j v_j.
+\end{equation}
+Equality holds for $M$, so $M$ is optimal. This is the only optimality invariant needed for replay.
+
+When a candidate changes columns $J'$, where $|J'|\le2$, delete the edges of $M$ incident to those columns. They are distinct matching edges, so at most two rows and columns become unmatched. Preserve all $u_i$ and all $v_j$ for $j\notin J'$, and set
+\begin{equation}\label{eq:core-dual-reset}
+v'_j=\min_i(C'_{ij}-u_i),\qquad j\in J'.
+\end{equation}
+For an unchanged column, the old feasibility inequalities remain valid. For a changed column, $v'_j\le C'_{ij}-u_i$ for every row by definition, so feasibility is restored. Every retained matched edge belongs to an unchanged column and remains tight.
+
+One standard shortest augmenting-path step increases this partial matching by one while maintaining feasible dual values and tight matched edges. To verify its update, let $S$ and $T$ be row and column vertices of an alternating tree rooted at an unmatched row. If no tight edge reaches a column outside $T$, set
+\begin{equation}
+\delta=\min_{i\in S,j\notin T}(C'_{ij}-u_i-v_j)\ge0
+\end{equation}
+and increase $u_i$ by $\delta$ on $S$ while decreasing $v_j$ by $\delta$ on $T$. For an edge in $S\times T$ its dual sum is unchanged; for one in $S\times T^c$ the increase is at most its slack; for one in $S^c\times T$ its dual sum decreases; elsewhere it is unchanged. Dual feasibility therefore holds in all four cases. A matched edge has either both endpoints inside the alternating tree or both outside, so its tightness also holds. At least one previously positive boundary slack becomes zero. The tree can grow along this edge, or it reaches an unmatched column and its alternating path is flipped. The flip only uses tight edges and adds one matched edge.
+
+At most $|J'|$ augmentations restore a perfect tight matching. The preceding objective equality then proves optimality for $C'$. Dense shortest-path implementations keep one minimum slack and predecessor per unvisited column; each newly reached row is scanned once and at most $k$ rows enter the tree. This gives $O(k^2)$ time per augmentation, hence $O(|J'|k^2)=O(k^2)$ per count signature after the base state is prepared. Integer overlap costs preserve integral slacks and dual updates; the implementation must still respect its machine-integer range.
+
+The base optimum and dual state may be restored before each candidate, or the previous candidate's optimal state may be reused; in either case all changed columns must be identified and their incident matching edges removed. The proof allows arbitrary signature order. When both columns have identical values to the cached state, no reoptimization is required. Rectangular residual matrices require consistent zero padding. A count solver's chosen residual matching is not by itself a physical-output certificate; final mappings use the original full matcher or the unique-output certificate established next.
+
+\subsection{Lifting a family certificate to unique physical outputs}\label{sec:unique-physical-lift}
+The strict case of neighborhood removal follows from the same established exchange argument~\cite{grossmann2026hypergraph}. We use that case to determine when a family count answer also fixes the prescribed physical output. The contribution here is the safe use of a shared family certificate across the count quotient and the richer result, not a new fixed-edge inequality.
+
+Let $F=(e_1,\ldots,e_{H-k})$ be the complete sequence of edges removed by the family compiler, before support-component decomposition; also write $F$ for its set of edges. For edge $e_t=(i_t,j_t)$, let $I_t,J_t$ be the remaining row and column sets when its recorded bounds were computed. Those alternative bounds are
+\begin{equation}\label{eq:lift-recorded-bounds}
+R_t=\max_{j\in J_t\setminus\{j_t\}}U_{i_tj},\qquad C_t=\max_{i\in I_t\setminus\{i_t\}}U_{ij_t}.
+\end{equation}
+An empty maximum is zero. The target column is unedited, so its actual value is $W_{i_tj_t}(a)=w_t$ for every family member. The stronger condition needed for physical recovery is
+\begin{equation}\label{eq:lift-strict}
+w_t>R_t+C_t\qquad\text{for every }e_t\in F.
+\end{equation}
+If a batch shares bounds calculated before any edge of that batch is removed, those recorded maxima are still valid: deleting other rows and columns can only decrease the sets of competing entries.
+
+To see the effect of strictness, fix a family member $a$ and an optimum residual matching $M$ that omits $e_t$. Such a matching contains $(i_t,j)$ and $(i,j_t)$ for distinct $i\ne i_t$ and $j\ne j_t$. The two-edge exchange used in Eq.~\eqref{eq:core-exchange} gives
+\begin{align}
+W(a;M')-W(a;M)
+&=w_t+W_{ij}(a)-W_{i_tj}(a)-W_{ij_t}(a)\nonumber\\
+&\ge w_t-U_{i_tj}-U_{ij_t}\nonumber\\
+&\ge w_t-R_t-C_t>0.\label{eq:lift-strict-exchange}
+\end{align}
+This contradicts optimality. Thus every residual optimum contains $e_t$. For the first removed edge this applies to every full optimum. Deleting that common edge gives a bijection between full optima and optima of the smaller residual. Induction over $t$ proves that every full optimum for every family member contains all edges of $F$. Consequently restriction to the final residual gives the stronger set identity
+\begin{equation}\label{eq:lift-optimum-set}
+\operatorname{Opt}(W(a))=\{F\cup M: M\in\operatorname{Opt}(W(a)[I_*,J_*])\},
+\end{equation}
+where $I_*,J_*$ are the global remaining vertex sets. The non-strict condition gives equality of optimum values, but it does not justify this equality of optimum sets.
+
+No edited column is removed by the family rule. For the two-host family, $|J_*|=k\ge2$; hence the condition $k\le2$ means exactly $k=2$ and $J_*=J$. All other $H-2$ rows and columns are already paired by $F$. This condition concerns the global square residual, rather than the largest active support component. Small rectangular components can have several zero-edge completions when combined; their separate sizes do not establish uniqueness of the full matching.
+
+Write $I_*=(i_1,i_2)$ and $J_*=(j_1,j_2)$. Let $z_i$ be the count-signature entry giving the number of free mutable residents from incumbent host $i$ assigned to $j_1$, and let $n_i$ be their fixed total. With $b_{ij}$ including all fixed background residents and any fixed symmetry representative, the actual residual entries are
+\begin{equation}\label{eq:lift-residual-entries}
+W_{i,j_1}(a)=b_{i,j_1}+z_i,\qquad W_{i,j_2}(a)=b_{i,j_2}+n_i-z_i,\qquad i\in I_*.
+\end{equation}
+These are the candidate's integer overlap entries, not its family upper envelope. Define the two possible retained totals
+\begin{equation}\label{eq:lift-two-permutations}
+d(z)=W_{i_1j_1}(a)+W_{i_2j_2}(a),\qquad x(z)=W_{i_1j_2}(a)+W_{i_2j_1}(a).
+\end{equation}
+If $d(z)>x(z)$, the unique residual matching is the diagonal; if $x(z)>d(z)$, it is the crossed pairing. When $d(z)=x(z)$, both are optimal and the certificate makes no claim about the prescribed tie choice. By Eq.~\eqref{eq:lift-optimum-set}, a strict inequality in Eq.~\eqref{eq:lift-two-permutations} yields a unique full integer-count optimum. Its candidate-column-to-incumbent-row map, denoted $\psi_z$, combines $F$ with that residual pairing and depends only on the signature in the fixed seed-column order.
+
+The unit-cost physical matcher uses stored scores rather than exact integer overlaps. For completeness, let $1\le N\le2^{50}$, $u=2^{-53}$, and $\eta=2^{-1074}$. The earlier per-entry rounding bound implies, for every full matching $M$,
+\begin{align}
+\left|\sum_{(i,j)\in M}w(W_{ij})-\left(1+\frac1{2N}\right)\sum_{(i,j)\in M}W_{ij}\right|
+&\le uN+u+\frac{u^2}{2}+H(2+u)\eta\nonumber\\
+&\le E:=u(N+2)+3H\eta<0.126.\label{eq:lift-score-error}
+\end{align}
+Here each matching selects total overlap at most $N$, rather than $H$ times the largest individual entry. If $M_*$ is the unique integer optimum, integrality gives $W(M_*)-W(M)\ge1$ for every $M\ne M_*$. Therefore
+\begin{equation}\label{eq:lift-score-gap}
+\sum_{e\in M_*}w(W_e)-\sum_{e\in M}w(W_e)\ge1-2E>0.748>0.
+\end{equation}
+The same matching is the unique optimum of the sum of stored scores. Under the prescribed assignment solver's optimality contract, its deterministic tie rule therefore returns precisely this matching. This argument concerns the stored objective; it does not replace that solver contract with a separate proof of its internal floating-point implementation.
+
+Finally, a count signature does not specify which individual residents chose each group, nor the resulting canonical group order. For the particular mask $a$, let $j_a(v)$ be workload $v$'s group in the fixed seed-column order, and let $\gamma_a$ map those group labels to canonical labels by ascending smallest resident identity. Then its canonical assignment is $a(v)=\gamma_a(j_a(v))$. The physical mapping for canonical columns and the resulting aligned assignment are
+\begin{equation}\label{eq:lift-canonical-map}
+f_a(c)=\psi_z(\gamma_a^{-1}(c)),\qquad \widetilde a(v)=f_a(a(v))=\psi_z(j_a(v)).
+\end{equation}
+The moved set and its count are consequently
+\begin{equation}\label{eq:lift-rich-fields}
+\mathcal M_a=\{v:\widetilde a(v)\ne\inc(v)\},\qquad m(a)=|\mathcal M_a|=N-v(a).
+\end{equation}
+The original output operations applied to this identical aligned assignment give the same moved identities, count, stored movement fraction, and unit movement cost. Only $\psi_z$ may be cached by count signature. The permutation $\gamma_a$, aligned assignment, and moved identities must be reconstructed for each actual mask; two masks with equal signatures can differ in all three.
+
+\begin{proposition}[A family certificate for the rich physical result]\label{prop:unique-physical-lift}
+Consider a unit-cost two-host family with $N\le2^{50}$. If every removed edge satisfies Eq.~\eqref{eq:lift-strict}, its global residual has two rows and two columns, and $d(z)\ne x(z)$, Eqs.~\eqref{eq:lift-canonical-map}--\eqref{eq:lift-rich-fields} recover exactly the physical output of the prescribed full matcher under its optimality contract. Within this supported family domain, a non-strict deletion sequence, larger global core, or residual tie retains the prescribed full matcher.
+\end{proposition}
+The preceding exchange, optimum-set identity, residual comparison, stored-score bound, and canonical relabeling establish each part of the proposition. If the seed equals the incumbent, every unchanged host is an isolated diagonal edge with weight $s_i>0$ and both alternative maxima zero, so its $H-2$ fixed edges satisfy the strict premise without a separate reduction pass. The family constructor enforces $N\le2^{50}$ as a domain condition. Requests with explicit per-workload movement weights remain on the original exact lexicographic matching path; the unique-output certificate applies only to unit movement costs.
+
+This recovery uses the already compiled overlap information and the two-column count signature, avoiding a new whole-placement overlap construction and a dense physical assignment when its premises hold. Constructing the returned assignment and moved identities still requires $O(N)$ output work. The deterministic physical-result map used by the complete-family preservation theorem is unchanged: the certificate and its fallback are two exact ways to evaluate the same map.
+
+\section{Canonical shared query execution}
+\subsection{The reference computation}
+Fix an immutable workload panel $X\in\mathbb F_{64}^{B\times N\times T}$, its scene and time order, a numerical backend, finite intermediate values, and the per-row reduction sequences. Canonicalization orders hosts by their smallest resident identity, and every host membership is an ascending workload tuple $I=(i_1,\ldots,i_r)$. Define $\mathsf S_r$ to be the specified binary64 resident reduction, not an arbitrary reassociation of a real sum. A canonical load row is
+\begin{equation}
+ \mathcal L(I)_{bt}=\mathsf S_r(X_{b,i_1,t},\ldots,X_{b,i_r,t}).
+ \label{eq:canonical-load}
+\end{equation}
+For one host, let $\mathsf P_T$ perform the prescribed time comparisons and reductions. Its seven per-scene projections are activity, tolerance-based overload occurrence, native affected status, native overload fraction, mean uncapped excess, conditional severity, and peak:
+\begin{equation}
+ \mathcal Z(I)=\mathsf P_T(\mathcal L(I)).
+\end{equation}
+Let $\mathsf R_H$ assemble these projections in canonical host order and perform the final host reductions, including zero-denominator conventions. For a placement with canonical groups $I_1,\ldots,I_H$, the reference historical query is
+\begin{equation}
+ \mathcal O(\pi)=\mathsf R_H(\mathcal Z(I_1),\ldots,\mathcal Z(I_H)).
+ \label{eq:query-composition}
+\end{equation}
+This computation is the meaning of full replay in the equivalence claim. Its real-arithmetic formulas alone would not specify the same floating-point computation.
+
+\subsection{Membership interning and cardinality batches}
+A shared session interns a host by its complete membership tuple. A resident entry stores $\mathcal L(I)$ and $\mathcal Z(I)$ for the same immutable panel, capacity, tolerance, and backend contract. Reuse therefore requires equality of the query inputs, rather than equality of host labels, forecasts, or an approximate workload summary. Changing the panel or numerical parameters starts a distinct session.
+
+For a submitted candidate batch, first collect its groups in a local map. A repeated group in the batch appears once in this map. A registry hit supplies its existing view; each missing group is materialized once for this batch. Missing groups of cardinality $r$ form an index matrix $A\in[N]^{q_r\times r}$ whose rows preserve ascending resident order. Their packed operand tensor satisfies
+\begin{equation}
+ W_{jbit}=X_{b,A_{ji},t},\qquad (j,b,i,t)\in[q_r]\times[B]\times[r]\times[T].
+\end{equation}
+Only the resident axis is reduced:
+\begin{equation}
+ \widehat{\mathcal L}_j(b,t)=\mathsf S_r(W_{jb1t},\ldots,W_{jbrt}).
+\end{equation}
+Each logical group therefore has the same operand sequence and resident count as Eq.~\eqref{eq:canonical-load}. The execution contract requires that batching preserve that group's reduction tree, including the effective layout seen by the backend. It also requires the same length-$T$ projection tree for each host--scene row. Equal cardinality and unchanged resident order make this contract implementable without padding residents or introducing subtract-and-add sums; they do not license changing the numerical backend's operation tree.
+
+After obtaining the views, a lookup table maps each candidate to its group identifiers in canonical host order. Gathering this table yields projection arrays of shape candidate-by-host-by-scene. Candidate batching changes only an outer index: the final host reduction uses the same $H$ operands, order, and tree as $\mathsf R_H$. The Boolean host reductions are exact integer/Boolean operations under nonoverflowing counts; the numerical frequency, excess, severity, and peak reductions retain their specified order.
+
+\begin{theorem}[Shared-query equivalence]
+Under the fixed replay contract, membership interning, cardinality-batched materialization, and candidate gathering produce exactly the canonical loads and six-coordinate historical profile for every submitted candidate. Registry eviction does not change this equality. The analogous forecast views preserve the canonical capacity predicate.
+\end{theorem}
+\begin{proof}
+For a missing group $I$, the packed tensor contains exactly $X_{b,i_1,t},\ldots,X_{b,i_r,t}$ for each $(b,t)$. The same $\mathsf S_r$ therefore gives $\widehat{\mathcal L}(I)=\mathcal L(I)$ bit for bit. Applying the same $\mathsf P_T$ gives $\widehat{\mathcal Z}(I)=\mathcal Z(I)$. For a registry hit, its immutable key and session identify these same operands and operators, so its stored values satisfy the same equality. A repeated local key references one of these equal values. Thus every entry obtained for a batch is canonical.
+
+For each candidate, gather these entries in its canonical sequence $(I_1,\ldots,I_H)$. Their values, shapes, and host order equal the reference operands in Eq.~\eqref{eq:query-composition}. Applying the same final reduction gives the same stored output, including threshold indicators and idle-scene sentinels. Eviction can remove only an entry from future registry lookup; the current batch's local map retains it until completion. If an evicted entry is needed later, the preceding missing-group argument reconstructs its canonical value. Hence eviction changes work but not answers.
+
+For a forecast group, replace the workload panel by the fixed forecast panel and use the same ordered resident sum. The resulting load vector and the comparisons against the same stored $C+\tau$ are identical. A conjunction over the same nonempty groups therefore returns the same feasibility predicate.
+\end{proof}
+
+The reduction trees are part of the query semantics. The next bounds permit a different arithmetic circuit only when its result is enclosed and an unresolved decision is refined canonically.
+
+\subsection{Ranking and search-path consequence}
+For executions sharing the same candidate order, fix the starting state, random draws, completed operations, and deterministic tie-breaking. Shared-query equivalence gives the same profile for the first scored candidate, hence the same quantized gains, movement score, and retention decision. Inductively, if the retained state agrees before the next recorded operation, equal canonical feasibility and profile values give equal keys and the same next retained state. The same Selection query then selects the same action. Equality of the internal candidate order is not required for completed-family equivalence: Section~\ref{sec:family-preservation} establishes this stronger result from the fixed total retention order.
+
+A CPU allowance may allow a faster plan to finish additional operations. A feedback allocator using measured family CPU may also choose a different next family. Such executions need not have the same action. A controlled fixed-operation comparison holds the recorded families and attempts fixed, or supplies the same recorded cost feedback; its equality claim concerns numerical answers and decisions on that path.
+
+\subsection{Data access, arithmetic work, and storage}
+Let $Q$ candidates each use $H$ groups. Let $\mathcal M$ be the missing groups materialized in one submitted batch, $R_{\mathcal M}=\sum_{I\in\mathcal M}|I|$, and $r_{\max}=\max_{I\in\mathcal M}|I|$. A generic batch constructed from full assignment vectors uses $O(QN)$ membership work. The residual-family representation instead shares its unchanged groups and constructs only the two changing resident tuples for each mask; a full $N$-label assignment is needed only at a retention tie or a potential insertion. Gathering and summing missing groups reads $BTR_{\mathcal M}$ demand values. Their time projections process $BT|\mathcal M|\le BTR_{\mathcal M}$ cells, because every group is nonempty. Gathering and reducing the final projected candidates processes $O(QHB)$ values. Including initial validation of the panel, the numerical/structural work is
+\begin{equation}
+ O\bigl(NBT+QN+BTR_{\mathcal M}+QHB\bigr).
+\end{equation}
+The $NBT$ startup term is paid once per immutable session. Across batches, the missing-group term sums over materialization events; a group evicted between batches may be materialized again. In contrast, full replay of every candidate reads $QNBT$ demands and performs $O(QHBT)$ profile processing. For forecast predicates the corresponding missing-group demand term is $T\sum_{I\in\mathcal M_f}|I|$, with $O(QH)$ final conjunction work.
+
+A resident-view cache stores $O(MBT)$ numerical values for $M$ retained memberships, plus their identities. The immutable input uses $O(NBT)$ values. Candidate gathers require $O(QHB)$ values, and grouped materialization is tiled. These storage terms are separate from the compact partition and component-matching structures.
+
+\section{Native-profile certificates for complete residual subtrees}
+\label{sec:family-score-certificates}
+
+\paragraph{Scope.}
+Fix a finite nonnegative binary64 source panel with $B$ scenes and $T$ times, a complete $H$-host seed, two edited host groups, and an ordered mutable set. Every admitted descendant retains exactly $H$ nonempty resident groups. All unchanged groups keep their complete ascending-VM memberships.  A numeric mask has its canonical meaning: zero routes a free VM to the first edited group, and one routes it to the second.  When both fixed backgrounds are empty, the first mutable VM is fixed in the first group, as in the reference search. An aligned interval $[s,s+2^k)$ fixes the high mask bits and leaves the low $k$ bits unresolved.  We bound every complete descendant of this interval, before constructing an $N$-label assignment or its complete profile.
+
+The consumer is a full retained pool using the prescribed balanced relative-gain key.  The bounded consumer is balanced retention. A family containing a globally idle scene uses canonical evaluation, preserving the native $\mathrm{VR}=\mathrm{PAR}=-1$ sentinels. A nonfinite enclosure uses the same fallback.
+
+\subsection{Nonnegative reduction enclosures}
+
+Let $u=2^{-53}$ and $\eta=2^{-1074}$.  We use the conservative elementary model
+\[
+ \operatorname{RN}(z)=z(1+\delta)+\epsilon,
+ \qquad |\delta|\le u,\quad |\epsilon|\le\eta,
+\]
+under round-to-nearest binary64 arithmetic with gradual underflow and finite intermediates.  For a nonnegative real sum $S$ of $n$ stored operands and any binary summation tree, set
+\[
+ m=\max(n-1,0),\qquad
+ \gamma_n=\frac{mu}{1-mu},\qquad
+ d_n=\frac{m\eta}{1-mu}.
+\]
+All counts in the implementation are bounded by $2^{50}$, so $\gamma_n<1$. Expanding the computed tree writes its result as a sum of input operands multiplied by products of at most $m$ factors $1+\delta$, plus at most $m$ additive errors multiplied by such products.  Therefore its stored result $y$ satisfies
+\begin{equation}
+ (1-\gamma_n)S-d_n\le y\le(1+\gamma_n)S+d_n.
+ \label{eq:family-positive-tree}
+\end{equation}
+Initialization by zero and multiplication by an exactly stored zero or one introduce no extra nonzero error.  Consequently the same bound covers the batched zero--one selector products used for mandatory and possible mutable resident sets, including fused multiply-add implementations.
+
+For a known stored reduction $y$, inversion gives
+\begin{equation}
+ S\in\left[
+ \max\left(0,\frac{y-d_n}{1+\gamma_n}\right),
+ \frac{y+d_n}{1-\gamma_n}\right].
+ \label{eq:family-invert-sum}
+\end{equation}
+A zero sum of nonnegative stored operands is exactly zero; this special case retains an exact zero upper endpoint.  Given a real lower or upper endpoint, Equation~\eqref{eq:family-positive-tree} transfers it to a bound for another canonical reduction of at most $n$ operands.  The constants are formed as exact rationals and converted outwards. Every arithmetic operation on endpoints is rounded in its required direction.  In particular, an upper multiplication of two positive values that underflows returns at least $\eta$, not zero.
+
+\paragraph{Forecast subset centers and leaf witnesses.}
+The forecast predicate has an analogous enclosure before either changed resident tuple is constructed.  Put $r=\max\{|B_0|,|B_1|\}+|U|$ and let $D$ be the largest stored forecast operand among residents of the two edited seed groups.  Both quantities are fixed before screening.  An outward evaluation of
+\[
+ E_r=\gamma_r rD+d_r
+\]
+bounds the error of any finite positive summation tree over at most $r$ such operands.  A fixed background sum, a subset-table sum, and their final addition expand into just such a tree: each included resident occurs once.  Additions to an exact zero add no error.  This remains true when the symmetry-fixed resident is absorbed into the first background.
+
+Let $M_{st}$ be the exact-real demand of residents mandatory on side $s$ at forecast time $t$, and let $\widetilde M_{st}$ be its computed subset center. Then $\widetilde M_{st}\le M_{st}+E_r$.  Every completion has real load at least $M_{st}$ by nonnegativity, and at most $r$ resident operands, so its canonical stored load is at least $M_{st}-E_r$.  Consequently
+\[
+ \widehat\ell^{\rm can}_{st}\ge
+ \widetilde M_{st}-2E_r.
+\]
+Rounding the radius upward and the final subtraction downward yields a valid lower endpoint.  It may be clipped at zero because every canonical load is nonnegative.  A strict comparison of this endpoint with the same stored $\operatorname{RN}(C+\tau)$ therefore certifies infeasibility.  Equality does not reject.  Nonfinite centers, radii, or unsupported subset-table sizes fall back to the canonical predicate.
+
+For a singleton mask the mandatory set is its complete changed group. Evaluating all such centers in one batch therefore gives the same individual sound rejection statements without requiring an internal-node traversal. If a sorted set $\mathcal A$ of nonempty masks has been screened, a bitmap can record these certified rejections.  A dyadic witness for interval $I$ may combine them whenever every mask in $\mathcal A\cap I$ has a rejection bit. That witness certifies precisely the listed set $\mathcal A\cap I$.  It makes no assertion about unchecked empty masks or other masks outside that set. Compression changes only the representation of already proved statements; it does not avoid the preceding leaf enumeration.  Forecast-ineligible masks remain outside the seen set, as in canonical residual-family execution.
+
+\paragraph{Resident bounds.}
+For each edited seed group, invert its canonical stored load and the stored sum of its mutable residents.  Outward subtraction encloses the real fixed background.  This is an interval operation; it does not assert that subtracting mutable residents reproduces a canonical background fold.  Add the real sums of forced residents to bound the mandatory load, and add all residents still allowed on that side to bound its possible load.  Applying Equation~\eqref{eq:family-positive-tree} with the total number $R$ of residents in the two edited seed groups yields stored-load endpoints $L_{hbt}\le x_{hbt}\le U_{hbt}$ for $h\in\{0,1\}$ in every descendant.
+
+The real total demand of the two groups is conserved.  Let $S^-_{bt}$ bound this real total from below.  Although the two descendant groups have separate canonical reductions, their stored loads obey the coupled lower bound
+\begin{equation}
+ x_{0bt}+x_{1bt}\ge
+ D^-_{bt}:=\max\{0,(1-\gamma_R)S^-_{bt}-2d_R\}.
+ \label{eq:family-pair-conservation}
+\end{equation}
+This statement concerns the real sum of the two stored loads.  It remains valid when their resident counts and their canonical column positions change.
+
+\subsection{All six native loss lower bounds}
+
+The following definitions apply separately in every scene.  Unchanged groups provide exact Boolean projections and canonical stored time projections.  We enclose only reductions of those stored numeric projections when combining them with the changing groups.  This avoids assuming that canonical host summation is invariant under column permutation.
+
+\paragraph{Tolerant occurrence and host fraction.}
+Let $c_\tau=\operatorname{RN}(C+10^{-12})$, the exact stored comparison threshold used by the reference.  A changing group certainly violates when some $L_{ht}>c_\tau$.  Equation~\eqref{eq:family-pair-conservation} also forces at least one changing group to violate whenever $D^-_t>2c_\tau$.  Thus a lower bound on the number of violating changing hosts is the maximum of the number individually forced to violate and the indicator that the coupled test holds at some time.  Add the exact common-host count.  The indicator that this total is positive is a lower bound for $J$, and its canonical stored division by $H$ is a lower bound for $V$.  When a common host violates, the lower bound for $J$ is exactly one; when both reference and lower candidate occurrence are zero, their stored occurrence gain is exactly zero.
+
+\paragraph{Active and affected denominators.}
+An edited host is possibly active if some $U_{ht}>0$, and certainly active if some $L_{ht}>0$.  If the conserved pair contains positive demand in this scene, at least one of its hosts is active.  With exact common-host counts, these facts give $A^-\le A\le A^+$ for the descendant's active-host count. Similarly, an edited host is possibly affected if some $U_{ht}>C$.  Adding the exact common affected-host count gives an upper bound $M^+$ on the native affected-host denominator.  Using a profile computed directly from lower loads would be unsound: its active and affected denominators could be smaller than the descendant's.  We bound these denominators separately.
+
+\paragraph{Native violation rate.}
+At each time a lower bound on the number of overloaded changing hosts is
+\[
+ q^-_t=\max\{\mathbf 1[L_{0t}>C]+\mathbf 1[L_{1t}>C],
+                     \mathbf 1[D^-_t>2C]\}.
+\]
+Add $\sum_tq^-_t$ to the exact common count of native overloaded cells. If $T$ is a power of two, every stored host frequency $n_h/T$ and their sum are exact dyadic values in the stated $HT\le2^{50}$ range.  The original division of this frequency lower bound by $A^+$ is a valid lower bound for native VR.  For other $T$, the real sum of stored frequencies is bounded by
+\[
+ \sum_h\operatorname{RN}(n_h/T)
+ \ge (1-u)\frac{\sum_hn_h}{T}-H\eta.
+\]
+Downward evaluation and Equation~\eqref{eq:family-positive-tree} cover the subsequent canonical host sum, before division by $A^+$.
+
+\paragraph{Stored excess and the coupled lower bound.}
+For one finite nonnegative stored load $x$, write
+\[
+ r=x/C,\qquad y=\operatorname{RN}(r),\qquad
+ e(x)=\max\{\operatorname{RN}(y-1),0\}.
+\]
+If $y<1$, monotonicity of round-to-nearest implies $r<1$, so $\max\{(1-2u)r-1,0\}=0$.  If $y\ge1$, the elementary arithmetic model gives
+\begin{align*}
+ e(x)&\ge(1-u)(y-1)-\eta\\
+     &\ge(1-u)^2r-(1-u)-(2-u)\eta\\
+     &\ge(1-2u)r-1.
+\end{align*}
+The last inequality follows because the difference is $u^2r+u-(2-u)\eta\ge0$; it does not rely on incidental outward ulps hiding underflow error.  Since excess is also nonnegative,
+\begin{equation}
+ e(x_0)+e(x_1)\ge
+ \max\left\{(1-2u)\frac{x_0+x_1}{C}-2,0\right\}.
+ \label{eq:family-coupled-excess}
+\end{equation}
+Evaluate the right side downward using $D^-_t$.  The maximum of this result and a downward sum of the individual monotone bounds $e(L_{0t}),e(L_{1t})$ gives a lower bound $E^-_t$ on the sum of stored excesses at time $t$.
+
+\paragraph{Raw excess.}
+For individual hosts, first bound the canonical time sum of $e(L_{ht})$ using the real-sum inversion and the stored-sum transfer, then use the original stored division by $T$.  This bounds each stored time mean from below. For the coupled bound, let $E^-\le\sum_tE^-_t$.  The sum of the two stored time sums is at least $(1-\gamma_T)E^--2d_T$.  If this lower bound is $Z^-$, then the real sum of their two stored time means is at least
+\[
+ (1-u) Z^-/T-2\eta.
+\]
+Take the maximum of the individual and coupled bounds.  Add the real lower bound for the common stored time means, transfer through the canonical $H$-host fold, and perform the canonical division by $A^+$.  The result bounds the native, uncapped, active-host-normalized raw loss from below.
+
+\paragraph{Native severity.}
+For an edited host let $n_h^+$ count times with $U_{ht}>C$. Its stored excess-sum lower bound divided by $n_h^+$ bounds its severity whenever $n_h^+>0$; otherwise the lower bound is zero.  A zero actual overload count implies zero actual excess numerator.  Moreover the original stored severity is at least the canonical stored mean excess, since they share a numerator and the positive overload count is at most $T$. Consequently the coupled pair mean-excess lower bound also lower-bounds the real sum of the pair's stored severities.  Combine this with the individual severity bounds, the common severity lower sum, the canonical $H$-host reduction allowance, and finally division by $M^+$.  If $M^+=0$, the original severity and its lower bound are both zero.
+
+\paragraph{Native peak-to-average ratio.}
+The largest stored host peak has lower bound
+\[
+ P^- = \max\left\{P_{\mathrm{common}},
+                \max_{h,t}L_{ht},\;\tfrac12\max_tD^-_t\right\}.
+\]
+The upper endpoints give individual edited-peak upper bounds.  A coupled upper bound avoids counting every unresolved resident twice.  Let $F_{ht}$ denote the real mandatory load and $I$ the unresolved residents.  Then
+\[
+ \max_tx_{0t}^{\mathrm{real}}+\max_tx_{1t}^{\mathrm{real}}
+ \le\max_tF_{0t}+\max_tF_{1t}
+             +\sum_{i\in I}\max_tX_{it}.
+\]
+Each unresolved VM belongs to exactly one completed group.  This explains the single occurrence of its peak in the upper bound.  Apply the resident growth factor $1+\gamma_R$ and add $2d_R$ to cover the two stored peak values. Take the smaller of this coupled upper bound and the sum of the individual peak upper bounds.  Add the common real peak-sum upper bound, transfer through the canonical host fold, and divide by $A^-$ using the prescribed rounding. This yields an upper bound $\overline p^+$ on the canonical stored mean peak. Thus $\operatorname{RN}(P^-/\overline p^+)$ is a PAR lower bound whenever the canonical stored mean peak is positive.
+
+The implementation explicitly verifies a positive lower bound for that stored denominator: a nonnegative host sum is at least its largest operand, so $\operatorname{RN}(P^-/A^+)$ lower-bounds the stored mean peak.  Failure to prove strict positivity requests exact refinement.  The native nonpositive- mean sentinel is therefore never replaced by a positive lower loss.
+
+\paragraph{Finite-range guard.}
+All endpoint operations must remain finite.  In addition the largest possible stored capacity ratio must not exceed $\mathrm{maxfloat}/(4HT)$, including unchanged groups.  In the stated bounded-count scope, the factor four dominates every positive reduction-growth allowance. This ensures that native excess sums cannot overflow.  Nonfinite gain or quantization intermediates request exact refinement.  These restrictions are conservative sufficient conditions, not claims of maximal supported range.
+
+\subsection{Stored gain keys and controller preservation}
+
+Let $\underline P$ be the resulting $B\times6$ stored lower-profile array and $P$ any descendant's canonical stored profile.  Coordinatewise, $\underline P\le P$.  Both profiles are evaluated by the same canonical gain circuit, with the same reference operands, selected coordinates, row order, and prescribed reduction tree:
+\[
+ g(P)=\operatorname{RN}\left(
+ \frac{\operatorname{mean}_{\rm can}
+       (\operatorname{RN}(P^{\rm ref}-P))}
+      {\max\{|\operatorname{mean}_{\rm can}P^{\rm ref}|,10^{-8}\}}
+ \right).
+\]
+This is the mean of stored row differences, not a difference of means. Round-to-nearest subtraction with fixed first operand is antitone in its second operand.  Addition, division by a fixed positive value, and each prescribed averaging step are monotone.  Fixed arithmetic trees therefore give $g(\underline P)\ge g(P)$ coordinatewise, even under cancellation.
+
+\begin{lemma}[Batching the canonical gain circuit]
+Let $E$ be the number of selected coordinates.  Suppose the fixed numerical backend uses the same prescribed tree for a length-$B$ contiguous reduction, independently of the number of adjacent, separately reduced rows.  The scalar gain circuit can then be batched without changing any stored gain by packing its operands in $Q\times E\times B$ contiguous order and reducing only the last axis.  The reference scale must be computed on the reference layout before any packing.
+\end{lemma}
+\begin{proof}
+The scalar advanced-index selection produces a $B\times E$ column-major array.  For coordinate $e$, its unit-stride row operands are $P^{\rm ref}_{1e},\ldots,P^{\rm ref}_{Be}$ and $P_{1e},\ldots,P_{Be}$.  Elementwise subtraction therefore produces the ordered stored sequence
+\[
+ d_{qe1},\ldots,d_{qeB},\qquad
+ d_{qeb}=\operatorname{RN}(P^{\rm ref}_{be}-P_{qbe}).
+\]
+Packing these same operands in row-major $Q\times E\times B$ order changes only their addresses.  Every $(q,e)$ row has the same sequence of rounded differences, length, unit stride, and reduction tree as the scalar column. Induction over that tree gives the same stored sum; the subsequent division by $B$ is the same operation.  Computing the reference means before packing also preserves their potentially different original strides and reduction tree.  Their saved positive scales therefore give the same final divisions. Thus all finite gains are bitwise identical, including cancellation cases. Nonfinite arithmetic is not converted into a finite certificate.
+\end{proof}
+
+This is an execution-contract statement for the fixed backend, rather than a claim that arbitrary array libraries or reassociated reductions agree. The scalar circuit remains an independent oracle.  The same packed circuit can serve exact candidate scoring and optimistic-key scoring.  Source validation and reference scales may be reused for an immutable query session; family-dependent load checks, idle sentinels, and finite-range guards remain in force.
+
+Multiplication by $2^{40}$, floor, and the conversion of finite results to integer preserve this ordering.  Sorting coordinate values ascending also preserves coordinatewise order: if $a_i\ge b_i$ for every $i$, the $j$th smallest $a$ cannot be less than the $j$th smallest $b$, because that would require at least $j$ entries of $b$ below its own $j$th order statistic. Equivalently, the number of coordinates below any threshold can only decrease when coordinates are increased.  Appending $-m^-$ and $-c^-$ for valid movement-count and cost lower bounds produces a complete lexicographic upper key $K^+$ for every descendant on which those movement bounds are valid. In particular, after exact nonempty-host, forecast and seen filtering, one may take the minimum movement value over the remaining active signature classes. The profile enclosure still covers every complete descendant, but this tighter complete-key bound is asserted only for that active subset.  Every excluded identity and every exclusion witness refers to the same subset.
+
+Let $K_0$ be the worst key of a full balanced retained pool at any point in the family. If $K^+<K_0$ strictly, no active descendant covered by the bound can enter the final pool. The worst retained key cannot decrease as additional candidates are processed, so the same exclusion remains valid later in the family. A static plan fixes $K_0$ at family entry; a progressive plan updates it after exact scoring batches. Equality does not exclude: the canonical-assignment tie order must remain available.
+
+Every forecast-feasible identity is inserted into the seen set, including a candidate excluded by movement or score. Forecast-ineligible identities are not inserted. Numeric masks retain their prescribed membership meaning, but surviving candidates may be scored in any order. Equal score keys retain the canonical-assignment tie order, independently of arrival. The following results combine these state rules with progressive evaluation and deferred physical matching.
+
+
+\section{Complete-family preservation and deferred physical matching}
+\label{sec:family-preservation}
+A candidate's retention summary contains its canonical assignment $a$, stored Build means and gains, balanced key, and optimum movement count. In the unit-cost setting its movement cost is $m(a)$ as well. Let $s(a)$ denote this summary and let $D(a)$ be the prescribed full physical-matching record, including aligned host destinations and moved workload identities. The rich record is $r(a)=(s(a),D(a))$. The map $D$ depends only on the fixed incumbent, canonical assignment, and deterministic matching rule.
+
+\subsection{Order-independent retention}
+Fix the total order that compares exact balanced keys in descending order and then canonical assignments in ascending order. Keys are fixed by the immutable query inputs. For $P\ge1$, let $T_P(A)$ retain the first $\min(P,|A|)$ distinct canonical identities in a finite set $A$, with their summaries. Repeated identities have the same summary and contribute one element.
+
+\begin{lemma}[Top-$P$ composition]\label{lem:top-p}
+For finite candidate sets $A$ and $B$ under this fixed total order,
+\begin{equation}
+ T_P\!\left(T_P(A)\cup B\right)=T_P(A\cup B).
+ \label{eq:top-p-composition}
+\end{equation}
+Consequently, exact scoring in any order or batch partition returns the same final retained pool.
+\end{lemma}
+\begin{proof}
+If $a\in A\setminus T_P(A)$, then at least $P$ distinct identities in $A$ precede $a$. Those predecessors remain present in $A\cup B$, so $a\notin T_P(A\cup B)$. Thus removing $A\setminus T_P(A)$ cannot remove any element of the right-hand side. Both sides retain the first $P$ available identities in the same total order, or all identities when fewer than $P$ exist, proving Eq.~\eqref{eq:top-p-composition}. Repeated application gives the result for any sequence of batches with the same union. The final assignment tie-break makes this order independent of candidate arrival.
+\end{proof}
+
+\subsection{Progressive certified evaluation}
+Let $\mathcal R$ be the exact retained pool after the candidates scored so far, and let $\mathcal U$ contain the remaining eligible family identities absent from the input seen set. For each $a\in\mathcal U$, a valid optimistic key $K^+(a)$ satisfies $K(a)\le K^+(a)$ in lexicographic key order. The same bound may cover a residual subtree. An unavailable or invalid enclosure, represented by \texttt{None}, is assigned the formal upper value $+\infty$; it cannot justify score exclusion. Process candidates in descending optimistic-key order and score each selected batch canonically. After updating the exact pool, a full pool permits stopping when
+\begin{equation}
+ \max_{a\in\mathcal U}K^+(a)
+ <K\!\left(\operatorname{worst}(\mathcal R)\right).
+ \label{eq:progressive-stop}
+\end{equation}
+If $\mathcal U$ is empty, the family is already complete. With fewer than $P$ retained identities, the score cutoff does not permit early stopping.
+
+\begin{proposition}[Progressive evaluation preservation]\label{prop:progressive}
+Suppose every omitted candidate has a valid upper key strictly below the worst key of a full current pool, either individually or by Eq.~\eqref{eq:progressive-stop}. Progressive evaluation returns the same final summary pool as scoring every eligible family identity in numeric mask order. The conclusion holds for any positive batch size and any internal scoring order.
+\end{proposition}
+\begin{proof}
+Without exclusions, Lemma~\ref{lem:top-p} gives the exact top-$P$ of the input pool and all scored identities, independently of order and batching. For a candidate $a$ omitted at some point, the valid bound gives
+\begin{equation}
+ K(a)\le K^+(a)
+ <K\!\left(\operatorname{worst}(\mathcal R)\right)
+ \le K(b)\qquad(b\in\mathcal R).
+ \label{eq:progressive-domination}
+\end{equation}
+The $P$ distinct identities in $\mathcal R$ therefore all precede $a$ in the total order. They belong to the full candidate union even if later evicted, so adding any remaining identities cannot place $a$ in its top-$P$. This argument applies to every omitted candidate and, under Eq.~\eqref{eq:progressive-stop}, to the entire remaining set. Removing these identities leaves the full union's top-$P$ unchanged. Lemma~\ref{lem:top-p} then proves equality with complete numeric-mask enumeration.
+\end{proof}
+
+Strict inequality is essential when only score keys are bounded: a candidate whose upper key equals the cutoff may win through its canonical assignment and must be scored. A missing bound remains $+\infty$ until exact scoring or another valid eligibility test resolves that candidate; it prevents the global stopping test. Descending-bound order tends to raise the cutoff sooner but is not required for preservation. The batch size $32$ is an execution parameter, not a premise of the proof. The static entry-cutoff plan is the special case that never tightens its cutoff. Where the native-profile score gate is disabled, exact scoring supplies the same result without this progressive filter.
+
+Score exclusion never suppresses identity bookkeeping. Independently of which profiles are evaluated, form the same set of forecast-feasible canonical family identities and insert all of them into the seen set, including movement-ineligible and score-excluded identities. No next seed, selection query, or other consumer may inspect a provisional pool before family completion. Cache materialization and eviction may follow the scoring order, provided shared-query equivalence continues to hold.
+
+\subsection{Deferred physical materialization}
+\begin{proposition}[Deferred physical materialization]\label{prop:deferred}
+Suppose a complete family is processed before any next seed, selection, or release decision. Within that family, feasibility, score comparison, duplicate handling, and retention depend only on $s(a)$. Replacing rich intermediate records by their summaries and constructing $D(a)$ only for candidates in the final pool produces exactly the same complete-family output as constructing $D(a)$ at every intermediate insertion. At most $P$ new physical matchings are needed for a pool of size $P$.
+\end{proposition}
+\begin{proof}
+Let $\pi_s$ project a pool of rich records onto its summaries. Canonical assignment remains in the summary, so both score and final assignment ties have the same total order. If $T_P$ denotes retaining the first $P$ distinct records in that order, then
+\begin{equation}
+\pi_s\!\left(T_P(\mathcal R\cup\{r(a)\})\right)
+=T_P\!\left(\pi_s(\mathcal R)\cup\{s(a)\}\right).
+\label{eq:deferred-commutation}
+\end{equation}
+To verify this identity, each record on either side has the same identity and comparison key, and $T_P$ consults no component of $D$. Thus both select exactly the same candidate identities and stored summary fields. Eligibility and seen-set decisions also consult only the summary and canonical identity, so they agree before this insertion.
+
+Induct over any chosen processing order, beginning from the common input pool and seen set. Equation~\eqref{eq:deferred-commutation} preserves the summary pool at every step relative to eager evaluation in that order; the preceding eligibility observation preserves the seen set. Lemma~\ref{lem:top-p} and Proposition~\ref{prop:progressive} show that the completed summary pool also equals that of full numeric-mask enumeration. A provisional entrant later evicted has no effect on the final pool and never needs $D(a)$. At the family boundary, apply the same deterministic map $D$ to each retained summary missing its physical record. The completed rich records then equal those of eager enumeration, including matching ties and moved workload identities. Existing rich input records need no reconstruction. There are at most $P$ retained candidates, proving the final bound.
+\end{proof}
+
+The implementation still forms a canonical assignment when an exact key can enter the pool or must resolve an assignment tie. Deferral removes the physical matching of transient entrants; it does not replace canonical assignment tie-breaking. For weighted movement, the secondary optimum can depend on workload identities beyond count signatures, so that path computes the complete matching before retention.
+
+\begin{theorem}[Complete-family semantics]\label{thm:family-semantics}
+Fix the source, numerical reduction program, balanced retention order, incumbent, family, input pool, and seen set. Count signatures, family-wide fixed-edge reduction, support-component factorization, exact two-column assignment replay, certified capacity and profile filters, shared canonical views, progressive evaluation, and deferred physical materialization return the same final pool, seen set, and physical records as full canonical enumeration. Candidate scoring order and batch partition may differ. Under common completed-family operations, random draws, and cost feedback, successive completed-family states and the selected action also agree.
+\end{theorem}
+\begin{proof}
+Count signatures identify identical overlap objectives. Equation~\eqref{eq:core-exact} preserves each objective after family-wide edge reduction, and Theorem~\ref{thm:component} preserves it under component decomposition. The tight primal-dual invariant~\eqref{eq:core-dual-state} proves that two-column replay returns the same residual optimum. Together these steps preserve each exact movement count; none substitutes its own tie matching for the final physical consumer. Capacity filtering rejects only masks whose canonical forecast violates the constraint. Shared views and the gain-circuit lemma preserve the exact stored profiles and keys of each scored candidate. Every profile-based exclusion satisfies the strict domination condition in Proposition~\ref{prop:progressive}, using either the full pool's entry cutoff or its current cutoff. That proposition and Lemma~\ref{lem:top-p} preserve the final summary pool despite different scoring orders, batch partitions, or omitted profiles. Every forecast-feasible identity enters the seen set, regardless of movement or score rejection, so the final seen set is also identical. Proposition~\ref{prop:deferred} restores precisely the same rich physical records at family completion. The next deterministic operation sees the same state; induction over completed-family operations gives the final assertion.
+\end{proof}
+
+CPU-limited executions may complete different families. The theorem concerns equivalence of the specified family query; measurements under a common time budget separately evaluate the additional search enabled by faster execution.
+
+\section{Historical admission and source-keyed replay}
+For one selected action and $n>0$ audit rows, the exact mean gain of coordinate $e$ is
+\begin{equation}
+\bar g_e=\frac1n\sum_{b=1}^n\bigl(\operatorname{dyad}(L_{be}(\inc))-\operatorname{dyad}(L_{be}(\act))\bigr),
+\label{eq:historical-mean}
+\end{equation}
+where $\operatorname{dyad}$ interprets a finite stored binary64 value as its exact rational value. Admission requires all $\bar g_e\ge0$ and at least one $\bar g_e>0$. Every row retains its original multiplicity, including overlapping or repeated windows.
+
+\begin{lemma}[Integer dyadic census]\label{lem:dyadic}
+Let an integer state $(a,e)$ represent the accumulated value $a2^{-e}$. Initialize it at $(0,0)$. For a signed operand $\sigma m2^{-q}$, with $\sigma\in\{-1,1\}$, update
+\begin{equation}
+e'=\max(e,q),\qquad a'=a2^{e'-e}+\sigma m2^{e'-q}.
+\label{eq:dyadic-census}
+\end{equation}
+Applying this update separately to each incumbent loss and its negative action loss yields the exact numerator total in Eq.~\eqref{eq:historical-mean}. Its sign gives the same admission decision as exact rational averaging.
+\end{lemma}
+\begin{proof}
+Both exponents in Eq.~\eqref{eq:dyadic-census} are nonnegative integers. Its represented value is
+\begin{equation}
+a'2^{-e'}=a2^{e'-e}2^{-e'}+\sigma m2^{e'-q}2^{-e'}=a2^{-e}+\sigma m2^{-q}.
+\end{equation}
+Thus each update adds exactly the next signed operand. Induction over the $2n$ operands gives the exact coordinate total. Arbitrary-precision integer shifts and additions introduce no rounding. Division by the positive integer $n$ preserves every sign, proving the gate equivalence. Processing the two stored losses separately also avoids rounding their difference before summation.
+\end{proof}
+
+\subsection{Canonical source cells}
+Let the hourly source be $X\in\mathbb F_{64}^{N\times L}$, and let an audit window with start $s_b$ contain $x_{bit}=X_{i,s_b+t}$. On the supported canonical resident fold, a host's stored load at absolute hour $\tau$ is determined solely by its ascending resident tuple and the operands $(X_{i\tau})_i$. Computing this fold once for every host-hour and retrieving it at all window occurrences therefore preserves every stored load. Direct window replay uses the same operands and fold at each occurrence. Unsupported numerical shapes use the prescribed reference reduction.
+
+For the eight-hour excess projection, let $e_h(s)$ be a canonical stored cell excess, and define
+\begin{align}
+R_2(s)&=\operatorname{RN}(e_h(s)+e_h(s+1)),\nonumber\\
+R_4(s)&=\operatorname{RN}(R_2(s)+R_2(s+2)),\nonumber\\
+R_8(s)&=\operatorname{RN}(R_4(s)+R_4(s+4)).
+\label{eq:source-time-tree}
+\end{align}
+Expanding $R_8(s)$ gives the prescribed balanced eight-leaf tree. A keyed plan evaluates each identical node once and reuses its stored result; a direct plan evaluates that same tree for each window. Both use the same strict overload predicates, exact integer occurrence counts, maxima, and canonical host assembly.
+
+\begin{lemma}[Historical query preservation]\label{lem:historical-query}
+The keyed and direct plans described above return the same canonical historical profiles and dyadic census result, including unsorted or repeated window starts.
+\end{lemma}
+\begin{proof}
+Each requested window load has the same resident operands and reduction tree in both plans. Each stored excess cell and Boolean predicate therefore agrees. Equation~\eqref{eq:source-time-tree} supplies identical time sums, while exact occurrence counts and maxima agree on the same cells. Final host projections receive these equal operands in canonical host order, preserving all ratios and idle sentinels. Unsorted starts change output positions only; repeated starts repeat the same values with their stated multiplicity. Substitution of identical stored profiles into Lemma~\ref{lem:dyadic} preserves the complete gate result.
+\end{proof}
+
+This is a census of a fixed finite table. Independence among its rows is unnecessary; claims about a fresh population use the separate sampling model below.
+
+\section{Action-footprint bounds for fixed-host indicators}
+The physical host matching is fixed before Certification. Let $M=\{i:\inc(i)\ne\act(i)\}$, let $A=\{\inc(i),\act(i):i\in M\}$, and write $k=|A|$. Every host outside $A$ has the same membership in both placements. Under paired canonical replay on the same scene and reduction shape, its stored loads and threshold bits are therefore identical. Let $q_{ht}^I,q_{ht}^a\in\{0,1\}$ denote those bits.
+
+\begin{lemma}[Boolean footprint]
+The exact fixed-host ratios of canonical threshold bits satisfy $|G_V|\le k/H$ and $|G_R|\le k/H$. Occurrence satisfies $|G_J|\le1$. If $k=0$, all four fresh paired gains vanish exactly.
+\end{lemma}
+\begin{proof}
+For duration, the unchanged hosts cancel and every remaining Boolean difference has magnitude at most one:
+\begin{align}
+ |G_R|&=\frac1{HT}\left|\sum_{h\in A,t}(q_{ht}^I-q_{ht}^a)\right|\\
+ &\le\frac1{HT}\sum_{h\in A,t}|q_{ht}^I-q_{ht}^a|\le\frac{kT}{HT}=\frac{k}{H}.
+\end{align}
+Let $v_h^I=\max_tq_{ht}^I$ and $v_h^a=\max_tq_{ht}^a$. These bits also agree outside $A$, giving
+\begin{equation}
+ |G_V|=\frac1H\left|\sum_{h\in A}(v_h^I-v_h^a)\right|\le\frac1H\sum_{h\in A}|v_h^I-v_h^a|\le\frac{k}{H}.
+\end{equation}
+Occurrence is one Boolean value. When $k=0$, every host membership and replay projection agrees, so every loss and paired gain agrees as well.
+\end{proof}
+
+The indicator ratios are stored after exact integer counting. Assume count accumulation does not overflow and $HT\le2^{53}$, so both normalization integers are represented exactly. Correct rounding of a ratio in $[0,1]$ has absolute error at most $\epsilon=2^{-53}$: adjacent binary64 numbers in this interval are at most $2^{-53}$ apart, and rounding chooses a nearest representable value. For stored $\widehat V^I,\widehat V^a$ and exact ratios $V^I,V^a$,
+\begin{align}
+ |\widehat V^I-\widehat V^a|&\le |V^I-V^a|+|\widehat V^I-V^I|+|\widehat V^a-V^a|\\
+ &\le k/H+2\epsilon.
+\end{align}
+The same argument applies to $R$. Stored ratios remain in $[0,1]$, hence valid stored paired bounds are
+\begin{equation}
+ B_J=1,\qquad B_V=B_R=\up\!\left(\min\{1,k/H+2^{-52}\}\right),
+ \label{eq:footprint-bounds}
+\end{equation}
+with all bounds zero for an unchanged action. Here $\up$ rounds outward to binary64. This argument uses equality of unchanged threshold bits, not real-arithmetic load conservation across potentially different summation trees. It therefore remains valid at floating-point capacity boundaries. It does not apply unchanged to native VR with placement-dependent active-host normalization.
+
+\section{Migration-graph bounds for uncapped excess}
+\subsection{Count and topology}
+Assume $0\le x_{it}\le b_i$ on every possible fresh scene, with all $b_i$ declared before certification. At a fixed time, a moved workload forms an edge $i:s_i\to t_i$ from its old host to its matched destination. Its contribution to the real load change is $-x_i$ at $s_i$ and $+x_i$ at $t_i$. Thus
+\begin{equation}
+ d_h=\ell_h(\act)-\ell_h(\inc)=\sum_{i:t_i=h}x_i-\sum_{i:s_i=h}x_i,\qquad \sum_hd_h=0.
+\end{equation}
+Writing $W_x=\sum_{i\in M}x_i$, each positive change is at most the incoming moved demand at that host. Therefore
+\begin{equation}
+ \sum_h[d_h]_+\le W_x,\qquad \sum_h[-d_h]_+=\sum_h[d_h]_+.
+\end{equation}
+For $f(z)=[z/C-1]_+$, monotonicity and $1/C$-Lipschitz continuity give
+\begin{equation}
+ f(\ell_h+d_h)-f(\ell_h)\le[d_h]_+/C.
+ \label{eq:positive-lipschitz}
+\end{equation}
+Apply this inequality in both directions, sum hosts, and average times. If every $b_i\le d_{\max}$, then
+\begin{equation}
+ |G_{u_H}|\le\frac{\sum_{i\in M}b_i}{HC}\le\frac{m d_{\max}}{HC}.
+ \label{eq:count-bound}
+\end{equation}
+No factor two is needed: conservation equates total positive and total negative change, rather than adding both totals.
+
+The count bound ignores edge destinations. Define the maximum incoming directed cut
+\begin{equation}
+ D_*=\max_{S\subseteq[H]}\sum_{i:s_i\notin S,\ t_i\in S}b_i.
+ \label{eq:directed-cut}
+\end{equation}
+For any real vector $d$, a maximizing subset contains its positive entries and excludes its negative entries, so $\sum_h[d_h]_+=\max_S\sum_{h\in S}d_h$. Edges internal to $S$ cancel, yielding
+\begin{align}
+ \sum_h[d_h]_+&=\max_S\left(\sum_{i\in\partial^-S}x_i-\sum_{i\in\partial^+S}x_i\right)\\
+ &\le\max_S\sum_{i\in\partial^-S}b_i=D_*.
+ \label{eq:cut-load-change}
+\end{align}
+The support box is compact and the cut family is finite. Interchanging the two maxima and maximizing the fixed cut's linear expression gives
+\begin{align}
+ \max_{0\le x_i\le b_i}\sum_h[d_h(x)]_+
+ &=\max_S\max_{0\le x_i\le b_i}\left(\sum_{i\in\partial^-S}x_i-\sum_{i\in\partial^+S}x_i\right)\\
+ &=\max_S\sum_{i\in\partial^-S}b_i=D_*.
+\end{align}
+The inner maximum sets entering demands to $b_i$ and exiting demands to zero; internal demands have coefficient zero. Thus $D_*$ is exactly the largest total positive load change over the support box. A correlated population whose support is a strict subset of that box still satisfies the bound but need not attain it.
+
+Combining Eqs.~\eqref{eq:positive-lipschitz} and \eqref{eq:cut-load-change}, using $\sum_h[-d_h]_+=\sum_h[d_h]_+$ for the reverse direction, and averaging times proves
+\begin{equation}
+ |G_{u_H}|\le D_*/(HC)\le\sum_{i\in M}b_i/(HC)\le m d_{\max}/(HC).
+ \label{eq:graph-raw}
+\end{equation}
+Reversing every edge preserves $D_*$, because the entering cut of $S$ in the reversed graph is the entering cut of $S^c$ in the original graph. Consequently this two-sided envelope is symmetric in the placements, despite its directed definition.
+
+\subsection{Components and a scalable upper envelope}
+Ignore edge directions and zero-weight edges to obtain support components $\mathcal C_1,\ldots,\mathcal C_q$. Every edge lies within one component. The sets $S\cap\mathcal C_j$ can be selected independently, so
+\begin{equation}
+ D_*=\sum_{j=1}^q\max_{S_j\subseteq\mathcal C_j}\sum_{i:s_i\in\mathcal C_j\setminus S_j,\ t_i\in S_j}b_i.
+\end{equation}
+A component with $v$ vertices and $e$ nonzero aggregate edges can be enumerated in $O(e2^v)$ arithmetic operations by checking its subsets. This exponential dependence is confined to small components; no polynomial-time exact directed-cut algorithm is claimed.
+
+For a larger component aggregate parallel edges as $W_{hk}=\sum_{i:s_i=h,t_i=k}b_i$. A cut contains at most one direction of an unordered host pair, hence
+\begin{equation}
+ D_*\le U_{\mathrm{pair}}:=\sum_{h<k}\max(W_{hk},W_{kh}).
+\end{equation}
+A second linear-time upper bound uses total weight $W=\sum_{h,k}W_{hk}$ and imbalance $\beta_h=\sum_kW_{kh}-\sum_kW_{hk}$. For a cut, let $a(S)$ be its entering weight and $b(S)$ its exiting weight. Then
+\begin{equation}
+ a(S)+b(S)\le W,\qquad a(S)-b(S)=\sum_{h\in S}\beta_h.
+\end{equation}
+Since $\sum_h\beta_h=0$, positive and negative imbalance totals have equal magnitude, and
+\begin{equation}
+ \sum_{h\in S}\beta_h\le\sum_h[\beta_h]_+=\frac12\sum_h|\beta_h|.
+\end{equation}
+Adding the preceding two inequalities yields
+\begin{equation}
+ D_*\le U_{\mathrm{bal}}:=W/2+\|\beta\|_1/4.
+ \label{eq:balance-bound}
+\end{equation}
+Let $L$ be a common denominator of the rational aggregate weights. Every cut weight is an integer multiple of $1/L$, so $\lfloor L U_{\mathrm{bal}}\rfloor/L$ remains a valid upper bound. Use its minimum with $U_{\mathrm{pair}}$. Summing exact small-component maxima and these large-component upper bounds gives a global $U(G)\ge D_*$. Both fallback quantities require $O(e+v)$ arithmetic operations per component. For a unit-weight directed cycle of length $2r+1$, Eq.~\eqref{eq:balance-bound} with lattice rounding gives $r$, while $U_{\mathrm{pair}}=2r+1$.
+
+\subsection{Conserved capacity and tight examples}
+At one time let $y_h=\ell_h/C$, let $Q_0=\sum_hy_h$ be the common normalized total demand, and define $s(y)=\sum_h\min(y_h,1)$. Each summand is at most $y_h$ and at most one, giving $s(y)\le\min(Q_0,H)$. If $Q_0\le1$, every $y_h\le1$ and $s(y)=Q_0$. If $Q_0>1$, either some $y_h\ge1$ or all are below one; these two cases give $s(y)\ge1$ and $s(y)=Q_0>1$, respectively. Thus
+\begin{equation}
+ \min(Q_0,1)\le s(y)\le\min(Q_0,H).
+\end{equation}
+The identity $[y_h-1]_+=y_h-\min(y_h,1)$ gives $\sum_h[y_h-1]_+=Q_0-s(y)$. Equal totals in the two placements therefore imply
+\begin{align}
+ \left|\frac1H\sum_h[y_h^a-1]_+-\frac1H\sum_h[y_h^I-1]_+\right|
+ &=|s(y^a)-s(y^I)|/H\\
+ &\le\{\min(Q_0,H)-\min(Q_0,1)\}/H\le(H-1)/H.
+\end{align}
+After averaging time, both physical envelopes hold simultaneously:
+\begin{equation}
+ |G_{u_H}|\le B_{u_H}^{\mathrm{phys}}:=\min\{U(G)/(HC),(H-1)/H\}.
+ \label{eq:combined-physical}
+\end{equation}
+The fixed denominator $H$ and conservation of every workload's demand are essential. This derivation does not replace $H$ by a placement-dependent active-host count.
+
+The graph envelope can be attained. Take $H=2,C=1$, incumbent groups $\{0,1,2\},\{3,4,5\}$, candidate groups $\{0,1,3\},\{2,4,5\}$, and one-time demands $(1/2,0,1/2,0,1/2,1/2)$. Identity matching retains four workloads, while the exchanged matching retains two, so $m=2$. With common support $b_i=1/2$, the two edge directions each have weight $1/2$, hence $D_*=1/2$. Loads change from $(1,1)$ to $(1/2,3/2)$, attaining $|G_{u_H}|=1/4=D_*/(HC)$, half the count envelope.
+
+The combined envelope with exact $D_*$ is sharp as a function of $D_*,H,C$ over the allowed support class. Fix $H\ge2$ and any $D\ge0$. Put one stationary workload of demand $C$ at a hub and one stationary zero-demand anchor plus one moved workload at each of $H-1$ source hosts. Move every latter workload to the hub and give it support $D/(H-1)$. Each incumbent--candidate overlap is at most one; identity matching retains one workload at every host and therefore maximizes overlap, moving $H-1$ workloads. The graph is an inward star with $D_*=D$. For $D\le(H-1)C$, set each moved demand to $D/(H-1)$. Incumbent hosts do not overload, while candidate excess is $D$ at the hub, giving $|G_{u_H}|=D/(HC)$. For $D\ge(H-1)C$, set each moved demand to $C$, which its support permits. Loads change from $(C,\ldots,C)$ to $(HC,0,\ldots,0)$, attaining $(H-1)/H$. Source groups remain nonempty because their anchors stay. These constructions prove sharpness over this class, rather than attainment for every fixed action or correlated workload law.
+
+\section{A uniform allowance for stored excess replay}
+The preceding load conservation and graph arguments concern real arithmetic. The certificate consumes stored raw losses. Assume correctly rounded binary64 elementary operations, no intermediate overflow, a fixed positive binary64 capacity, and exactly represented normalization $Q=HT\le2^{53}$. Let $\epsilon=2^{-53}$ and $\zeta=2^{-1075}$. A finite elementary result obeys
+\begin{equation}
+ |\operatorname{fl}(z)-z|\le\epsilon|z|+\zeta.
+\end{equation}
+The additive term covers subnormal results. Stored input demands are interpreted as exact dyadic operands satisfying the declared support.
+
+For $m$ nonnegative operands bounded by $A$, define
+\begin{equation}
+ S(m,A)=\bigl((1+\epsilon)^{m-1}-1\bigr)mA+\zeta(m-1)(1+\epsilon)^{m-1}.
+ \label{eq:sum-error}
+\end{equation}
+To see why this covers any binary summation tree, write every rounded addition as its exact operand sum times $1+\delta$, $|\delta|\le\epsilon$, plus an additive error of magnitude at most $\zeta$. On expanding the tree, each input is multiplied by at most $m-1$ factors. Its coefficient differs from one by at most $(1+\epsilon)^{m-1}-1$. There are $m$ inputs of magnitude at most $A$. Each of the $m-1$ additive errors is amplified by at most $(1+\epsilon)^{m-1}$. Summing their absolute contributions gives Eq.~\eqref{eq:sum-error}. In particular, $S(1,A)=0$.
+
+Let $D=d_{\max}$ bound every demand, let $N$ bound a host's resident count, and put $A_0=ND/C$. The following quantities bound the error after each stage:
+\begin{align}
+ e_\ell&=S(N,D),\label{eq:load-error}\\
+ e_q&=(1+\epsilon)e_\ell/C+\epsilon A_0+\zeta,\label{eq:division-error}\\
+ e_f&=(1+\epsilon)e_q+\epsilon(A_0+1)+\zeta,\label{eq:clipping-error}\\
+ e_\Sigma&=Qe_f+S(Q,A_0+e_f),\label{eq:excess-sum-error}\\
+ e_u&=(1+\epsilon)e_\Sigma/Q+\epsilon A_0+\zeta.\label{eq:raw-error}
+\end{align}
+Equation~\eqref{eq:load-error} follows directly from the tree bound; using $N$ rather than the actual resident count is conservative because all terms are nonnegative and the bound is nondecreasing in that count. For division, $|\widehat\ell-\ell|\le e_\ell$, $\ell/C\le A_0$, and
+\begin{align}
+ |\operatorname{fl}(\widehat\ell/C)-\ell/C|
+ &\le e_\ell/C+\epsilon|\widehat\ell/C|+\zeta\\
+ &\le e_\ell/C+\epsilon(A_0+e_\ell/C)+\zeta=e_q.
+\end{align}
+For subtraction of one, the exact intermediate ratio differs from its stored counterpart by at most $e_q$, while the magnitude of the latter minus one is at most $A_0+e_q+1$. Thus its rounded error is at most
+\begin{equation}
+ e_q+\epsilon(A_0+e_q+1)+\zeta=e_f.
+\end{equation}
+Clipping at zero is a $1$-Lipschitz map and adds no error beyond selecting its already stored operand or exact zero, so the same $e_f$ covers each stored excess.
+
+There are $Q$ nonnegative excess operands. Replacing exact excesses by stored ones contributes at most $Qe_f$. Each stored excess is at most $A_0+e_f$, so summing them adds at most $S(Q,A_0+e_f)$, proving Eq.~\eqref{eq:excess-sum-error}. Finally the exact mean is at most $A_0$, and the same division argument gives
+\begin{align}
+ |\operatorname{fl}(\widehat\Sigma/Q)-\Sigma/Q|
+ &\le e_\Sigma/Q+\epsilon(A_0+e_\Sigma/Q)+\zeta=e_u.
+\end{align}
+The uniform bounds on loads, ratios, and sums also provide a conservative check that these intermediate results remain finite. The derivation presupposes this nonoverflowing contract.
+
+For the paired stored losses, the triangle inequality now yields
+\begin{align}
+ |\widehat u_H^I-\widehat u_H^a|
+ &\le |u_H^I-u_H^a|+|\widehat u_H^I-u_H^I|+|\widehat u_H^a-u_H^a|\\
+ &\le B_{u_H}^{\mathrm{phys}}+2e_u.
+\end{align}
+Consequently a valid predeclared stored bound is
+\begin{equation}
+ B_{u_H}=\up\!\left(\min\{U(G)/(HC),(H-1)/H\}+2e_u\right).
+ \label{eq:stored-raw-bound}
+\end{equation}
+The same error allowance belongs to both physical branches before outward rounding. One may also take the minimum of two separately valid outward-rounded bounds. A minimum with an uncorrected physical branch would not be justified. All support-weight and cut comparisons may use exact rationals; only the final declared binary64 bound needs outward rounding.
+
+\section{Fresh expected-gain admission}
+\subsection{Targets and bounded transformations}
+Let $B_e\ge0$ be a predeclared almost-sure bound on the stored paired gain, and fix $0<\alpha<1$. The action-footprint bounds in Eqs.~\eqref{eq:footprint-bounds} and \eqref{eq:stored-raw-bound} supply such bounds for $(J,V,R,u_H)$. Let $r$ be the fixed strict-improvement anchor, let $\eta\ge0$ be its required gain, and let $\delta_e\ge0$ be the other coordinates' noninferiority margins. Set
+\begin{equation}
+ q_e=\begin{cases}\eta,&e=r,\\-\delta_e,&e\ne r,\end{cases}
+ \qquad A_e=B_e+|q_e|,\qquad
+ Y_{en}=\begin{cases}(G_e(Z_n)-q_e)/A_e,&A_e>0,\\0,&A_e=0.\end{cases}
+ \label{eq:transform}
+\end{equation}
+The specified targets are $r=R$, $\eta=.005$, and $(\delta_J,\delta_V,\delta_R,\delta_{u_H})=(.01,.01,0,.001)$. These decimals denote exact rationals. Native VS and PAR remain evaluated outcome measures rather than coordinates of this four-loss certificate.
+
+Because $|G_e|\le B_e$, we have $|G_e-q_e|\le B_e+|q_e|$ and hence $Y_{en}\in[-1,1]$. If $A_e=0$, both $B_e$ and $q_e$ are zero, so the gain is zero almost surely and the strict target cannot hold. Otherwise, under the conditional null $\E[G_e(Z_n)\mid\F_{n-1}]\le q_e$,
+\begin{equation}
+ \E[Y_{en}\mid\F_{n-1}]=\frac{\E[G_e(Z_n)\mid\F_{n-1}]-q_e}{A_e}\le0.
+\end{equation}
+Conditional iid sampling is sufficient to obtain this null whenever the action's conditional mean gain is at most $q_e$. Mere temporal stationarity or a sample maximum is not a replacement for the conditional sampling and support assumptions.
+
+\subsection{A fixed mixture and a computable lower bound}
+For each fixed $0<\lambda<1$, define $W_{e,\lambda}(n)=\prod_{i=1}^n(1+\lambda Y_{ei})$, with $W_{e,\lambda}(0)=1$. Every factor lies in $[1-\lambda,1+\lambda]$ and is positive. Under the conditional null,
+\begin{align}
+ \E[W_{e,\lambda}(n)\mid\F_{n-1}]
+ &=W_{e,\lambda}(n-1)\bigl(1+\lambda\E[Y_{en}\mid\F_{n-1}]\bigr)\\
+ &\le W_{e,\lambda}(n-1).
+\end{align}
+Thus each product is a nonnegative supermartingale. Use the fixed countable bets and weights
+\begin{equation}
+ (w_0,\lambda_0)=(1/2,255/256),\qquad
+ (w_j,\lambda_j)=(2^{-j-1},2^{-j})\quad(j\ge1).
+\end{equation}
+Their weights sum to one. At every finite $n$, each product is at most $2^n$, so the mixture $E_e(n)=\sum_{j\ge0}w_jW_{e,\lambda_j}(n)$ is integrable. Conditional monotone convergence gives
+\begin{align}
+ \E[E_e(n)\mid\F_{n-1}]
+ &=\sum_{j\ge0}w_j\E[W_{e,\lambda_j}(n)\mid\F_{n-1}]\\
+ &\le\sum_{j\ge0}w_jW_{e,\lambda_j}(n-1)=E_e(n-1).
+\end{align}
+Also $E_e(0)=1$. Ville's inequality therefore gives the time-uniform bound
+\begin{equation}
+ \Prb\!\left(\sup_n E_e(n)\ge1/\alpha\mid\F_0\right)\le\alpha.
+ \label{eq:ville}
+\end{equation}
+These are standard bounded-mean betting and confidence-sequence tools~\cite{howard2021confidence,waudbysmith2024betting}; the action-specific supports enter through Eq.~\eqref{eq:transform}.
+
+At prefix $n\ge1$, materialize only components through $J(n)=\max\{8,\lfloor\log_2n\rfloor+1\}$ and compute
+\begin{equation}
+ \underline E_e(n)=\sum_{j=0}^{J(n)}w_jW_{e,\lambda_j}(n)\le E_e(n).
+\end{equation}
+Every newly introduced component is evaluated on the entire observed prefix, as if present from time zero. The changing partial sum need not itself be a supermartingale; its pathwise domination by the fixed complete mixture is sufficient. A coordinate locks at its first inspected crossing of $1/\alpha$. Its computations may stop after locking because only its previously established crossing is used.
+
+\begin{theorem}[One-action false-admission control]
+Conditional on $\F_0$, suppose the action, targets, and valid gain supports are fixed, and fresh scenes are iid. If any required expected-gain target $\E[G_e\mid\F_0]>q_e$ is false, joint admission has probability at most $\alpha$. Dependence across coordinates is unrestricted.
+\end{theorem}
+\begin{proof}
+For a false joint statement select one failing coordinate $e_0$ with $\E[G_{e_0}\mid\F_0]\le q_{e_0}$. Conditional iid sampling makes its conditional mean at every step the same failing mean, so Eq.~\eqref{eq:ville} applies. If $A_{e_0}=0$, its transformed observations are zero and no partial mixture can exceed one; it cannot cause admission. Otherwise, joint admission implies that this coordinate crossed at some inspection, regardless of when other coordinates locked. Therefore
+\begin{align}
+ \Prb(\mathrm{admit}\mid\F_0)
+ &\le\Prb\!\left(\sup_n\underline E_{e_0}(n)\ge1/\alpha\mid\F_0\right)\\
+ &\le\Prb\!\left(\sup_nE_{e_0}(n)\ge1/\alpha\mid\F_0\right)\le\alpha.
+\end{align}
+This is an intersection--union argument: one false coordinate suffices to bound the false joint statement. No independence across coordinates or Bonferroni allocation is required. Different crossing times and persistent locks do not change the implication.
+\end{proof}
+
+More generally, the same proof applies without iid scenes if a fixed failing coordinate satisfies $\E[G_e(Z_n)\mid\F_{n-1}]\le q_e$ at every step. That statement concerns a conditional-mean null, not an arbitrary marginal-mean claim under dependence. Choosing the strict anchor or another action after observing Certification would require a different simultaneous-testing argument.
+
+\subsection{Consistency under strict alternatives}
+For $|x|\le\lambda<1$, use the identity
+\begin{equation}
+ \log(1+x)=x-\int_0^x\frac{s}{1+s}\,ds.
+\end{equation}
+For $x\ge0$, the integral is at most $x^2/[2(1-\lambda)]$ because $1+s\ge1-\lambda$. For $x<0$, substitute $s=-v$ to obtain $\int_0^x s/(1+s)\,ds=\int_0^{-x}v/(1-v)\,dv$, which has the same bound. Consequently, for $|y|\le1$ and $0<\lambda\le1/2$,
+\begin{equation}
+ \log(1+\lambda y)\ge\lambda y-\frac{\lambda^2y^2}{2(1-\lambda)}\ge\lambda y-\lambda^2.
+ \label{eq:log-lower}
+\end{equation}
+Suppose $\theta_e=\E[Y_{en}\mid\F_0]>0$. Choose a fixed dyadic $0<\lambda_j<\min\{\theta_e,1/2\}$. Then
+\begin{equation}
+ \E[\log(1+\lambda_jY_{en})\mid\F_0]\ge\lambda_j\theta_e-\lambda_j^2>0.
+\end{equation}
+These iid log factors are bounded between $\log(1-\lambda_j)$ and $\log(1+\lambda_j)$. The strong law gives $n^{-1}\log W_{e,\lambda_j}(n)\to c_e>0$ almost surely. Since $J(n)\to\infty$, that component is eventually materialized and
+\begin{equation}
+ \underline E_e(n)\ge w_jW_{e,\lambda_j}(n)\longrightarrow\infty
+\end{equation}
+almost surely. With finitely many coordinates, the intersection of these probability-one events still has probability one. Their finite crossing times have a finite maximum, so unbounded inspections eventually admit whenever all targets hold strictly.
+
+A tied non-anchor with $\delta_e>0$ has transformed mean $\delta_e/(B_e+\delta_e)>0$ and is an interior alternative. A zero-margin true tie has no such consistency guarantee. A fixed finite bet grid bounded away from zero would not establish consistency for arbitrarily small positive transformed means.
+
+\subsection{Finite-sample evidence bound}
+Let $d$ be the number of required coordinates, let $\mu_e=\E[G_e\mid\F_0]$, and suppose every gap $\Delta_e=\mu_e-q_e$ is positive. Define
+\begin{equation}
+ \theta_e=\frac{\Delta_e}{B_e+|q_e|},\qquad \rho=\min_e\theta_e\in(0,1].
+\end{equation}
+All denominators are positive under this strict alternative. The unknown $\rho$ is used only to analyze power, not to choose a bet or a target. For $0<\beta<1$, let
+\begin{equation}
+ n_\beta(\rho)=\left\lceil\max\left\{\frac2\rho,\frac{32}{\rho^2}\log\frac d\beta,
+ \frac8{\rho^2}\log\frac8{\alpha\rho}\right\}\right\rceil.
+ \label{eq:power-cap}
+\end{equation}
+At every deterministic inspected prefix $n\ge n_\beta(\rho)$, admission has occurred by that inspection with probability at least $1-\beta$.
+
+To prove this statement, choose a dyadic $\lambda_j\in[\rho/4,\rho/2]$. Such a component exists because adjacent dyadic bets differ by a factor of two. It has $j\ge1$ and $w_j=\lambda_j/2\ge\rho/8$. Since $2^{j-1}\le2/\rho\le n$, it is included among components through $J(n)$.
+
+Let $S_e(n)=\sum_{i=1}^nY_{ei}$. Hoeffding's inequality for independent bounded variables with range length two~\cite{hoeffding1963} gives
+\begin{align}
+ \Prb\{S_e(n)<n\theta_e-a\mid\F_0\}
+ &\le\exp\left(-\frac{2a^2}{\sum_{i=1}^n(1-(-1))^2}\right)\\
+ &=\exp(-a^2/(2n)).
+\end{align}
+Set $L_0=\log(d/\beta)$ and $a=\sqrt{2nL_0}$. A union bound over the $d$ coordinates gives, with probability at least $1-\beta$,
+\begin{equation}
+ S_e(n)\ge n\theta_e-\sqrt{2nL_0}\ge n\rho-\sqrt{2nL_0}\quad\text{for every }e.
+\end{equation}
+The condition $n\ge32L_0/\rho^2$ implies $\sqrt{2nL_0}\le n\rho/4$. On this event, Eq.~\eqref{eq:log-lower} yields
+\begin{align}
+ \log W_{e,\lambda_j}(n)
+ &\ge\lambda_jS_e(n)-n\lambda_j^2\\
+ &\ge n\lambda_j(3\rho/4-\lambda_j)\\
+ &=n\left(\rho^2/8+(\lambda_j-\rho/4)(\rho/2-\lambda_j)\right)\\
+ &\ge n\rho^2/8.
+\end{align}
+Both factors in the product are nonnegative. Hence every still-unlocked coordinate satisfies
+\begin{equation}
+ \underline E_e(n)\ge w_jW_{e,\lambda_j}(n)\ge(\rho/8)\exp(n\rho^2/8)\ge1/\alpha,
+\end{equation}
+where the last step uses $n\ge8\rho^{-2}\log(8/(\alpha\rho))$. Coordinates locked earlier already satisfy admission. This proves the stated power bound.
+
+For fixed inspection batch size $b$ and deterministic cap $c\ge n_\beta(\rho)$, the next inspection is $n_b=\min\{b\lceil n_\beta(\rho)/b\rceil,c\}$, so $n_\beta(\rho)\le n_b<n_\beta(\rho)+b$. Thus admission by $n_b$ has probability at least $1-\beta$. This fixed-time concentration argument does not assert the same power bound for a data-dependent next inspection. False-admission validity still holds for adaptive inspection by the time-uniform mixture argument.
+
+The support dependence is explicit:
+\begin{equation}
+ \rho^{-2}=\max_e\frac{(B_e+|q_e|)^2}{\Delta_e^2},\qquad
+ n_\beta(\rho)=O\!\left(\rho^{-2}\log\frac{d}{\alpha\beta\rho}\right).
+\end{equation}
+The footprint and graph envelopes reduce these sufficient normalized-gap requirements without changing the action or target. Another coordinate can still determine the maximum. The bound does not imply monotonic stopping on every realized sample path, or that fewer migrations necessarily produce a larger gain.
+
+\section{Streaming paired workload queries}
+A paired reader exposes one predeclared consecutive scene stream. Every scene is generated independently under the declared conditional law. A fixed role-specific random stream makes the scene prefix invariant to the partition of requests. Fit, Build, Selection, Certification, and Evaluation use distinct streams. Any declared demand clipping is part of this population law and therefore precedes replay.
+
+For a fixed replay batch shape, the reader constructs both placements from the same scenes, optionally sharing membership views within that panel. A short tail is padded to the same numerical shape and only its requested rows are returned. Consequently the stored paired loss for each scene uses the same per-scene computation under stopped and fixed-cap acquisition. The registry cannot be shared across different scene panels because its input data have changed.
+
+The stopped certificate requests a batch only when earlier evidence has not completed the joint decision. Every such request and the decision to stop are measurable with respect to the already observed filtration. They therefore retain the supermartingale validity above. A fixed-cap rule can acquire the identical replay-batch sequence but inspect its mixture only at the cap. The two rules differ in inspection schedule, not in action, targets, scene law, or numerical definition of a row.
+
+If stopping occurs after $n_s$ scenes in replay batches of size $b$, exactly $\lceil n_s/b\rceil$ batches are generated and paired-replayed. No later scenes are acquired. Scene generation produces $n_sNT$ demand values, while a fixed cap $c$ produces $cNT$. Peak scene-panel storage is $O(bNT)$ rather than $O(cNT)$, separately from stored evidence rows, mixture arithmetic, and query views. The statistical procedure is also valid on precomputed loss arrays, but only on-demand acquisition realizes these generation and replay savings. End-to-end timing consequently includes reader work and exact statistical arithmetic; action-bound construction is accounted for separately.
+
+\section{Exact numerical evaluation of the certificate}
+\subsection{Exact crossing arithmetic}
+Write the transformed observations as exact rationals $Y_i=z_i/d_i$, $d_i>0$, and let $D_n=\prod_{i=1}^nd_i$. Then
+\begin{align}
+ W_0(n)&=N_0(n)/(D_n2^{8n}),& N_0(n)&=\prod_{i=1}^n(256d_i+255z_i),\\
+ W_j(n)&=N_j(n)/(D_n2^{jn}),& N_j(n)&=\prod_{i=1}^n(2^jd_i+z_i).
+\end{align}
+Set $\kappa_n=\max\{8n+1,J(n)n+J(n)+1\}$. Including the mixture weights gives the common integer numerator
+\begin{equation}
+ \mathcal N_n=N_0(n)2^{\kappa_n-8n-1}+\sum_{j=1}^{J(n)}N_j(n)2^{\kappa_n-jn-j-1},\qquad
+ \underline E(n)=\mathcal N_n/(D_n2^{\kappa_n}).
+\end{equation}
+All exponents are nonnegative. For exact $\alpha=p/q$, the crossing test is the integer comparison $p\mathcal N_n\ge qD_n2^{\kappa_n}$. Arbitrary-precision products and shifts decide it without approximate log wealth. Balanced product trees change evaluation cost but not this exact integer value.
+
+
+\subsection{Gain and normalized-observation intervals}
+A paired query returns intervals $[g_i^-,g_i^+]$ containing the exact dyadic differences of the canonical stored losses. Complete canonical replay obtains such an interval by outward subtraction; a shared or enclosed query may provide it directly. The predeclared population bound gives the additional valid interval $[-B,B]$. Their intersection still contains the gain.
+
+For target $q$ and scale $A=B+|q|>0$, let $q^-\le q\le q^+$ and $0<A^-\le A\le A^+$ be outward endpoints. If
+\begin{equation}
+n^-=\operatorname{RD}(g_i^--q^+),\qquad n^+=\operatorname{RU}(g_i^+-q^-),
+\end{equation}
+then $n^-\le G_i-q\le n^+$. The normalized endpoints are
+\begin{align}
+y_i^-&=\operatorname{RD}\!\left(\frac{n^-}{A^+\mathbf1\{n^-\ge0\}+A^-\mathbf1\{n^-<0\}}\right),\nonumber\\
+y_i^+&=\operatorname{RU}\!\left(\frac{n^+}{A^-\mathbf1\{n^+>0\}+A^+\mathbf1\{n^+\le0\}}\right).
+\label{eq:normalization-interval}
+\end{align}
+For a negative numerator, division by a smaller positive denominator is more negative; the other signs follow similarly. Hence $y_i^-\le Y_i\le y_i^+$. Intersecting with $[-1,1]$ is valid. If no positive finite lower scale endpoint exists, exact rational normalization precedes outward conversion. If $A=0$, the canonical observation is zero.
+
+\subsection{Positive-product filtering}
+For a fixed represented rate $0<\lambda<1$, monotonicity gives
+\begin{equation}
+0<1+\lambda y_i^-\le1+\lambda Y_i\le1+\lambda y_i^+.
+\end{equation}
+Outward addition and multiplication produce factor endpoints. Inductively multiplying their positive intervals from $[1,1]$ encloses every partial product. Underflow uses zero as a lower endpoint and an outward positive upper endpoint; unresolved overflow requests exact refinement. Positive weighted addition gives
+\begin{equation}
+L_n\le\underline E(n)\le U_n.
+\label{eq:evidence-filter}
+\end{equation}
+Every newly introduced mixture component replays its complete observed prefix. A weight too small for the endpoint format is omitted only from the lower sum; its unresolved upper contribution forces refinement unless the lower sum already proves crossing.
+
+Write $\alpha=p/q$ exactly. If $pL_n\ge q$, the canonical partial mixture crosses; if $pU_n<q$, it does not. These endpoint comparisons use exact rational values. Otherwise the integer computation above resolves the same comparison, including equality. Thus the filter adds no statistical error term.
+
+\begin{theorem}[Inspected-decision preservation]\label{thm:evidence-exact}
+Suppose each query interval contains its canonical stored paired gain and every ambiguous comparison uses the same immutable scene prefix for exact refinement. The filtered and exact certificates have identical coordinate crossings, locks, stopping row, and released action.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:normalization-interval} contains each exact normalized observation. Positive interval multiplication and addition give Eq.~\eqref{eq:evidence-filter}; separated comparisons therefore equal the exact threshold bit, and ambiguous comparisons explicitly compute that bit. Initially the two executions have identical action, stream position, and locks. If these states agree before an inspection, they acquire the same next scene indices and produce the same crossing bit for every unlocked coordinate. Their locks and stopping decisions then agree. Induction over inspections proves the entire trajectory. A replayed prefix is a numerical reconstruction of previously acquired scenes and contributes no additional inferential observations.
+\end{proof}
+
+\subsection{Preserving the action-support calculation}
+The raw support calculation contains the exact nonnegative expression $2e_u$ and a rational physical support $p=\min\{U(G)/(HC),(H-1)/H\}$. Its stored output is defined by
+\begin{equation}
+b_{\rm err}=\operatorname{nextUp}(\operatorname{RN}(2e_u)),\qquad
+B_u=\operatorname{nextUp}(\operatorname{RN}(p+\operatorname{dyad}(b_{\rm err}))).
+\label{eq:support-rounding}
+\end{equation}
+Directed interval evaluation of the additions, products, divisions, and integer powers in $e_u$ yields $L\le2e_u\le U$. For integer powers, repeated squaring of positive intervals encloses the exact power by induction. If $\operatorname{RN}(L)=\operatorname{RN}(U)=v$, monotonicity of rounding proves $\operatorname{RN}(2e_u)=v$. Apply the two rounding stages in Eq.~\eqref{eq:support-rounding} unchanged. If endpoint roundings disagree, increase precision or evaluate the exact rational expression. This construction preserves the normalized evidence itself, as well as its validity; finite-range guards are resolved by the same interval separation or exact comparison.
+
+\section{Enclosed paired views}
+The primary paired reader performs canonical replay with shared complete resident groups. A compared plan also shares nonempty incumbent--candidate intersections. This section gives the latter's numerical enclosure without changing the canonical target.
+
+\subsection{Intersection fragments}
+For incumbent groups $I_1,\ldots,I_H$ and physically aligned action groups $A_1,\ldots,A_H$, let $F_{hk}=I_h\cap A_k$ and let $\mathcal G$ contain the nonempty fragments. Each resident belongs to exactly one fragment. With $E=|\mathcal G|$ and $m$ migrants, $H\le E\le N$ and $E-H\le m$: every host has an incident fragment, at most $H$ fragments are diagonal, and each off-diagonal fragment contains a migrant.
+
+Reduce each fragment's resident demands to a stored sum, then combine its incident fragments to obtain each old or new host center $z_h$. Let $r_h$ be that host's resident count and let $D$ bound every input demand. With the tree allowance $S$ in Eq.~\eqref{eq:sum-error},
+\begin{equation}
+|z_h-\ell_h|\le S(r_h,D),\qquad
+|z_h-\widehat\ell_h^{\rm can}|\le2S(r_h,D)=:\rho_h.
+\label{eq:fragment-radius}
+\end{equation}
+To prove the first inequality, expand a fixed host root into its fragment trees. Its fragments are disjoint and partition exactly that host's residents, so the expanded expression is a binary positive summation tree with $r_h$ leaves, each appearing once. Sharing a fragment with the other placement creates no duplicate path to this fixed root. Equation~\eqref{eq:sum-error} applies. The canonical load is a second tree over the same leaves; the triangle inequality proves the second inequality.
+
+For efficient outward evaluation, one may replace $(1+u)^{r-1}$ in $S$ by the larger rational $(1-(r-1)u)^{-1}$ whenever $(r-1)u<1$. Indeed the binomial coefficient of $u^k$ is at most $(r-1)^k$, so the finite binomial sum is bounded by the positive geometric series. This yields a conservative geometric tree allowance. Any finite outward enlargement of a numerical radius preserves its enclosure.
+
+Each primitive demand contributes once to a fragment. The old and new host roots require $2(E-H)$ further additions, because their respective positive fragment degrees each sum to $E$. These root operations and projection work are additional to the $N$ primitive demand contributions; a smaller contribution count alone does not establish a lower total running time.
+
+\subsection{Canonical loss enclosures}
+Clip each center to nonnegative values, which cannot increase its distance from the nonnegative canonical load. Equation~\eqref{eq:fragment-radius} gives load endpoints. Strict threshold predicates evaluated at their lower and upper endpoints bound the canonical bits, and monotone integer sums and positive fixed normalization bound the occurrence, host-fraction, and duration losses.
+
+For raw excess, let $K$ denote canonical loads and $Z$ the centers. Let $U$ bound both arrays, computed from $r_hD+S(r_h,D)+\rho_h$, and put $Q=HT$, $A=U/C$, $u=2^{-53}$, and $\zeta=2^{-1075}$. Define
+\begin{align}
+e_q&=uA+\zeta,\nonumber\\
+e_f&=(1+u)e_q+u(A+1)+\zeta,\nonumber\\
+e_\Sigma&=Qe_f+S(Q,A+e_f),\nonumber\\
+e_P(U)&=(1+u)e_\Sigma/Q+uA+\zeta.
+\label{eq:center-projection-error}
+\end{align}
+These are the capacity-division, subtraction-and-clipping, positive-sum, and final-mean bounds already derived for stored excess, now applied to a supplied load array. Thus every supported projection tree $F$ differs from its exact-real counterpart $P$ by at most $e_P(U)$. Since the excess map is $1/C$-Lipschitz,
+\begin{equation}
+|P(K)-P(Z)|\le\frac1{HTC}\sum_{h,t}|K_{ht}-Z_{ht}|
+\le\frac1{HC}\sum_h\rho_h.
+\end{equation}
+Consequently, even when the two projection trees differ,
+\begin{equation}
+|F_{\rm can}(K)-F_{\rm ctr}(Z)|\le\frac1{HC}\sum_h\rho_h+2e_P(U).
+\label{eq:center-projection-radius}
+\end{equation}
+Outward conversion and paired subtraction of the two placement intervals enclose the exact canonical gain.
+
+\subsection{Late normalization}
+A center projection may sum load-unit excess before dividing by capacity. Put $V=[U-C]_+$ and
+\begin{align}
+\eta_f&=uV+\zeta,\qquad E_\Sigma=Q\eta_f+S(Q,V+\eta_f),\nonumber\\
+E_a&=(1+u)E_\Sigma/Q+uV+\zeta,\nonumber\\
+E_{\rm late}&=(1+u)E_a/C+uV/C+\zeta.
+\label{eq:late-projection-error}
+\end{align}
+For $z\ge0$, clipping commutes with rounding of $z-C$: both $\max\{\operatorname{RN}(z-C),0\}$ and $\operatorname{RN}([z-C]_+)$ are zero if $z\le C$, and coincide otherwise. Each stored clipped term therefore differs from $[z-C]_+$ by at most $\eta_f$. The same positive-tree argument bounds the sum error by $E_\Sigma$. Dividing first by $Q$ gives error $E_a$, and subsequently dividing by $C$ gives error $E_{\rm late}$. The exact-real target is
+\begin{equation}
+P(Z)=\frac1Q\sum_{h,t}[Z_{ht}/C-1]_+=\frac1{QC}\sum_{h,t}[Z_{ht}-C]_+.
+\end{equation}
+Combining this with the canonical projection error gives
+\begin{equation}
+|F_{\rm can}(K)-F_{\rm late}(Z)|\le\frac1{HC}\sum_h\rho_h+e_P(U)+E_{\rm late}.
+\end{equation}
+All intermediate values and outward bounds must be finite. A failed range guard invokes canonical replay. Theorem~\ref{thm:evidence-exact} then preserves every inspected decision for either center consumer.
+
+\subsection{Exact ordered prefixes}
+When a canonical resident reduction is an ordered linear fold, identical ordered resident prefixes can share their stored partial sum exactly. Assign a symbolic state to each full ordered prefix. Two next additions are shared only when they have the same prefix state and current resident identity. Induction over resident order gives equal stored parent accumulators, equal operands, and equal next additions. Different histories are never merged merely because their numerical values coincide. After the loads, retaining the prescribed Boolean and excess projection trees yields identical canonical losses. A shape outside this fold contract uses the reference computation. In particular, sharing a complete group or a prefix does not justify reassociating the canonical sum.
+
+\section{A local-migration counterexample to subtract-and-add replay}
+The difference between canonical replay and a delta update can occur for one physical migration on the same nonnegative demand vector. It does not require comparing unrelated summation examples. Take a power-of-two capacity $C$ in the normal binary64 range, with no overflow or underflow in the following operations, and let $a=C2^{-53}$. The incumbent memberships are $I_0=(0,1,2,3)$ and $I_1=(4)$, with demands
+\begin{equation}
+ (x_0,x_1,x_2,x_3,x_4)=(C,a,a,C,0).
+\end{equation}
+Move VM $0$ from host $0$ to host $1$. The new nonempty memberships are $A_0=(1,2,3)$ and $A_1=(0,4)$; maximum-overlap matching preserves these physical labels, retaining four VMs and moving one. Under ascending-resident replay, round-to-nearest with ties to even gives
+\begin{align}
+ \widehat\ell_0^I
+ &=\operatorname{fl}(\operatorname{fl}(\operatorname{fl}(C+a)+a)+C)=2C,\\
+ \widehat\ell_0^a
+ &=\operatorname{fl}(\operatorname{fl}(a+a)+C)=C+C2^{-52},\\
+ \widetilde\ell_0^a
+ &=\operatorname{fl}(\widehat\ell_0^I-C)=C.
+\end{align}
+Here $C+a$ is halfway between $C$ and its successor, so it rounds to $C$. The sum $a+a=C2^{-52}$ is exact, and $C+C2^{-52}$ is exactly the successor of $C$. Both plans give load $C$ on host $1$, but the strict overload bit on host $0$ is one under canonical replay and zero under the delta update. Thus a physically valid single-VM departure can change native VR from $1/2$ to zero solely by changing the numerical execution; the canonical fixed-host excess is $2^{-53}$ while its delta-replayed value is zero. The example demonstrates why a signed load update requires an enclosure or an exact canonical reconstruction at strict capacity boundaries.
+
+\begin{thebibliography}{7}
+\bibitem{hoeffding1963} W.~Hoeffding, ``Probability inequalities for sums of bounded random variables,'' \emph{Journal of the American Statistical Association}, vol.~58, no.~301, pp.~13--30, 1963. doi: \href{https://doi.org/10.1080/01621459.1963.10500830}{10.1080/01621459.1963.10500830}.
+\bibitem{howard2021confidence} S.~R.~Howard, A.~Ramdas, J.~McAuliffe, and J.~Sekhon, ``Time-uniform, nonparametric, nonasymptotic confidence sequences,'' \emph{The Annals of Statistics}, vol.~49, no.~2, pp.~1055--1080, 2021. doi: \href{https://doi.org/10.1214/20-AOS1991}{10.1214/20-AOS1991}.
+\bibitem{waudbysmith2024betting} I.~Waudby-Smith and A.~Ramdas, ``Estimating means of bounded random variables by betting,'' \emph{Journal of the Royal Statistical Society Series B: Statistical Methodology}, vol.~86, no.~1, pp.~1--27, 2024. doi: \href{https://doi.org/10.1093/jrsssb/qkad009}{10.1093/jrsssb/qkad009}.
+\bibitem{millstettey2007dynamic} G.~A.~Mills-Tettey, A.~Stentz, and M.~B.~Dias, ``The dynamic Hungarian algorithm for the assignment problem with changing costs,'' Robotics Institute, Carnegie Mellon University, Tech. Rep. \href{https://www.cs.cmu.edu/~gertrude/dyn_assign_techreport.pdf}{CMU-RI-TR-07-27}, July 2007.
+\bibitem{korenwein2018reduction} V.~Korenwein, A.~Nichterlein, R.~Niedermeier, and P.~Zschoche, ``Data reduction for maximum matching on real-world graphs: Theory and experiments,'' in \emph{26th Annual European Symposium on Algorithms}, LIPIcs, vol.~112, pp.~53:1--53:13, 2018. doi: \href{https://doi.org/10.4230/LIPIcs.ESA.2018.53}{10.4230/LIPIcs.ESA.2018.53}.
+\bibitem{morita2024update} K.~Morita, S.~Shiroshita, Y.~Yamaguchi, and Y.~Yokoi, ``Fast primal-dual update against local weight update in linear assignment problem and its application,'' \emph{Information Processing Letters}, vol.~183, article~106432, 2024. doi: \href{https://doi.org/10.1016/j.ipl.2023.106432}{10.1016/j.ipl.2023.106432}.
+\bibitem{grossmann2026hypergraph} E.~Gro{\ss}mann, F.~Joos, H.~Reinst{\"a}dtler, and C.~Schulz, ``Engineering hypergraph $b$-matching algorithms, \emph{Journal of Graph Algorithms and Applications}, vol.~30, no.~1, pp.~1--24, 2026. doi: \href{https://doi.org/10.7155/jgaa.v30i1.3166}{10.7155/jgaa.v30i1.3166}.
+\end{thebibliography}
+\end{document}

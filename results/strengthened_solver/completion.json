@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "cases": 354,
+  "methods": [
+    "Scenario-MIP"
+  ],
+  "view_cases": {
+    "longitudinal": 78,
+    "primary": 300
+  }
+}
