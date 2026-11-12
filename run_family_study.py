@@ -11,11 +11,8 @@ for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VEC
 import argparse
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import gc
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from pathlib import Path
-import platform
 from time import perf_counter, process_time
 
 import numpy as np
@@ -30,8 +27,9 @@ from cara.repair import feasible, ffd
 
 
 ROOT = Path(__file__).resolve().parent
-MAIN_METHODS = ("CARA", "Component-CARA", "Compact-CARA", "Eager-CARA", "Joint-SA", "Anneal", "Risk-SA", "Broad", "Swap",
+BASE_METHODS = ("CARA", "Component-CARA", "Compact-CARA", "Eager-CARA", "Joint-SA", "Anneal", "Risk-SA", "Broad", "Swap",
                 "Scenario-MIP", "No-residual", "No-frontier", "Best-seed", "Raw-order")
+MAIN_METHODS = (BASE_METHODS[0], "Family-CARA", *BASE_METHODS[1:])
 CERTIFICATE_ABLATIONS = ("No-forecast-certificate", "No-migration-certificate", "No-score-certificate")
 HEURISTICS = tuple(name for name in MAIN_METHODS if name != "Scenario-MIP")
 CERTIFICATE_FLAGS = ("family_certificate_forecast", "family_certificate_migration", "family_certificate_score")
@@ -101,7 +99,7 @@ def method_settings(method, config):
         settings["family_factor_matching"] = False
         settings["family_matching_backend"] = "dense"
         settings["family_defer_physical"] = False
-    elif method in ("CARA", "Component-CARA", "No-residual", "No-frontier", "Best-seed", "Raw-order", *CERTIFICATE_ABLATIONS):
+    elif method in ("CARA", "Family-CARA", "Component-CARA", "No-residual", "No-frontier", "Best-seed", "Raw-order", *CERTIFICATE_ABLATIONS):
         settings["family_execution"] = "certified"
     if method == "Component-CARA":
         settings["family_matching_backend"] = "factorized"
@@ -121,6 +119,11 @@ def method_settings(method, config):
         settings["anneal_objective"] = "risk"
     elif method == "Joint-SA":
         settings["anneal_objective"] = "joint"
+    if method == "Family-CARA":
+        settings.update(family_seed_compilation=False, family_bound_views=False,
+                        family_metric_cascade=False, family_subset_views=False,
+                        family_structural_bound_gate=False, family_compiled_bounds=False,
+                        family_staged_acquisition=False)
     return settings
 
 
@@ -220,11 +223,11 @@ def decide(data, origin, incumbent, forecast, method, config, seed, protocol, bu
 
 
 def run_case(job):
-    index, case, plan, binding, output = job
+    index, case, plan, _context, output = job
     path = Path(output) / "records" / f'{case["dataset"]}_{case["origin"]}_{case["seed_index"]}.json'
     if path.exists():
         cached = json.loads(path.read_text())
-        if (cached.get("study_binding") != binding or any(cached[name] != value for name, value in case.items())
+        if (cached.get("config") != plan["config"] or any(cached[name] != value for name, value in case.items())
                 or set(cached["policies"]) != {"FFD", *plan["methods"]}):
             raise ValueError(f"Cached case belongs to a different complete study: {path}")
         return cached
@@ -248,7 +251,7 @@ def run_case(job):
     methods = plan["methods"]
     shift = index % len(methods)
     order = methods[shift:] + methods[:shift]
-    record = {**case, "study_binding": binding, "n_vms": data.n_vms, "capacity": data.capacity,
+    record = {**case, "n_vms": data.n_vms, "capacity": data.capacity,
               "config": config, "incumbent_assignment": incumbent, "method_order": order,
               "trace_loading_cpu_seconds": loading_cpu, "trace_loading_wall_seconds": loading_wall,
               "trace_cache_hit": cache_hit,
@@ -295,19 +298,14 @@ def make_plan(args):
     if args.phase == "evaluation" and budget != protocol["proposal_allowance_seconds"]:
         raise ValueError("Evaluation requires the frozen proposal allowance")
     config = {**config, "cpu_limit": float(budget)}
-    files = [Path(__file__).resolve(), ROOT / "benchmark_native_intervals.py", *sorted((ROOT / "cara").glob("*.py")),
-             *sorted((ROOT / "cara/kernels").glob("*.c"))]
     return {"study": "complete_window_family_execution", "phase": args.phase, "protocol": protocol,
             "cases": case_grid(protocol, args.phase, args.seeds), "config": config,
             "methods": methods, "method_settings": {method: method_settings(method, config) for method in methods},
             "proposal_allowance_seconds": float(budget), "workers": args.workers,
-            "data_root": str(args.data_root.resolve()),
-            "inputs": {name: sha256((args.data_root / name / "data-00000-of-00001.arrow").read_bytes()).hexdigest()
-                       for name in protocol["decision_cohorts"]},
-            "implementation": {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest() for path in files},
-            "environment": {"python": platform.python_version(), "platform": platform.platform(),
-                            "packages": {name: version(name) for name in ("numpy", "scipy", "pyarrow")},
-                            "threads": {name: os.environ[name] for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS")}},
+            "data_root": str(args.data_root),
+            "inputs": list(protocol["decision_cohorts"]),
+            
+            
             "rotation": "Each case rotates the declared method order by its index; the separate solver study is not in that joint rotation.",
             "timing": "Actual process CPU. Preparation and proposal share the allowance; Selection, physical-action validation and Audit are included in complete decision cost. Common data loading, forecast/FFD construction, outcome evaluation and serialization are excluded. Solver CPU and wall observations retain their separate meaning."}
 
@@ -316,13 +314,12 @@ def run(args):
     plan = make_plan(args)
     plan_path = args.output / "study_plan.json"
     if plan_path.exists() and json.loads(plan_path.read_text()) != serial(plan):
-        raise ValueError("Use a new output directory for a changed study plan or implementation")
+        raise ValueError("Use a new output directory for a changed study plan")
     save(plan_path, plan)
     if args.plan_only:
         print(json.dumps({"planned_cases": len(plan["cases"]), "methods": plan["methods"], "output": str(args.output)}))
         return
-    binding = sha256(json.dumps(serial(plan), sort_keys=True).encode()).hexdigest()
-    jobs = [(index, case, plan, binding, str(args.output)) for index, case in enumerate(plan["cases"])]
+    jobs = [(index, case, plan, None, str(args.output)) for index, case in enumerate(plan["cases"])]
     records = []
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
         futures = [pool.submit(run_case, job) for job in jobs]
@@ -342,7 +339,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--phase", choices=("development", "evaluation"), required=True)
     parser.add_argument("--protocol", type=Path, default=ROOT / "configs/release/family_protocol.json")
-    parser.add_argument("--config", type=Path, default=ROOT / "configs/release/main_frozen.json")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/release/family_frozen.json")
     parser.add_argument("--data-root", type=Path, default=ROOT / "data/raw/cloudcons")
     parser.add_argument("--methods", nargs="+", choices=(*MAIN_METHODS, *CERTIFICATE_ABLATIONS), default=list(HEURISTICS))
     parser.add_argument("--seeds", type=int, nargs="+")

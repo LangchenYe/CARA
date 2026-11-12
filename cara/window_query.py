@@ -9,7 +9,7 @@ Fresh iid panels retain the existing scene reader and never use these keys.
 """
 import ctypes
 from fractions import Fraction
-from hashlib import sha256
+from hashlib import blake2b
 import os
 from pathlib import Path
 import platform
@@ -48,7 +48,7 @@ def prepare_window_queries():
     compiler = shutil.which(os.environ.get("CC", "cc"))
     if compiler is None:
         raise RuntimeError("A C99 compiler is required for time-keyed queries")
-    key = sha256(source.read_bytes() + repr((_FLAGS, compiler, platform.machine())).encode()).hexdigest()[:20]
+    key = blake2b(source.read_bytes() + repr((_FLAGS, compiler, platform.machine())).encode()).hexdigest()[:20]
     cache = Path(tempfile.gettempdir()) / "cara-window-kernels"
     cache.mkdir(exist_ok=True)
     suffix = ".dylib" if platform.system() == "Darwin" else ".so"

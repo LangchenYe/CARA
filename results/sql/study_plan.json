@@ -1,0 +1,39 @@
+{
+  "cohorts": [
+    "azure2019",
+    "borg2019_d",
+    "borg2019_e",
+    "huawei2025"
+  ],
+  "origins": [
+    288,
+    300,
+    312
+  ],
+  "width": 8,
+  "requested_families": 4,
+  "pair_rule": "First min(4,H(H-1)/2) risk-ordered pairs; original jitter RNG seed 519+origin; original mutable-resident rule.",
+  "build_role": {
+    "start_lookback_hours": 192,
+    "stop_lookback_hours": 64,
+    "horizon": 8,
+    "stride": 1,
+    "rows": 121
+  },
+  "plans": [
+    "sql",
+    "sql_shared",
+    "sql_shared_resident",
+    "full",
+    "shared",
+    "shared_resident"
+  ],
+  "repetitions": 3,
+  "max_returned_load_bytes": 67108864,
+  "common_input": "The complete original forecast-feasible, incumbent-relative movement-feasible ordered candidate multiset is constructed once outside all compared query timers. Zero-query settings remain with zero query cost.",
+  "execution": "Existing cold SQL/helper controls are retained for multiple chunks. Resident SQL-Shared materializes D once, interns the entire candidate collection once, builds one native-SUM group_load relation, then fetches bounded result chunks. Resident canonical SharedQueryReplay initializes one bounded registry and computes the whole Q-by-B-by-6 profile batch once; only inspection loads are chunked outside timing. For one chunk, each cold helper and its resident counterpart are physically equivalent and share one measured arm.",
+  "resident_boundary": "Resident SQL query CPU begins after immutable D and its connection are ready; it includes candidate membership/mapping preparation, group aggregation, fetch and profile work. Resident canonical query CPU begins after its reader constructor and includes membership planning and complete profile execution. Cold totals include both source preparation and query processing. Resident SQL verification intervals are explicitly excluded from its continuous CPU interval; all operator and loop work is retained.",
+  "memory": "Each returned load tensor is at most 64 MiB. Cold helper plans charge repeated chunk preparation. Resident SQL retains its global group relation and resident canonical execution retains one bounded registry across the entire candidate batch. No candidate is dropped; at most one canonical reference chunk and one observed chunk are retained for diagnostics. Full profile arrays are Q-by-B-by-6, not Q-by-H-by-B-by-T.",
+  "arithmetic": "SQL retains native SUM. Every returned load/profile bit difference and strict/tolerant threshold flip is counted per trial. SQL is not claimed to implement the canonical NumPy operation graph.",
+  "scope": "Secondary query-stage database-engine context, not full CARA search, selection, certification, or deployment performance."
+}

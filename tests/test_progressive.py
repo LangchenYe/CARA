@@ -75,8 +75,23 @@ def test_cached_leaf_bounds_are_reused_and_cleared_before_a_new_prune():
     assert cert.leaf_upper_keys == {}
 
 
+def test_empty_pool_builds_leaf_bounds_without_excluding_any_score():
+    cert = certificate()
+    masks = cert.family.nonempty_masks()[:10]
+    class Bounds:
+        def upper_keys(self, ranges, **kwargs):
+            return [(start - 100, 0) for start, _ in ranges]
+    surviving, excluded = cert.prune(masks, migration_limit=16, cutoff=None,
+                                     score_bounds=Bounds(), certify_migration=False,
+                                     score_min_leaves=1, score_strategy='leaf')
+    assert surviving == masks
+    assert excluded == ()
+    assert cert.leaf_upper_keys == {mask: (mask - 100, 0) for mask in masks}
+
+
 @pytest.mark.parametrize('hosts,batch_values', [(4, 1024), (128, 512)])
-def test_progressive_queries_match_eager_with_independent_profiles_and_exclusion_oracles(hosts, batch_values):
+@pytest.mark.parametrize('bootstrap', [False, True])
+def test_progressive_queries_match_eager_with_independent_profiles_and_exclusion_oracles(hosts, batch_values, bootstrap):
     rng = np.random.default_rng(419)
     incumbent = tuple(np.repeat(np.arange(hosts), 4))
     forecast = np.full((len(incumbent), 3), .08)
@@ -85,6 +100,7 @@ def test_progressive_queries_match_eager_with_independent_profiles_and_exclusion
               'score_mode': 'gain', 'family_score_min_hosts': 0,
               'family_score_min_leaves': 1, 'family_score_strategy': 'leaf',
               'family_forecast_strategy': 'leaf', 'family_progressive_batch': 3,
+              'family_bootstrap_bounds': bootstrap,
               'query_batch_values': batch_values}
     expected = None
     progressive_batches = 0
@@ -133,6 +149,7 @@ def test_controller_preserves_every_complete_family_and_final_physical_action():
               'seed_schedule': 'coverage', 'score_mode': 'gain', 'shared_queries': True,
               'batch_queries': True, 'family_score_min_hosts': 0, 'family_score_min_leaves': 1,
               'family_score_strategy': 'leaf', 'family_progressive_batch': 3,
+              'family_bootstrap_bounds': True,
               'replay_arms': ['exact'] * 8}
     results, histories = {}, {}
     for mode, progressive in [('eager', False), ('certified', False), ('certified', True)]:

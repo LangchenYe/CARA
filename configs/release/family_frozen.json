@@ -51,5 +51,15 @@
   "family_defer_physical": true,
   "family_matching_backend": "compiled",
   "family_unique_physical": true,
-  "family_unique_physical_min_hosts": 16
+  "family_unique_physical_min_hosts": 16,
+  "family_bootstrap_bounds": true,
+  "family_progressive_batch": 16,
+  "family_seed_compilation": true,
+  "family_bound_views": true,
+  "family_metric_cascade": true,
+  "family_subset_views": true,
+  "family_structural_bound_gate": true,
+  "family_bound_work_min": 192,
+  "family_compiled_bounds": true,
+  "family_staged_acquisition": true
 }

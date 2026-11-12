@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 import run_family_study as study
+from analyze_family_study import complete_evaluation_methods
 
 
 @pytest.fixture
@@ -120,3 +121,26 @@ def test_targets_are_sliced_after_all_method_decisions(monkeypatch, protocol, tm
     assert target_accesses == [("CARA", "Eager-CARA")]
     assert result["panel_rows"] == {"build": 121, "selection": 25, "audit": 25}
     assert all(set(policy["metrics"]) == set(study.NATIVE_METRICS) for policy in result["policies"].values())
+
+
+def test_family_control_changes_only_the_execution_refinements_and_their_cost_policy():
+    flags = ("family_seed_compilation", "family_bound_views", "family_metric_cascade", "family_subset_views",
+             "family_structural_bound_gate", "family_compiled_bounds", "family_staged_acquisition")
+    config = {**dict.fromkeys(flags, True), "cpu_limit": 2., "top_p": 16,
+              "frontier_fraction": .5, "mutable_limit": 12, "anneal_temperature_fraction": .01}
+    saved = deepcopy(config)
+    current, family = study.method_settings("CARA", config), study.method_settings("Family-CARA", config)
+    assert {key for key in current if current[key] != family[key]} == set(flags)
+    assert all(family[flag] is False for flag in flags)
+    assert family["family_execution"] == "certified"
+    assert study.engine_for("Family-CARA") is study.engine_for("CARA")
+    assert config == saved
+
+
+def test_analysis_accepts_complete_old_and_new_method_sets_without_missing_baselines():
+    assert complete_evaluation_methods(study.BASE_METHODS)
+    assert complete_evaluation_methods(study.MAIN_METHODS)
+    assert len(study.BASE_METHODS) == 14 and len(study.MAIN_METHODS) == 15
+    for missing in study.BASE_METHODS:
+        assert not complete_evaluation_methods([method for method in study.MAIN_METHODS if method != missing])
+    assert not complete_evaluation_methods([*study.MAIN_METHODS, "Unknown"])

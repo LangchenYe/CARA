@@ -1,47 +1,62 @@
-"""Join complete method studies and summarize both frozen evaluation views.
+"""Summarize complete CARA comparisons, including every incumbent fallback.
 
-Default inputs must have the same cases, controller, data and implementation.
-An explicit replacement accepts only a complete rerun of the four declared
-physical-map arms, retaining every original source and binding. The serial
-solver retains its distinct timing protocol. All comparisons include
-incumbent fallbacks; paired differences are descriptive, without independence
-or significance claims for overlapping targets or repeated search streams.
+A supplied complete comparison can be analyzed directly. Fresh heuristic and
+serial-solver runs can be joined when their case design and inputs agree.
 """
 import argparse
 import csv
-from hashlib import sha256
 import json
 import math
 from pathlib import Path
-
 import numpy as np
-
 from cara.data import canonical_assignment, load_dataset, native_metrics
-from run_family_study import MAIN_METHODS, NATIVE_METRICS, case_grid, case_key, save
-
+from run_family_study import BASE_METHODS, MAIN_METHODS, NATIVE_METRICS, case_grid, case_key, method_settings, save, validate_selected
+from benchmark_native_intervals import predictive_metrics
 
 TIMINGS = ("preparation_cpu_seconds", "remaining_proposal_allowance_seconds", "proposal_cpu_seconds",
            "proposal_with_preparation_cpu_seconds", "proposal_budget_overshoot_cpu_seconds", "selection_cpu_seconds",
            "search_call_cpu_seconds", "post_search_movement_cpu_seconds", "audit_cpu_seconds",
            "total_decision_cpu_seconds", "total_decision_wall_seconds")
 COUNTERS = ("evaluations", "blocks", "completed_operations")
-COMPARATORS = ("Compact-CARA", "Eager-CARA", "Joint-SA")
+COMPARATORS = ("Family-CARA", "Compact-CARA", "Eager-CARA", "Joint-SA")
+
+
+def complete_evaluation_methods(methods):
+    """Accept complete baseline studies with or without the family-only control."""
+    return set(BASE_METHODS) <= set(methods) <= set(MAIN_METHODS)
 
 
 def load_complete(directory):
+    directory = Path(directory)
     plan = json.loads((directory / "study_plan.json").read_text())
     records = json.loads((directory / "records.json").read_text())
     expected = case_grid(plan["protocol"], plan["phase"], sorted({c["seed_index"] for c in plan["cases"]}))
-    if plan["study"] != "complete_window_family_execution" or plan["cases"] != expected:
+    if plan["study"] not in ("complete_window_family_execution", "complete_family_comparison") or plan["cases"] != expected:
         raise ValueError(f"Unexpected or incomplete scenario design: {directory}")
+    methods = plan["methods"]
+    if not methods or len(methods) != len(set(methods)) or set(plan["method_settings"]) != set(methods):
+        raise ValueError("Methods and effective settings must be complete and unique")
+    if plan["study"] == "complete_window_family_execution":
+        if any(plan["method_settings"][name] != method_settings(name, plan["config"]) for name in methods):
+            raise ValueError("Effective method settings differ from the declared controller")
+    else:
+        groups, owners = plan["execution_groups"], plan["method_groups"]
+        if set(owners) != set(methods):
+            raise ValueError("Each method must identify its execution group")
+        for name in methods:
+            group = groups[str(owners[name])]
+            if name not in group["methods"] or group["method_settings"][name] != plan["method_settings"][name]:
+                raise ValueError("A policy's settings disagree with its execution group")
+        solver = groups[str(owners["Scenario-MIP"])] if "Scenario-MIP" in owners else None
+        if solver is not None and (solver["methods"] != ["Scenario-MIP"] or solver["workers"] != 1):
+            raise ValueError("Scenario-MIP requires a separate serial execution group")
     planned = {case_key(case): case for case in expected}
     if len(records) != len(expected) or {case_key(row) for row in records} != set(planned):
         raise ValueError(f"Every planned scenario must appear exactly once: {directory}")
-    binding = sha256(json.dumps(plan, sort_keys=True).encode()).hexdigest()
     for row in records:
-        if (row.get("study_binding") != binding
+        if (row["config"] != plan["config"]
                 or any(row[field] != value for field, value in planned[case_key(row)].items())
-                or set(row["policies"]) != {"FFD", *plan["methods"]}):
+                or set(row["policies"]) != {"FFD", *methods}):
             raise ValueError("Record does not match its declared scenario and methods")
         if row["panel_rows"] != plan["protocol"]["expected_rows"]:
             raise ValueError("A record does not use all prescribed historical windows")
@@ -61,11 +76,21 @@ def load_complete(directory):
 
 
 def join_studies(inputs):
+    if not inputs:
+        raise ValueError("At least one complete comparison is required")
     studies = [load_complete(path) for path in inputs]
     first = studies[0][0]
-    methods, merged = [], {}
+    if first["study"] == "complete_family_comparison":
+        if len(studies) != 1:
+            raise ValueError("A complete comparison must be the sole input")
+        if first["phase"] == "evaluation" and not complete_evaluation_methods(first["methods"]):
+            raise ValueError("Final evaluation analysis requires all prescribed baseline methods")
+        return studies[0]
+    methods, merged, groups, owners, settings = [], {}, {}, {}, {}
     for index, (plan, rows) in enumerate(studies):
-        for field in ("phase", "protocol", "cases", "config", "inputs", "implementation", "environment", "proposal_allowance_seconds"):
+        if plan["study"] != "complete_window_family_execution":
+            raise ValueError("Use only complete individual runs when joining studies")
+        for field in ("phase", "protocol", "cases", "config", "inputs", "proposal_allowance_seconds"):
             if plan[field] != first[field]:
                 raise ValueError(f"Input studies disagree on {field}")
         if set(methods).intersection(plan["methods"]):
@@ -73,12 +98,15 @@ def join_studies(inputs):
         if "Scenario-MIP" in plan["methods"] and (plan["methods"] != ["Scenario-MIP"] or plan["workers"] != 1):
             raise ValueError("Scenario-MIP must be a separate serial study")
         methods.extend(plan["methods"])
+        settings.update(plan["method_settings"])
+        owners.update(dict.fromkeys(plan["methods"], index))
+        groups[str(index)] = {name: plan[name] for name in ("methods", "method_settings", "config", "workers", "rotation", "timing")}
         for row in rows:
             identity = case_key(row)
             if identity not in merged:
-                merged[identity] = {name: value for name, value in row.items() if name not in ("study_binding", "method_order")}
+                merged[identity] = {name: value for name, value in row.items() if name != "method_order"}
                 merged[identity]["policies"] = dict(row["policies"])
-                merged[identity]["study_components"] = []
+                merged[identity]["execution_groups"] = []
             else:
                 target = merged[identity]
                 for field in ("seed", "views", "config", "n_vms", "capacity", "incumbent_assignment", "panel_rows"):
@@ -87,106 +115,17 @@ def join_studies(inputs):
                 if row["policies"]["FFD"] != target["policies"]["FFD"]:
                     raise ValueError("Common incumbent metrics or movement differ")
                 target["policies"].update({name: row["policies"][name] for name in plan["methods"]})
-            merged[identity]["study_components"].append({
-                "study": index, "binding": row["study_binding"], "method_order": row["method_order"],
-                "workers": plan["workers"], "trace_cache_hit": row["trace_cache_hit"],
-                "trace_loading_cpu_seconds": row["trace_loading_cpu_seconds"],
-                "trace_loading_wall_seconds": row["trace_loading_wall_seconds"],
-                "common_forecast_incumbent_cpu_seconds": row["common_forecast_incumbent_cpu_seconds"],
-                "evaluation_cpu_seconds": row["evaluation_cpu_seconds"]})
-    if first["phase"] == "evaluation" and set(methods) != set(MAIN_METHODS):
-        raise ValueError("Final evaluation analysis requires all 13 prescribed methods")
-    ordered = [merged[case_key(case)] for case in first["cases"]]
+            merged[identity]["execution_groups"].append({"group": index,
+                **{name: row[name] for name in ("method_order", "trace_cache_hit", "trace_loading_cpu_seconds",
+                    "trace_loading_wall_seconds", "common_forecast_incumbent_cpu_seconds", "evaluation_cpu_seconds")}})
+    if first["phase"] == "evaluation" and not complete_evaluation_methods(methods):
+        raise ValueError("Final evaluation analysis requires all prescribed baseline methods")
     plan = {"study": "complete_family_comparison", "phase": first["phase"], "cases": first["cases"],
-            "methods": methods, "protocol": first["protocol"], "config": first["config"],
-            "proposal_allowance_seconds": first["proposal_allowance_seconds"],
-            "substudies": [item[0] for item in studies],
-            "execution": "Heuristic method order rotates within cases. Scenario-MIP retains its separately serial wall-limited solve; it did not share the heuristic rotation."}
-    return plan, ordered
-
-
-REPLACEMENT_METHODS = ("CARA", "No-frontier", "Best-seed", "Raw-order")
-REPLACEMENT_ADDITIONS = {"family_unique_physical": True, "family_unique_physical_min_hosts": 16}
-REPLACEMENT_SOURCE_FILES = frozenset(("cara/family_certificates.py", "cara/refinement.py",
-                                    "cara/compiled_matching.py"))
-
-
-def replace_complete_arms(base_plan, base_records, directory):
-    """Explicit complete-arm overlay; original studies and bindings are retained."""
-    if base_plan.get("replacement") is not None or base_plan["phase"] != "evaluation":
-        raise ValueError("One declared replacement is supported, on a complete evaluation only")
-    replacement, records = load_complete(directory)
-    if (len(replacement["methods"]) != len(REPLACEMENT_METHODS)
-            or set(replacement["methods"]) != set(REPLACEMENT_METHODS)):
-        raise ValueError("Replacement must contain all and only the four declared physical-map arms")
-    original_studies = base_plan["substudies"]
-    original = original_studies[0]
-    for field in ("phase", "protocol", "cases", "inputs", "environment", "proposal_allowance_seconds",
-                  "rotation", "timing"):
-        if replacement[field] != original[field]:
-            raise ValueError(f"Replacement disagrees on {field}")
-    if (set(original["config"]).intersection(REPLACEMENT_ADDITIONS)
-            or replacement["config"] != {**original["config"], **REPLACEMENT_ADDITIONS}):
-        raise ValueError("Replacement may only add the two declared unique-physical settings")
-    old_sources, new_sources = original["implementation"], replacement["implementation"]
-    if set(old_sources) != set(new_sources):
-        raise ValueError("Replacement changes the recorded implementation-file set")
-    changed_sources = {name: {"original": old_sources[name], "replacement": new_sources[name]}
-                       for name in old_sources if old_sources[name] != new_sources[name]}
-    if not set(changed_sources).issubset(REPLACEMENT_SOURCE_FILES):
-        raise ValueError("Replacement changes implementation outside the declared physical-map files")
-    owners = {method: index for index, study in enumerate(original_studies) for method in study["methods"]}
-    for method in REPLACEMENT_METHODS:
-        if method not in owners:
-            raise ValueError("A replacement arm is missing from the complete original comparison")
-        expected = {**original_studies[owners[method]]["method_settings"][method], **REPLACEMENT_ADDITIONS}
-        if replacement["method_settings"][method] != expected:
-            raise ValueError(f"Replacement changes additional effective settings for {method}")
-    index = len(original_studies)
-    all_studies = [*original_studies, replacement]
-    bindings = [sha256(json.dumps(study, sort_keys=True).encode()).hexdigest() for study in all_studies]
-    policy_sources = {"FFD": 0, **owners, **dict.fromkeys(REPLACEMENT_METHODS, index)}
-    by_case = {case_key(row): row for row in records}
-    if len(base_records) != len(records) or {case_key(row) for row in base_records} != set(by_case):
-        raise ValueError("Replacement and original comparison must have identical complete cases")
-    result = []
-    for position, original_row in enumerate(base_records):
-        row = by_case[case_key(original_row)]
-        for field in ("seed", "views", "n_vms", "capacity", "incumbent_assignment", "panel_rows"):
-            if row[field] != original_row[field]:
-                raise ValueError(f"Replacement changes the common case context: {field}")
-        if original_row["config"] != original["config"] or row["config"] != replacement["config"]:
-            raise ValueError("A record's configuration disagrees with its own source plan")
-        if row["policies"]["FFD"] != original_row["policies"]["FFD"]:
-            raise ValueError("Replacement changes the common incumbent result")
-        shift = position % len(REPLACEMENT_METHODS)
-        if row["method_order"] != replacement["methods"][shift:] + replacement["methods"][:shift]:
-            raise ValueError("Replacement method order disagrees with its declared case rotation")
-        component = {"study": index, "binding": row["study_binding"], "method_order": row["method_order"],
-                     "workers": replacement["workers"], "role": "complete_arm_replacement"}
-        for field in ("trace_cache_hit", "trace_loading_cpu_seconds", "trace_loading_wall_seconds",
-                      "common_forecast_incumbent_cpu_seconds", "evaluation_cpu_seconds"):
-            component[field] = row[field]
-        result.append({**original_row,
-                       "policies": {**original_row["policies"],
-                                    **{method: row["policies"][method] for method in REPLACEMENT_METHODS}},
-                       "study_components": [*original_row["study_components"], component],
-                       "policy_sources": dict(policy_sources)})
-    plan = {**base_plan, "substudies": all_studies,
-            "method_sources": {method: {"study": owner, "binding": bindings[owner]}
-                               for method, owner in policy_sources.items()},
-            "method_settings": {method: all_studies[owner]["method_settings"][method]
-                                for method, owner in policy_sources.items() if method != "FFD"},
-            "replacement": {"methods": list(REPLACEMENT_METHODS), "source_directory": str(directory),
-                            "source_study": index, "binding": bindings[index],
-                            "config_additions": dict(REPLACEMENT_ADDITIONS),
-                            "allowed_implementation_changes": sorted(REPLACEMENT_SOURCE_FILES),
-                            "implementation_changes": changed_sources,
-                            "selection": "Every declared arm uses its complete rerun; no case-level replacement."},
-            "execution": base_plan["execution"] + " The four declared arms come from a separate complete rerun. "
-                         "Other methods retain their original complete studies; each source's rotation, workers "
-                         "and bindings remain recorded. No shared rotation across those runs is implied."}
-    return plan, result
+            "methods": methods, "protocol": first["protocol"], "config": first["config"], "inputs": first["inputs"],
+            "proposal_allowance_seconds": first["proposal_allowance_seconds"], "method_settings": settings,
+            "execution_groups": groups, "method_groups": owners,
+            "execution": "Heuristic method orders rotate within their stated execution groups. Scenario-MIP runs separately with one worker and a wall-limited solve."}
+    return plan, [merged[case_key(case)] for case in first["cases"]]
 
 
 def numeric_leaves(value, prefix=""):
@@ -304,10 +243,58 @@ def export_case(record, data_root, output):
                                     for h in range(hosts) for t in range(demand.shape[1])])
 
 
+def verify_outcomes(records, data_root):
+    """Recompute every current terminal metric from the original target data."""
+    datasets, contexts, expected_metrics = {}, {}, {}
+    policies_checked = selected_checked = 0
+    maximum_difference = dict.fromkeys(NATIVE_METRICS, 0.)
+    for row in records:
+        name, origin = row["dataset"], row["origin"]
+        if name not in datasets:
+            datasets[name] = load_dataset(name, data_root)
+        data = datasets[name]
+        context = (name, origin)
+        if context not in contexts:
+            contexts[context] = (data.panel(origin), data.forecast(origin),
+                                 data.panel(origin - 24, 24).std(axis=1, ddof=1))
+        demand, forecast, scales = contexts[context]
+        incumbent = canonical_assignment(row["incumbent_assignment"])
+        for method, policy in row["policies"].items():
+            terminal = canonical_assignment(policy["terminal_assignment"])
+            if len(terminal) != data.n_vms:
+                raise ValueError("A current terminal assignment omits cohort workloads")
+            selected = policy.get("selected_assignment")
+            if method != "FFD" and selected is not None:
+                validate_selected(incumbent, selected, forecast, data.capacity, row["config"],
+                                  policy.get("selected_movement"))
+                selected_checked += 1
+            expected_terminal = canonical_assignment(selected) if policy["admission"]["admitted"] else incumbent
+            if terminal != expected_terminal:
+                raise ValueError("A terminal assignment disagrees with its admission decision")
+            validate_selected(incumbent, terminal, forecast, data.capacity, row["config"], policy["movement"])
+            identity = (*context, terminal)
+            if identity not in expected_metrics:
+                expected_metrics[identity] = {**native_metrics(demand, terminal, data.capacity),
+                                             **predictive_metrics(demand, terminal, forecast, scales)}
+            for metric, actual in expected_metrics[identity].items():
+                difference = abs(actual - policy["metrics"][metric])
+                maximum_difference[metric] = max(maximum_difference[metric], difference)
+                if not math.isclose(actual, policy["metrics"][metric], rel_tol=0., abs_tol=1e-12):
+                    raise ValueError(f"Current outcome disagrees with original data: {context}, {method}, {metric}")
+            policies_checked += 1
+    return {"complete": True, "cases": len(records), "contexts": len(contexts),
+            "terminal_policies_checked": policies_checked, "selected_actions_checked": selected_checked,
+            "distinct_terminal_profiles": len(expected_metrics), "metrics": list(NATIVE_METRICS),
+            "maximum_absolute_difference": maximum_difference,
+            "all_physical_actions_feasible": True,
+            "description": "Original Arrow targets and fixed forecast intervals are recomputed; search is not rerun."}
+
+
 def run(args):
     plan, records = join_studies(args.inputs)
-    if getattr(args, "replacement", None) is not None:
-        plan, records = replace_complete_arms(plan, records, args.replacement)
+    if args.verify_outcomes:
+        verification = verify_outcomes(records, args.data_root)
+        save(args.output / "verification.json", verification)
     methods = ["FFD", *plan["methods"]]
     summaries, comparisons, outcomes = [], [], []
     views = sorted({view for row in records for view in row["views"]})
@@ -341,7 +328,7 @@ def run(args):
                "definitions": {"group_means": "Arithmetic case means including incumbent fallbacks. Cohort-macro results weight each cohort equally, including in the longer Borg daily sequences.",
                                "throughput": "Sum of recorded evaluations, blocks or operations divided by sum of actual proposal CPU including representation preparation. Solver nodes are not candidate evaluations.",
                                "paired": "CARA minus comparator on matching cohort/origin/stream cases. Lower/tied/higher counts use a 1e-12 display tolerance and do not encode desirability for interval width or coverage.",
-                               "timing": "Recorded actual times, not nominal two-second values. Selection, physical-action validation and Audit contribute to total decision time; common trace loading and forecast/FFD preparation are recorded per original substudy.",
+                               "timing": "Recorded actual times, not nominal two-second values. Selection, physical-action validation and Audit contribute to total decision time; common trace loading and forecast/FFD preparation are recorded per execution group.",
                                "overshoot": "Nonnegative charged proposal CPU above its allowance; median, p95 and maximum use NumPy linear quantiles.",
                                "scope": "Overlapping targets and search streams are not independent workload replicates. No inferential significance claim is computed. Separate solver CPU and wall observations retain their distinct budget meaning."}}
     args.output.mkdir(parents=True, exist_ok=True)
@@ -362,8 +349,8 @@ def run(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--inputs", type=Path, nargs="+", required=True)
-    parser.add_argument("--replacement", type=Path, help="Complete rerun of the four declared unique-physical arms")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--data-root", type=Path, default=Path(__file__).resolve().parent / "data/raw/cloudcons")
+    parser.add_argument("--verify-outcomes", action="store_true", help="Recompute all terminal metrics and validate every physical action from raw data")
     parser.add_argument("--case", nargs=3, default=["huawei2025", "297", "0"], metavar=("COHORT", "ORIGIN", "STREAM"))
     run(parser.parse_args())

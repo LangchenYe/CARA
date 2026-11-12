@@ -10,11 +10,8 @@ for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VEC
 
 import argparse
 import gc
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from pathlib import Path
-import platform
 from time import process_time
 
 import numpy as np
@@ -37,8 +34,6 @@ WIDTH, FAMILY_LIMIT, REPETITIONS = 8, 4, 3
 MAX_RESULT_BYTES = 64 << 20
 
 
-def binding(value):
-    return sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
 def chunk_slices(queries, hosts, scenes, times):
@@ -71,8 +66,7 @@ def prepare_case(data, origin):
         family_rows.append({"pair": pair, "mutable": mutable,
                             "candidate_start": start, "candidate_stop": len(assignments)})
     return panel, incumbent, tuple(assignments), {"family_requests": family_rows,
-        "common_input_cpu_seconds": process_time() - began,
-        "candidate_digest": binding(assignments)}
+        "common_input_cpu_seconds": process_time() - began}
 
 
 def arithmetic_differences(loads, profiles, reference_loads, reference_profiles, capacity):
@@ -276,9 +270,6 @@ def run_case(data, origin, case_index):
 
 
 def main(args):
-    files = ("benchmark_family_sql.py", "benchmark_sql_queries.py", "benchmark_query_engine.py",
-             "cara/data.py", "cara/query_engine.py", "cara/query_plan.py", "cara/repair.py",
-             "cara/refinement.py", "cara/workload_views.py")
     plan = {"cohorts": list(CAPACITIES), "origins": ORIGINS, "width": WIDTH,
         "requested_families": FAMILY_LIMIT, "pair_rule": "First min(4,H(H-1)/2) risk-ordered pairs; original jitter RNG seed 519+origin; original mutable-resident rule.",
         "build_role": {"start_lookback_hours": 192, "stop_lookback_hours": 64, "horizon": 8, "stride": 1, "rows": 121},
@@ -288,18 +279,15 @@ def main(args):
         "resident_boundary": "Resident SQL query CPU begins after immutable D and its connection are ready; it includes candidate membership/mapping preparation, group aggregation, fetch and profile work. Resident canonical query CPU begins after its reader constructor and includes membership planning and complete profile execution. Cold totals include both source preparation and query processing. Resident SQL verification intervals are explicitly excluded from its continuous CPU interval; all operator and loop work is retained.",
         "memory": "Each returned load tensor is at most 64 MiB. Cold helper plans charge repeated chunk preparation. Resident SQL retains its global group relation and resident canonical execution retains one bounded registry across the entire candidate batch. No candidate is dropped; at most one canonical reference chunk and one observed chunk are retained for diagnostics. Full profile arrays are Q-by-B-by-6, not Q-by-H-by-B-by-T.",
         "arithmetic": "SQL retains native SUM. Every returned load/profile bit difference and strict/tolerant threshold flip is counted per trial. SQL is not claimed to implement the canonical NumPy operation graph.",
-        "scope": "Secondary query-stage database-engine context, not full CARA search, selection, certification, or deployment performance.",
-        "environment": {"python": platform.python_version(), "system": platform.platform(),
-                        **{name: version(name) for name in ("numpy", "scipy", "pyarrow", "duckdb")}, "numerical_threads": 1},
-        "source_code": {name: sha256((ROOT / name).read_bytes()).hexdigest() for name in files}}
+        "scope": "Secondary query-stage database-engine context, not full CARA search, selection, certification, or deployment performance."}
     normalized = json.loads(json.dumps(plan))
     target = args.output / "study_plan.json"
     if target.exists() and json.loads(target.read_text()) != normalized:
-        raise ValueError("The SQL stage benchmark has different inputs or implementation")
+        raise ValueError("The SQL stage benchmark has different inputs or settings")
     save(target, plan)
     if args.write_plan:
         return
-    study_binding, records = binding(plan), []
+    records = []
     for name in CAPACITIES:
         tick = process_time()
         data = load_dataset(name)
@@ -308,11 +296,10 @@ def main(args):
             checkpoint = args.output / "cases" / f"{name}_{origin}.json"
             if checkpoint.exists():
                 row = json.loads(checkpoint.read_text())
-                if row["study_binding"] != study_binding:
+                if row["cohort"] != name or row["origin"] != origin:
                     raise ValueError("A SQL checkpoint belongs to another design")
             else:
                 row = run_case(data, origin, len(records))
-                row["study_binding"] = study_binding
                 save(checkpoint, row)
             records.append(row)
             save(args.output / "records.json", records)

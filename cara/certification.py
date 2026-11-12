@@ -239,7 +239,7 @@ def stored_raw_gain_bound(moved_count, hosts, capacity, *, vm_count, horizon,
     Covers arbitrary nonnegative summation trees, division, subtraction of one,
     positive-part clipping, aggregate summation, and final mean division. Assumes
     correctly rounded binary64 operations, finite intermediate results, and the
-    raw replay in data.burdens_from_loads. The proof is in theory_derivations.tex.
+    raw replay in data.burdens_from_loads. The proof is in theory/derivations.tex.
     Returns an outward-rounded float suitable for ``gain_bounds``.
     """
     if int(vm_count) != vm_count or vm_count < 1 or int(horizon) != horizon or horizon < 1:

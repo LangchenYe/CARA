@@ -12,12 +12,9 @@ import argparse
 from fractions import Fraction
 from functools import partial
 import gc
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from math import inf, nextafter
 from pathlib import Path
-import platform
 from time import perf_counter, process_time
 
 import numpy as np
@@ -31,14 +28,17 @@ from cara.migration_envelope import stored_action_gain_bounds, stored_topology_g
 from cara.native_aggregate import prepare_native
 from cara.scene_stream import SCENE_LAWS, SceneStream
 from cara.synthetic import LAW, make_environment
-from run_interval_validation import SEMANTIC
 from run_streaming_validation import (FRESH_NAMES, MARGINS, PROFILE_NAMES, ROLES, VALIDATION,
                                       PairedWorkloadReader, diagnostic, outcome_means, save)
 
 
 ROOT = Path(__file__).resolve().parent
+SEMANTIC = ("admitted", "rows", "rows_read", "decision", "reason", "metric_names", "anchor",
+            "noninferiority_margins", "min_anchor_gain", "gain_bounds", "exact_gain_bounds",
+            "exact_thresholds", "crossing_rows", "locked", "mixture_components", "claim_scope")
 ARMS = {
     "CARA": ("graph", 8192, 32),
+    "NoComponent": ("no_component", 8192, 32),
     "NoGraph": ("count", 8192, 32),
     "NoBoolean": ("no_boolean", 8192, 32),
     "Global": ("global", 8192, 32),
@@ -48,8 +48,12 @@ ARMS = {
 }
 
 
-def digest(value):
-    return sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+
+
+def action_contract(record):
+    """The small complete input determining a fixed-action certification run."""
+    return {name: record[name] for name in ("law", "seed", "status", "incumbent_assignment",
+            "candidate_assignment", "movement", "gain_bounds") if name in record}
 
 
 def load_contracts(source):
@@ -69,11 +73,10 @@ def load_contracts(source):
             or plan["inspection_batch"] != 32 or plan["replay_batch"] != 32
             or plan["fixed_caps"] != [2048, 4096, 8192]):
         raise ValueError("The complete original 96-environment fresh contract is required")
-    binding = digest(plan)
     for row in records:
         old, new = row["incumbent_assignment"], row["candidate_assignment"]
         if (row["method"] != "CARA" or row["counts"] != counts
-                or row["study_plan_sha256"] != binding
+                or row["config"] != plan["search_config"]
                 or len(old) != LAW["vms"] or tuple(old) != canonical_assignment(old)):
             raise ValueError("A frozen action disagrees with its original contract")
         if row["status"] == "no_candidate":
@@ -93,11 +96,22 @@ def load_contracts(source):
 
 
 def support(record, mode):
+    """Population bounds differing only in the specified support information.
+
+    ``graph`` uses component cut/capacity bounds and changed-host Boolean
+    bounds. ``no_component`` retains the same cuts with one global capacity
+    cap. ``count`` uses moved count and the global cap, without migration-graph
+    structure. ``no_boolean`` retains the component raw bound but uses unit
+    Boolean bounds. ``global`` uses unit Boolean bounds and the global cap.
+    """
+    if mode not in {"graph", "no_component", "count", "no_boolean", "global"}:
+        raise ValueError("Unknown fixed population support")
     old = record["incumbent_assignment"]
     aligned = record["movement"]["aligned_assignment"]
     hosts, capacity, horizon = len(set(old)), LAW["capacity"], LAW["horizon"]
-    if mode == "graph":
-        return tuple(stored_action_gain_bounds(old, aligned, capacity, horizon=horizon)["gain_bounds"])
+    if mode in {"graph", "no_component"}:
+        return tuple(stored_action_gain_bounds(old, aligned, capacity, horizon=horizon,
+            component_conservation=mode == "graph")["gain_bounds"])
     if mode == "no_boolean":
         raw = stored_topology_gain_bound(old, aligned, capacity, horizon=horizon)
         return (1., 1., 1., raw)
@@ -110,8 +124,6 @@ def support(record, mode):
     raw = nextafter(float(physical + roundoff), inf)
     if mode == "global":
         return (1., 1., 1., raw)
-    if mode != "count":
-        raise ValueError("Unknown fixed population support")
     touched = {host for a, b in zip(old, aligned) if a != b for host in (a, b)}
     exact = min(Fraction(1), Fraction(len(touched), hosts) + Fraction(1, 2**52)) if touched else Fraction()
     ratio = float(exact)
@@ -226,33 +238,29 @@ def main(args):
     if args.repetitions < 1:
         raise ValueError("Positive serial timing repetitions are required")
     original_plan, original_records = load_contracts(args.source)
-    files = ("run_frozen_fresh.py", "run_streaming_validation.py", "cara/action_query.py",
-             "cara/certification.py", "cara/interval_certificate.py", "cara/migration_envelope.py",
-             "cara/scene_stream.py", "cara/synthetic.py", "cara/fused_canonical.py",
-             "cara/kernels/fused_canonical.c", "cara/native_evidence.py", "cara/batch_evidence.py",
-             "cara/native_aggregate.py", "cara/kernels/aggregate.c", "cara/data.py", "cara/query_engine.py",
-             "cara/workload_views.py", "cara/refinement.py", "cara/native_runtime.py", "cara/error_budget.py",
-             "cara/native_canonical.py", "cara/kernels/canonical.c", "cara/admission.py", "run_interval_validation.py")
     plan = {"source": str(args.source), "source_study": original_plan,
-        "source_actions_digest": digest(original_records), "contracts": len(original_records),
+         "contracts": len(original_records),
         "selected": 90, "no_action_fallbacks": 6, "search_rerun": False, "arms": ARMS,
+        "support_variants": {
+            "CARA": "Component-wise directed-cut/conservation raw bound; changed-host Boolean bounds.",
+            "NoComponent": "Same directed cuts and changed-host Boolean bounds; one global conservation cap.",
+            "NoGraph": "Moved-count raw bound with global conservation cap; changed-host Boolean bounds.",
+            "NoBoolean": "Same component-wise raw bound as CARA; unit Boolean bounds.",
+            "Global": "Global conservation raw cap and unit Boolean bounds.",
+            "Fixed2048/4096/8192": "Same bounds as CARA; inspection only at the stated fixed cap."},
         "repetitions": args.repetitions, "keep_evaluation_arrays": args.keep_evaluation_arrays,
         "population_support": {"demand_interval": [0., 1.],
             "source": "SceneStream.next applies np.clip(values, 0., 1.) to every generated scene; this fixed population bound is not estimated from observed samples."},
         "execution": "All arms regenerate their actual 48-VM iid scene prefixes and use identical fused canonical paired queries plus native directed-evidence evaluation with exact fallback. Complete support, reader construction, generation, replay and evidence CPU are timed; common kernel compilation and immutable environment construction are separate.",
         "verification": "All 8192 certification loss rows per selected action are independently reconstructed and byte-compared with native losses. Every arm's full semantic result is compared with the Decimal-filter/exact-integer-fallback array oracle outside timing. All 16384 independent Evaluation rows are regenerated for each of 96 environments, including six fallbacks.",
-        "statistics": "One action, support and thresholds frozen before fresh evidence. Conditional iid laws are synthetic controls; no iid or future-law claim is attached to overlapping historical trace windows. Repetitions reuse prefixes for CPU measurements and are not independent statistical trials.",
-        "environment": {"python": platform.python_version(), "system": platform.platform(),
-                        "numpy": version("numpy"), "scipy": version("scipy"), "numerical_threads": 1},
-        "source_code": {name: sha256((ROOT / name).read_bytes()).hexdigest() for name in files}}
+        "statistics": "One action, support and thresholds frozen before fresh evidence. Conditional iid laws are synthetic controls; no iid or future-law claim is attached to overlapping historical trace windows. Repetitions reuse prefixes for CPU measurements and are not independent statistical trials."}
     path = args.output / "study_plan.json"
     normalized = json.loads(json.dumps(plan))
     if path.exists() and json.loads(path.read_text()) != normalized:
-        raise ValueError("Existing fixed-action study has different inputs or implementation")
+        raise ValueError("Existing fixed-action study has different inputs or settings")
     save(path, plan)
     if args.write_plan:
         return
-    binding = digest(plan)
     save(args.output / "common_preparation.json", {"aggregate": prepare_native(), "canonical": prepare_fused_canonical()})
     records = []
     for index, original in enumerate(original_records):
@@ -260,18 +268,20 @@ def main(args):
         checkpoint = args.output / "cases" / f"{identity}.json"
         if checkpoint.exists():
             record = json.loads(checkpoint.read_text())
-            if record["study_binding"] != binding:
+            if record["action_contract"] != action_contract(original):
                 raise ValueError("Checkpoint belongs to another fixed-action study")
             records.append(record)
             continue
         environment = make_environment(original["seed"])
         record = {"law": original["law"], "seed": original["seed"], "status": original["status"],
-                  "study_binding": binding, "rules": {}, "trials": [], "medians": {}}
+                  "action_contract": action_contract(original), "rules": {}, "trials": [], "medians": {}}
         saved = {}
         if original["status"] == "selected":
             supports = {mode: support(original, mode) for mode in {value[0] for value in ARMS.values()}}
-            if tuple(supports["graph"]) != tuple(original["gain_bounds"]):
-                raise AssertionError("The predeclared original graph support changed")
+            if tuple(supports["no_component"]) != tuple(original["gain_bounds"]):
+                raise AssertionError("The global-conservation control must retain its predeclared support")
+            if any(new > old for new, old in zip(supports["graph"], supports["no_component"])):
+                raise AssertionError("Component conservation cannot enlarge the declared support")
             reference, candidate = canonical_evidence(original, environment)
             saved.update(certification_reference=reference, certification_candidate=candidate)
             record["supports"] = supports
@@ -283,8 +293,8 @@ def main(args):
                 if any(actual[name] != expected[name] for name in SEMANTIC):
                     raise AssertionError((identity, arm, "Current canonical evidence oracle mismatch"))
                 record["rules"][arm] = actual
-                if mode == "graph":
-                    old_key = "stopped8192" if arm == "CARA" else f"fixed{cap}"
+                if mode in {"graph", "no_component"}:
+                    old_key = "stopped8192" if arm in {"CARA", "NoComponent"} else f"fixed{cap}"
                     record["archived_graph_semantic_equal"][arm] = all(
                         actual[name] == original["rules"][old_key][name] for name in SEMANTIC)
             record["canonical_loss_rows_checked"] = len(reference)
@@ -331,7 +341,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path, default=Path("results/icde2027_shared_streaming"))
+    parser.add_argument("--source", type=Path, default=Path("data/fresh_actions"))
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--repetitions", type=int, default=3)
     parser.add_argument("--keep-evaluation-arrays", action="store_true")

@@ -1,0 +1,32 @@
+{
+  "complete": true,
+  "cases": 354,
+  "contexts": 118,
+  "terminal_policies_checked": 5664,
+  "selected_actions_checked": 4043,
+  "distinct_terminal_profiles": 3063,
+  "metrics": [
+    "hosts",
+    "Util",
+    "VR",
+    "VS",
+    "PAR",
+    "raw",
+    "PICP",
+    "MPIW",
+    "WinklerScore"
+  ],
+  "maximum_absolute_difference": {
+    "hosts": 0.0,
+    "Util": 0.0,
+    "VR": 0.0,
+    "VS": 0.0,
+    "PAR": 0.0,
+    "raw": 0.0,
+    "PICP": 0.0,
+    "MPIW": 0.0,
+    "WinklerScore": 0.0
+  },
+  "all_physical_actions_feasible": true,
+  "description": "Original Arrow targets and fixed forecast intervals are recomputed; search is not rerun."
+}

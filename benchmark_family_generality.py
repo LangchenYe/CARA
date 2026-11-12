@@ -13,11 +13,8 @@ for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VEC
 import argparse
 from collections import Counter
 import gc
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from pathlib import Path
-import platform
 from time import process_time
 
 import numpy as np
@@ -404,21 +401,15 @@ def run(args):
     if (args.repetitions < 0 or args.width < 2 or args.width % 2 or args.families < 1 or args.adaptive_families < 1
             or len(set(args.plans)) != len(args.plans) or len(set(args.sources)) != len(args.sources)):
         raise ValueError("Use distinct sources/plans and valid counts")
-    files = [Path(__file__).resolve(), ROOT / "benchmark_family_queries.py", ROOT / "benchmark_family_execution.py",
-             ROOT / "benchmark_hourly_queries.py", ROOT / "benchmark_static_matching.py",
-             ROOT / "benchmark_reference_oracle.py", ROOT / "run_family_study.py", *sorted((ROOT / "cara").glob("*.py")),
-             *sorted((ROOT / "cara/kernels").glob("*.c"))]
     plan = {"study": "complete_hourly_nonincumbent_and_adaptive_queries", "sources": args.sources,
             "kinds": args.kinds, "spans": args.spans, "span_all_sources": args.span_all_sources,
             "residents_per_host": args.residents, "plans": args.plans, "config": config,
             "families": args.families, "adaptive_families": args.adaptive_families, "width": args.width,
             "horizon": 8, "windows": "every valid common-interval eight-hour window",
             "repetitions": args.repetitions, "memory_probe": args.memory,
-            "implementation": {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest() for path in files},
-            "inputs": {source: sha256((args.data_root / source / "data-00000-of-00001.arrow").read_bytes()).hexdigest()
-                       for source in args.sources},
-            "environment": {"python": platform.python_version(), "platform": platform.platform(),
-                            "packages": {name: version(name) for name in ("numpy", "scipy", "pyarrow")}},
+            
+            "inputs": list(args.sources),
+            
             "construction": "Cycle donors are the last resident(s) of each original host. Sort all donor bundles by mean forecast; partition by requested span; rotate each block; split only at forecast-infeasible increments. Concentrated seeds add a three-resident cycle in a central donor-load stratum of at most 20% of hosts, reserving residual migration room. Dispersed seeds use three times as many hosts with one different resident each, matching the planned extra movement while retaining the same capacity and reserve rule. Every primary seed passes the original forecast and movement constraints. All safety cuts and actual migration counts are retained; no measured runtime or future outcome chooses a seed.",
             "scope": "Unit-cost what-if query workloads on all source series. One-resident cycles, dispersed and concentrated mixtures respect the released 20% movement bound. Uniform two/three-resident stress cases explicitly use the full-N movement limit and are not deployment-quality evidence. Adaptive traces start at the incumbent and reuse each preceding best retained record as the next seed.",
             "timing": "Serial rotated process CPU includes shared readers, predicates, matching compilation/replay, complete canonical profiles, scoring, certified or full physical-map recovery, rich retention and adaptive seed selection. Source loading, immutable panels, seed construction, independent verification, structural analysis, garbage collection and serialization are outside timing.",

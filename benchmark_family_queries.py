@@ -10,11 +10,8 @@ for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VEC
 
 import argparse
 import gc
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from pathlib import Path
-import platform
 from time import perf_counter, process_time
 import tracemalloc
 
@@ -24,7 +21,7 @@ from benchmark_family_execution import PLANS, encoded, independent_assignment, m
 from benchmark_hourly_queries import SOURCES, family_pairs, load_hourly, make_input
 from cara.data import canonical_assignment, host_memberships
 from cara.family_certificates import FamilyCertificates, MembershipIndex, ResidualFamily
-from cara.family_score_bounds import FamilyScoreContext
+from cara.family_score_bounds import FamilyScoreContext, should_bound_profiles
 from cara.gain_circuit import GainsContext
 from cara.query_engine import ForecastViews, SharedQueryReplay
 from cara.refinement import PROFILE_NAMES, _ordered_records, migration_profile
@@ -43,17 +40,18 @@ def requests(incumbent, count, width):
 
 
 def run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, adaptive=False, families=8, width=8,
-             observer=None, certificate_observer=None, trace_allocations=False):
-    """Execute a production plan or the temporary single-instance control."""
+             observer=None, certificate_observer=None, state_observer=None, trace_allocations=False):
+    """Execute a production plan or the single-instance control."""
     with matching_control(plan == "static"):
         return _run_plan(panel, forecast, incumbent, capacity, config, plan,
                          seed=seed, adaptive=adaptive, families=families, width=width,
                          observer=observer, certificate_observer=certificate_observer,
+                         state_observer=state_observer,
                          trace_allocations=trace_allocations)
 
 
 def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, adaptive=False, families=8, width=8,
-              observer=None, certificate_observer=None, trace_allocations=False):
+              observer=None, certificate_observer=None, state_observer=None, trace_allocations=False):
     """Return the exact pool after every complete family in one persistent session.
 
     Adaptive execution derives the next seed from the current best pool record.
@@ -93,6 +91,10 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
     seen = {incumbent} if eager else {index.assignment_key(incumbent)}
     pool, snapshots, rows = {}, [], []
     score_context = None
+    seed_compiler = None
+    if settings.get("family_seed_compilation", False) and settings.get("family_matching_backend") == "compiled":
+        from cara.seed_matching import SeedMatchingCache
+        seed_compiler = SeedMatchingCache(incumbent)
     setup_cpu = process_time() - started
     for pair, mutable in family_requests:
         family_started = process_time()
@@ -102,6 +104,7 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
             taken = min(width // 2, len(left), len(right))
             mutable = tuple(sorted(left[:taken] + right[:taken]))
         counters, assignments, movements, pending_mask = {}, {}, {}, {}
+        bounds = None
         before_values, before_queries = cache.materialized_values, cache.group_queries
         if eager:
             backgrounds = tuple(tuple(vm for vm in seed_groups[host] if vm not in mutable) for host in pair)
@@ -121,7 +124,8 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
                                     factor_matching=settings.get("family_factor_matching", True),
                                     matching_backend=settings.get("family_matching_backend"),
                                     use_unique_physical=settings.get("family_unique_physical", True),
-                                    unique_physical_min_hosts=settings.get("family_unique_physical_min_hosts", 16))
+                                    unique_physical_min_hosts=settings.get("family_unique_physical_min_hosts", 16),
+                                    seed_matching_index=None if seed_compiler is None else seed_compiler.get(seed))
             mask_count = family.mask_count
             certificates = FamilyCertificates(family, forecasts)
         preparation_cpu = process_time() - family_started
@@ -150,18 +154,29 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
         if eager:
             surviving = active
         else:
-            score = (certified and settings["family_certificate_score"] and cutoff is not None
-                     and hosts >= int(settings.get("family_score_min_hosts", 0)))
+            bootstrap_bounds = (settings.get("family_bootstrap_bounds", False)
+                                and settings.get("family_progressive", True)
+                                and settings.get("family_score_strategy", "tree") == "leaf")
+            score = (certified and settings["family_certificate_score"]
+                     and (cutoff is not None or bootstrap_bounds)
+                     and should_bound_profiles(settings, hosts, panel.shape[2],
+                         sum(len(family.seed_groups[h]) for h in pair)))
             minimum = int(settings.get("family_score_min_leaves", 8))
             bounds = None
             if score and len(active) >= minimum:
                 if score_context is None:
-                    score_context = FamilyScoreContext.from_reader(cache, reference, objective_names=objectives)
-                bounds = score_context.for_family(seed, pair, mutable, seed_loads=cache.loads(seed))
+                    score_context = FamilyScoreContext.from_reader(cache, reference, objective_names=objectives,
+                        compiled_views=settings.get("family_bound_views", False),
+                        compiled_subsets=settings.get("family_subset_views", False),
+                        compiled_bounds=settings.get("family_compiled_bounds", False))
+                bounds = score_context.for_family(seed, pair, mutable,
+                    seed_loads=None if settings.get("family_bound_views", False) else cache.loads(seed))
             surviving, excluded = certificates.prune(active, migration_limit=limit, cutoff=cutoff,
                 score_bounds=bounds, certify_migration=certified and settings["family_certificate_migration"],
                 certify_score=score, score_min_leaves=minimum,
                 score_strategy=settings.get("family_score_strategy", "tree"),
+                metric_cascade=settings.get("family_metric_cascade", False),
+                staged_acquisition=settings.get("family_staged_acquisition", False), top_p=top,
                 observer=witness if certificate_observer is not None else None)
             for exclusion in excluded:
                 for mask in exclusion["active_masks"]:
@@ -182,7 +197,7 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
         predicate_cpu = process_time() - tick
         tick = process_time()
         progressive = (not eager and score and settings.get("family_score_strategy", "tree") == "leaf"
-                       and settings.get("family_progressive", True) and bool(certificates.leaf_upper_keys))
+                       and settings.get("family_progressive", True) and certificates.has_score_schedule)
         batches = (certificates.score_batches(actions,
                    lambda: min(record["key"] for record in pool.values()) if len(pool) == top else None,
                    batch_size=settings.get("family_progressive_batch", 32),
@@ -233,11 +248,18 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
             record["movement"] = physical
         records = _ordered_records(pool.values())
         snapshots.append(records)
+        # The generator may acquire coarse/full certificates between exact
+        # batches. This phase includes scheduling, acquisition, pool retention
+        # and deferred physical output, with only exact profile work removed.
         retention_cpu = process_time() - tick - profile_cpu
         family_cpu = process_time() - family_started
         if family is not None:
             counters.update(family.stats)
             counters.update(certificates.stats)
+        if bounds is not None and bounds.mutable_sum_index is not None:
+            counters.update(bounds.mutable_sum_index.stats)
+        if bounds is not None:
+            counters.update(bounds.diagnostics())
         counters.update(declared_masks=mask_count, forecast_passed_masks=len(passed),
                         duplicate_masks=len(passed) - len(active), profiled_masks=profiled,
                         physical_matching_calls=physical_calls,
@@ -250,6 +272,8 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
                      "profile_cpu_seconds": profile_cpu, "retention_cpu_seconds": retention_cpu})
         if observer is not None:
             observer(records, {"pair": pair, "mutable": mutable, "seed_assignment": seed})
+        if state_observer is not None:
+            state_observer(frozenset(seen), index)
         if adaptive and records:
             seed = records[0]["assignment"]
     cpu, wall = process_time() - started, perf_counter() - wall_started
@@ -263,6 +287,8 @@ def _run_plan(panel, forecast, incumbent, capacity, config, plan, *, seed=None, 
                   "peak_retained_view_array_bytes": cache._registry.peak_view_bytes,
                   "retained_view_array_bytes": cache.cached_view_bytes,
                   "peak_traced_incremental_bytes": peak}
+    if score_context is not None:
+        statistics["certificate_views"] = score_context.view_diagnostics()
     return snapshots, statistics
 
 
@@ -334,17 +360,13 @@ def run(args):
     if (args.repetitions < 0 or len(set(args.sources)) != len(args.sources)
             or len(set(args.plans)) != len(args.plans)):
         raise ValueError("Distinct sources/plans and nonnegative repetitions required")
-    files = [Path(__file__).resolve(), ROOT / "benchmark_family_execution.py", ROOT / "benchmark_static_matching.py",
-             ROOT / "benchmark_reference_oracle.py", ROOT / "benchmark_hourly_queries.py",
-             ROOT / "run_family_study.py", *sorted((ROOT / "cara").glob("*.py")), *sorted((ROOT / "cara/kernels").glob("*.c"))]
     plan = {"study": "complete_hourly_family_consumers", "sources": args.sources, "plans": args.plans,
             "settings": {name: PLANS[name] for name in args.plans}, "config": config,
             "families": 8, "mutable_width": 8, "horizon": 8, "windows": "every valid common-interval window",
             "repetitions": args.repetitions, "memory_probe": args.memory,
-            "inputs": {name: sha256((args.data_root / name / "data-00000-of-00001.arrow").read_bytes()).hexdigest() for name in args.sources},
-            "implementation": {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest() for path in files},
-            "environment": {"python": platform.python_version(), "platform": platform.platform(),
-                            "packages": {name: version(name) for name in ("numpy", "scipy", "pyarrow")}},
+            "inputs": list(args.sources),
+            
+            
             "timing": "Serial rotated process CPU includes reader/forecast setup, family preparation, exact predicates and bounds, matching, canonical profiles, scoring, retained pools and original physical tie mapping. Raw Arrow loading, immutable panel construction, correctness oracles, garbage collection and serialization are outside timing.",
             "resource_scope": "Separate optional tracemalloc probes start after the raw matrix, full input panel and forecast exist. Report incremental traced Python/NumPy peak and retained view-array bytes; these values are not process RSS.",
             "correctness": "Untimed eager reference and every comparison verify exact scalar/group profile bytes, every ordered family pool including original rich physical movement, and every active excluded leaf. Independent canonical answers are memoized only during verification and discarded before timed and memory runs, which reproduce the full pool sequence.",
@@ -371,7 +393,7 @@ def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=ROOT / "configs/release/main_frozen.json")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/release/family_frozen.json")
     parser.add_argument("--data-root", type=Path, default=ROOT / "data/raw/cloudcons_hourly")
     parser.add_argument("--sources", choices=SOURCES, nargs="+", default=list(SOURCES))
     parser.add_argument("--plans", choices=PLANS, nargs="+", default=list(PLANS))

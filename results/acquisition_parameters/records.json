@@ -1,0 +1,818 @@
+[
+  {
+    "hosts": 128,
+    "windows": 32,
+    "seed": 241001,
+    "all_family_pools_equal": true,
+    "medians": {
+      "8": {
+        "cpu_seconds": 0.035659999999999914,
+        "profile_cpu_seconds": 0.001258999999999899,
+        "profiled_masks": 16.0,
+        "progressive_batches": 2.0
+      },
+      "16": {
+        "cpu_seconds": 0.035017999999999994,
+        "profile_cpu_seconds": 0.0009959999999999969,
+        "profiled_masks": 16.0,
+        "progressive_batches": 1.0
+      },
+      "32": {
+        "cpu_seconds": 0.03652899999999992,
+        "profile_cpu_seconds": 0.001666999999999974,
+        "profiled_masks": 32.0,
+        "progressive_batches": 1.0
+      },
+      "64": {
+        "cpu_seconds": 0.03848600000000002,
+        "profile_cpu_seconds": 0.002979000000000065,
+        "profiled_masks": 64.0,
+        "progressive_batches": 1.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          8,
+          16,
+          32,
+          64
+        ],
+        "plans": {
+          "8": {
+            "cpu_seconds": 0.035391000000000006,
+            "profile_cpu_seconds": 0.0012499999999999178,
+            "profiled_masks": 16,
+            "progressive_batches": 2
+          },
+          "16": {
+            "cpu_seconds": 0.03497399999999995,
+            "profile_cpu_seconds": 0.0009959999999999969,
+            "profiled_masks": 16,
+            "progressive_batches": 1
+          },
+          "32": {
+            "cpu_seconds": 0.036474000000000006,
+            "profile_cpu_seconds": 0.0016740000000000643,
+            "profiled_masks": 32,
+            "progressive_batches": 1
+          },
+          "64": {
+            "cpu_seconds": 0.03881100000000004,
+            "profile_cpu_seconds": 0.003122999999999987,
+            "profiled_masks": 64,
+            "progressive_batches": 1
+          }
+        }
+      },
+      {
+        "order": [
+          16,
+          32,
+          64,
+          8
+        ],
+        "plans": {
+          "16": {
+            "cpu_seconds": 0.035017999999999994,
+            "profile_cpu_seconds": 0.0010060000000000624,
+            "profiled_masks": 16,
+            "progressive_batches": 1
+          },
+          "32": {
+            "cpu_seconds": 0.03666499999999995,
+            "profile_cpu_seconds": 0.001666999999999974,
+            "profiled_masks": 32,
+            "progressive_batches": 1
+          },
+          "64": {
+            "cpu_seconds": 0.03732200000000008,
+            "profile_cpu_seconds": 0.002979000000000065,
+            "profiled_masks": 64,
+            "progressive_batches": 1
+          },
+          "8": {
+            "cpu_seconds": 0.035659999999999914,
+            "profile_cpu_seconds": 0.001258999999999899,
+            "profiled_masks": 16,
+            "progressive_batches": 2
+          }
+        }
+      },
+      {
+        "order": [
+          32,
+          64,
+          8,
+          16
+        ],
+        "plans": {
+          "32": {
+            "cpu_seconds": 0.03652899999999992,
+            "profile_cpu_seconds": 0.0016520000000000978,
+            "profiled_masks": 32,
+            "progressive_batches": 1
+          },
+          "64": {
+            "cpu_seconds": 0.03848600000000002,
+            "profile_cpu_seconds": 0.002978000000000147,
+            "profiled_masks": 64,
+            "progressive_batches": 1
+          },
+          "8": {
+            "cpu_seconds": 0.03604300000000005,
+            "profile_cpu_seconds": 0.0012649999999998496,
+            "profiled_masks": 16,
+            "progressive_batches": 2
+          },
+          "16": {
+            "cpu_seconds": 0.035456000000000154,
+            "profile_cpu_seconds": 0.0009959999999999969,
+            "profiled_masks": 16,
+            "progressive_batches": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "hosts": 128,
+    "windows": 96,
+    "seed": 241002,
+    "all_family_pools_equal": true,
+    "medians": {
+      "8": {
+        "cpu_seconds": 0.10499400000000003,
+        "profile_cpu_seconds": 0.005807999999999591,
+        "profiled_masks": 48.0,
+        "progressive_batches": 6.0
+      },
+      "16": {
+        "cpu_seconds": 0.10366800000000032,
+        "profile_cpu_seconds": 0.004846000000000128,
+        "profiled_masks": 48.0,
+        "progressive_batches": 3.0
+      },
+      "32": {
+        "cpu_seconds": 0.10840200000000033,
+        "profile_cpu_seconds": 0.008405999999999914,
+        "profiled_masks": 96.0,
+        "progressive_batches": 3.0
+      },
+      "64": {
+        "cpu_seconds": 0.11519000000000013,
+        "profile_cpu_seconds": 0.014052999999999649,
+        "profiled_masks": 169.0,
+        "progressive_batches": 3.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          16,
+          32,
+          64,
+          8
+        ],
+        "plans": {
+          "16": {
+            "cpu_seconds": 0.10365099999999994,
+            "profile_cpu_seconds": 0.004744999999999777,
+            "profiled_masks": 48,
+            "progressive_batches": 3
+          },
+          "32": {
+            "cpu_seconds": 0.10763400000000001,
+            "profile_cpu_seconds": 0.008405999999999914,
+            "profiled_masks": 96,
+            "progressive_batches": 3
+          },
+          "64": {
+            "cpu_seconds": 0.11591600000000013,
+            "profile_cpu_seconds": 0.013951000000000269,
+            "profiled_masks": 169,
+            "progressive_batches": 3
+          },
+          "8": {
+            "cpu_seconds": 0.10499400000000003,
+            "profile_cpu_seconds": 0.005832999999999977,
+            "profiled_masks": 48,
+            "progressive_batches": 6
+          }
+        }
+      },
+      {
+        "order": [
+          32,
+          64,
+          8,
+          16
+        ],
+        "plans": {
+          "32": {
+            "cpu_seconds": 0.10882099999999983,
+            "profile_cpu_seconds": 0.008491999999999944,
+            "profiled_masks": 96,
+            "progressive_batches": 3
+          },
+          "64": {
+            "cpu_seconds": 0.11483599999999994,
+            "profile_cpu_seconds": 0.014052999999999649,
+            "profiled_masks": 169,
+            "progressive_batches": 3
+          },
+          "8": {
+            "cpu_seconds": 0.10502000000000011,
+            "profile_cpu_seconds": 0.005762000000000267,
+            "profiled_masks": 48,
+            "progressive_batches": 6
+          },
+          "16": {
+            "cpu_seconds": 0.10398799999999975,
+            "profile_cpu_seconds": 0.004872999999999905,
+            "profiled_masks": 48,
+            "progressive_batches": 3
+          }
+        }
+      },
+      {
+        "order": [
+          64,
+          8,
+          16,
+          32
+        ],
+        "plans": {
+          "64": {
+            "cpu_seconds": 0.11519000000000013,
+            "profile_cpu_seconds": 0.01423299999999994,
+            "profiled_masks": 169,
+            "progressive_batches": 3
+          },
+          "8": {
+            "cpu_seconds": 0.10481499999999988,
+            "profile_cpu_seconds": 0.005807999999999591,
+            "profiled_masks": 48,
+            "progressive_batches": 6
+          },
+          "16": {
+            "cpu_seconds": 0.10366800000000032,
+            "profile_cpu_seconds": 0.004846000000000128,
+            "profiled_masks": 48,
+            "progressive_batches": 3
+          },
+          "32": {
+            "cpu_seconds": 0.10840200000000033,
+            "profile_cpu_seconds": 0.008394000000000457,
+            "profiled_masks": 96,
+            "progressive_batches": 3
+          }
+        }
+      }
+    ]
+  },
+  {
+    "hosts": 256,
+    "windows": 32,
+    "seed": 241003,
+    "all_family_pools_equal": true,
+    "medians": {
+      "8": {
+        "cpu_seconds": 0.05925400000000014,
+        "profile_cpu_seconds": 0.008492000000000388,
+        "profiled_masks": 61.0,
+        "progressive_batches": 8.0
+      },
+      "16": {
+        "cpu_seconds": 0.058409000000000155,
+        "profile_cpu_seconds": 0.007575999999999361,
+        "profiled_masks": 69.0,
+        "progressive_batches": 5.0
+      },
+      "32": {
+        "cpu_seconds": 0.06220200000000009,
+        "profile_cpu_seconds": 0.011373999999999995,
+        "profiled_masks": 121.0,
+        "progressive_batches": 5.0
+      },
+      "64": {
+        "cpu_seconds": 0.06554500000000019,
+        "profile_cpu_seconds": 0.014648999999999912,
+        "profiled_masks": 163.0,
+        "progressive_batches": 5.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          32,
+          64,
+          8,
+          16
+        ],
+        "plans": {
+          "32": {
+            "cpu_seconds": 0.06205899999999964,
+            "profile_cpu_seconds": 0.01131400000000049,
+            "profiled_masks": 121,
+            "progressive_batches": 5
+          },
+          "64": {
+            "cpu_seconds": 0.06594800000000012,
+            "profile_cpu_seconds": 0.014648999999999912,
+            "profiled_masks": 163,
+            "progressive_batches": 5
+          },
+          "8": {
+            "cpu_seconds": 0.05913000000000013,
+            "profile_cpu_seconds": 0.008500000000000618,
+            "profiled_masks": 61,
+            "progressive_batches": 8
+          },
+          "16": {
+            "cpu_seconds": 0.05783200000000033,
+            "profile_cpu_seconds": 0.007557999999998621,
+            "profiled_masks": 69,
+            "progressive_batches": 5
+          }
+        }
+      },
+      {
+        "order": [
+          64,
+          8,
+          16,
+          32
+        ],
+        "plans": {
+          "64": {
+            "cpu_seconds": 0.06554500000000019,
+            "profile_cpu_seconds": 0.014673000000000158,
+            "profiled_masks": 163,
+            "progressive_batches": 5
+          },
+          "8": {
+            "cpu_seconds": 0.05925400000000014,
+            "profile_cpu_seconds": 0.008492000000000388,
+            "profiled_masks": 61,
+            "progressive_batches": 8
+          },
+          "16": {
+            "cpu_seconds": 0.058409000000000155,
+            "profile_cpu_seconds": 0.007575999999999361,
+            "profiled_masks": 69,
+            "progressive_batches": 5
+          },
+          "32": {
+            "cpu_seconds": 0.06281900000000018,
+            "profile_cpu_seconds": 0.011546000000000944,
+            "profiled_masks": 121,
+            "progressive_batches": 5
+          }
+        }
+      },
+      {
+        "order": [
+          8,
+          16,
+          32,
+          64
+        ],
+        "plans": {
+          "8": {
+            "cpu_seconds": 0.05933799999999945,
+            "profile_cpu_seconds": 0.008436000000000554,
+            "profiled_masks": 61,
+            "progressive_batches": 8
+          },
+          "16": {
+            "cpu_seconds": 0.05842700000000001,
+            "profile_cpu_seconds": 0.007677000000000156,
+            "profiled_masks": 69,
+            "progressive_batches": 5
+          },
+          "32": {
+            "cpu_seconds": 0.06220200000000009,
+            "profile_cpu_seconds": 0.011373999999999995,
+            "profiled_masks": 121,
+            "progressive_batches": 5
+          },
+          "64": {
+            "cpu_seconds": 0.06548900000000035,
+            "profile_cpu_seconds": 0.014647000000000077,
+            "profiled_masks": 163,
+            "progressive_batches": 5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "hosts": 256,
+    "windows": 96,
+    "seed": 241004,
+    "all_family_pools_equal": true,
+    "medians": {
+      "8": {
+        "cpu_seconds": 0.11103599999999947,
+        "profile_cpu_seconds": 0.007398000000000238,
+        "profiled_masks": 35.0,
+        "progressive_batches": 5.0
+      },
+      "16": {
+        "cpu_seconds": 0.11197899999999983,
+        "profile_cpu_seconds": 0.0073699999999989885,
+        "profiled_masks": 38.0,
+        "progressive_batches": 4.0
+      },
+      "32": {
+        "cpu_seconds": 0.11321400000000015,
+        "profile_cpu_seconds": 0.009401999999999688,
+        "profiled_masks": 54.0,
+        "progressive_batches": 4.0
+      },
+      "64": {
+        "cpu_seconds": 0.11863199999999985,
+        "profile_cpu_seconds": 0.01379700000000117,
+        "profiled_masks": 86.0,
+        "progressive_batches": 4.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          64,
+          8,
+          16,
+          32
+        ],
+        "plans": {
+          "64": {
+            "cpu_seconds": 0.11756000000000011,
+            "profile_cpu_seconds": 0.013615000000001487,
+            "profiled_masks": 86,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.11051399999999933,
+            "profile_cpu_seconds": 0.007398000000000238,
+            "profiled_masks": 35,
+            "progressive_batches": 5
+          },
+          "16": {
+            "cpu_seconds": 0.11083100000000012,
+            "profile_cpu_seconds": 0.007229999999999848,
+            "profiled_masks": 38,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.11321400000000015,
+            "profile_cpu_seconds": 0.009401999999999688,
+            "profiled_masks": 54,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          8,
+          16,
+          32,
+          64
+        ],
+        "plans": {
+          "8": {
+            "cpu_seconds": 0.11103599999999947,
+            "profile_cpu_seconds": 0.00730200000000103,
+            "profiled_masks": 35,
+            "progressive_batches": 5
+          },
+          "16": {
+            "cpu_seconds": 0.1124780000000003,
+            "profile_cpu_seconds": 0.0073699999999989885,
+            "profiled_masks": 38,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.11305999999999994,
+            "profile_cpu_seconds": 0.009360999999999287,
+            "profiled_masks": 54,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.12145100000000042,
+            "profile_cpu_seconds": 0.01379700000000117,
+            "profiled_masks": 86,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          16,
+          32,
+          64,
+          8
+        ],
+        "plans": {
+          "16": {
+            "cpu_seconds": 0.11197899999999983,
+            "profile_cpu_seconds": 0.007394999999999818,
+            "profiled_masks": 38,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.11355899999999952,
+            "profile_cpu_seconds": 0.009414000000001366,
+            "profiled_masks": 54,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.11863199999999985,
+            "profile_cpu_seconds": 0.013906000000000418,
+            "profiled_masks": 86,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.11164799999999975,
+            "profile_cpu_seconds": 0.007586999999999122,
+            "profiled_masks": 35,
+            "progressive_batches": 5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "hosts": 512,
+    "windows": 32,
+    "seed": 241005,
+    "all_family_pools_equal": true,
+    "medians": {
+      "8": {
+        "cpu_seconds": 0.07439799999999863,
+        "profile_cpu_seconds": 0.00840700000000183,
+        "profiled_masks": 29.0,
+        "progressive_batches": 5.0
+      },
+      "16": {
+        "cpu_seconds": 0.07297499999999957,
+        "profile_cpu_seconds": 0.00762000000000107,
+        "profiled_masks": 29.0,
+        "progressive_batches": 4.0
+      },
+      "32": {
+        "cpu_seconds": 0.07548399999999944,
+        "profile_cpu_seconds": 0.009668000000001342,
+        "profiled_masks": 45.0,
+        "progressive_batches": 4.0
+      },
+      "64": {
+        "cpu_seconds": 0.08010600000000068,
+        "profile_cpu_seconds": 0.014300999999999675,
+        "profiled_masks": 77.0,
+        "progressive_batches": 4.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          8,
+          16,
+          32,
+          64
+        ],
+        "plans": {
+          "8": {
+            "cpu_seconds": 0.07519600000000004,
+            "profile_cpu_seconds": 0.008392000000000621,
+            "profiled_masks": 29,
+            "progressive_batches": 5
+          },
+          "16": {
+            "cpu_seconds": 0.07321699999999964,
+            "profile_cpu_seconds": 0.007666999999999646,
+            "profiled_masks": 29,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.07583900000000021,
+            "profile_cpu_seconds": 0.01039300000000054,
+            "profiled_masks": 45,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.0811289999999989,
+            "profile_cpu_seconds": 0.015141000000001625,
+            "profiled_masks": 77,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          16,
+          32,
+          64,
+          8
+        ],
+        "plans": {
+          "16": {
+            "cpu_seconds": 0.07296399999999892,
+            "profile_cpu_seconds": 0.00762000000000107,
+            "profiled_masks": 29,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.0750989999999998,
+            "profile_cpu_seconds": 0.009668000000001342,
+            "profiled_masks": 45,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.08010600000000068,
+            "profile_cpu_seconds": 0.014300999999999675,
+            "profiled_masks": 77,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.07439799999999863,
+            "profile_cpu_seconds": 0.008433000000001911,
+            "profiled_masks": 29,
+            "progressive_batches": 5
+          }
+        }
+      },
+      {
+        "order": [
+          32,
+          64,
+          8,
+          16
+        ],
+        "plans": {
+          "32": {
+            "cpu_seconds": 0.07548399999999944,
+            "profile_cpu_seconds": 0.00961200000000062,
+            "profiled_masks": 45,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.08009599999999928,
+            "profile_cpu_seconds": 0.01413000000000153,
+            "profiled_masks": 77,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.07392600000000016,
+            "profile_cpu_seconds": 0.00840700000000183,
+            "profiled_masks": 29,
+            "progressive_batches": 5
+          },
+          "16": {
+            "cpu_seconds": 0.07297499999999957,
+            "profile_cpu_seconds": 0.0075179999999992475,
+            "profiled_masks": 29,
+            "progressive_batches": 4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "hosts": 512,
+    "windows": 96,
+    "seed": 241006,
+    "all_family_pools_equal": true,
+    "medians": {
+      "8": {
+        "cpu_seconds": 0.13934399999999947,
+        "profile_cpu_seconds": 0.011950000000000571,
+        "profiled_masks": 27.0,
+        "progressive_batches": 5.0
+      },
+      "16": {
+        "cpu_seconds": 0.13799000000000028,
+        "profile_cpu_seconds": 0.010785000000000267,
+        "profiled_masks": 27.0,
+        "progressive_batches": 4.0
+      },
+      "32": {
+        "cpu_seconds": 0.14220000000000077,
+        "profile_cpu_seconds": 0.014756999999999465,
+        "profiled_masks": 43.0,
+        "progressive_batches": 4.0
+      },
+      "64": {
+        "cpu_seconds": 0.1504379999999994,
+        "profile_cpu_seconds": 0.0222680000000004,
+        "profiled_masks": 75.0,
+        "progressive_batches": 4.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          16,
+          32,
+          64,
+          8
+        ],
+        "plans": {
+          "16": {
+            "cpu_seconds": 0.13838800000000084,
+            "profile_cpu_seconds": 0.010775000000000645,
+            "profiled_masks": 27,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.14220000000000077,
+            "profile_cpu_seconds": 0.014756999999999465,
+            "profiled_masks": 43,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.14909399999999984,
+            "profile_cpu_seconds": 0.022028999999999854,
+            "profiled_masks": 75,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.13934399999999947,
+            "profile_cpu_seconds": 0.012054000000000897,
+            "profiled_masks": 27,
+            "progressive_batches": 5
+          }
+        }
+      },
+      {
+        "order": [
+          32,
+          64,
+          8,
+          16
+        ],
+        "plans": {
+          "32": {
+            "cpu_seconds": 0.14222499999999982,
+            "profile_cpu_seconds": 0.014772999999999925,
+            "profiled_masks": 43,
+            "progressive_batches": 4
+          },
+          "64": {
+            "cpu_seconds": 0.15098199999999906,
+            "profile_cpu_seconds": 0.022274000000001237,
+            "profiled_masks": 75,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.13815800000000067,
+            "profile_cpu_seconds": 0.011950000000000571,
+            "profiled_masks": 27,
+            "progressive_batches": 5
+          },
+          "16": {
+            "cpu_seconds": 0.1379670000000015,
+            "profile_cpu_seconds": 0.010877000000002468,
+            "profiled_masks": 27,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          64,
+          8,
+          16,
+          32
+        ],
+        "plans": {
+          "64": {
+            "cpu_seconds": 0.1504379999999994,
+            "profile_cpu_seconds": 0.0222680000000004,
+            "profiled_masks": 75,
+            "progressive_batches": 4
+          },
+          "8": {
+            "cpu_seconds": 0.1400199999999998,
+            "profile_cpu_seconds": 0.01192600000000077,
+            "profiled_masks": 27,
+            "progressive_batches": 5
+          },
+          "16": {
+            "cpu_seconds": 0.13799000000000028,
+            "profile_cpu_seconds": 0.010785000000000267,
+            "profiled_masks": 27,
+            "progressive_batches": 4
+          },
+          "32": {
+            "cpu_seconds": 0.1421929999999989,
+            "profile_cpu_seconds": 0.014647000000000077,
+            "profiled_masks": 43,
+            "progressive_batches": 4
+          }
+        }
+      }
+    ]
+  }
+]

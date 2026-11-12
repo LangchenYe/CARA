@@ -3,9 +3,6 @@ import os
 for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
     os.environ[_name] = "1"
 
-import argparse
-from concurrent.futures import ProcessPoolExecutor, as_completed
-from hashlib import sha256
 import json
 from pathlib import Path
 from time import process_time
@@ -171,12 +168,13 @@ def search_method(label, incumbent, forecast, panels, config, seed):
 
 
 def one_environment(job):
-    law, seed, config, methods, counts, caps, output, binding = job
+    law, seed, config, methods, counts, caps, output, _context = job
     output = Path(output)
+    study_settings = json.loads(json.dumps({"config": config, "methods": methods, "counts": counts, "fixed_caps": caps}))
     paths = {method: output / method / "records" / f"{law}_{seed}.json" for method in methods}
     if all(path.exists() for path in paths.values()):
         records = {method: json.loads(path.read_text()) for method, path in paths.items()}
-        if any(record.get("study_plan_sha256") != binding for record in records.values()):
+        if any(record.get("study_settings") != study_settings for record in records.values()):
             raise ValueError("existing records differ from the frozen study design")
         return records
     environment = make_environment(seed)
@@ -194,7 +192,7 @@ def one_environment(job):
         proposal, candidate = proposals[method], proposals[method]["selected"]
         movement = None if candidate is None else migration_profile(incumbent, candidate)
         record = {"law": law, "seed": seed, "method": method, "config": config,
-            "study_plan_sha256": binding, "status": "no_candidate" if candidate is None else "selected",
+            "study_settings": study_settings, "status": "no_candidate" if candidate is None else "selected",
             "incumbent_assignment": incumbent, "candidate_assignment": candidate,
             "movement": movement, "search": proposal["stats"], "rules": {}, "counts": counts,
             "action_source": "CARA" if method == "No-footprint" else method}
@@ -298,8 +296,6 @@ def study_plan(config, methods, phase, caps):
         caps = (512,)
     if max(caps) != counts["certification"] or any(cap < 1 or cap % 32 for cap in caps):
         raise ValueError("fixed caps must be positive multiples of 32 and include the primary cap")
-    root = Path(__file__).resolve().parent
-    sources = [Path(__file__).resolve(), *sorted((root / "cara").glob("*.py"))]
     return {"phase": "validation" if phase == "plan" else phase,
         "validation_environments": [{"law": law, "seed": seed} for law, seed in environments],
         "methods": methods, "search_config": config, "base_environment_law": LAW,
@@ -310,121 +306,4 @@ def study_plan(config, methods, phase, caps):
         "fixed_caps": caps,
         "sampling": "Separate seeded streams for common, group, noise, burst occurrence and magnitude. Consecutive scene prefixes are invariant to batch partition. Roles are distinct; scenes are conditionally iid.",
         "timing": "Every inspected paired batch is generated and replayed on demand. Fixed caps use the same 32-scene replay shape but inspect evidence only at the cap. Total CPU includes acquisition, replay and exact statistical arithmetic; action bounds are separately timed.",
-        "controls": "No-footprint reuses CARA's frozen candidate and changes only V/R supports to 1; other named controls run their own predeclared search before certification.",
-        "source_sha256": {str(path.relative_to(root)): sha256(path.read_bytes()).hexdigest() for path in sources}}
-
-
-def verify_directory(output):
-    """Replay saved evidence and Evaluation means without rerunning search."""
-    output = Path(output)
-    plan = json.loads((output / "study_plan.json").read_text())
-    binding = sha256(json.dumps(plan, sort_keys=True).encode()).hexdigest()
-    expected = {(item["law"], item["seed"]) for item in plan["validation_environments"]}
-    report = {"scope": "Frozen plan bindings, saved-array exact certificate decisions/stopping rows, generated-row counts, terminal actions, and fresh/native Evaluation means. Search and scene generation are not rerun.", "methods": {}}
-    indexed = {}
-    for method in plan["methods"]:
-        records = json.loads((output / method / "records.json").read_text())
-        if len(records) != len(expected) or {(row["law"], row["seed"]) for row in records} != expected:
-            raise AssertionError("missing or duplicate designated environments")
-        indexed[method] = {(row["law"], row["seed"]): row for row in records}
-        checked_rules = checked_means = 0
-        for record in records:
-            if record["study_plan_sha256"] != binding:
-                raise AssertionError("record differs from its study plan")
-            with np.load(output / method / "arrays" / f"{record['law']}_{record['seed']}.npz") as arrays:
-                reference = arrays["evaluation_reference"]
-                native_reference = arrays["native_evaluation_reference"]
-                action = arrays["evaluation_candidate"] if record["status"] == "selected" else reference
-                native_action = arrays["native_evaluation_candidate"] if record["status"] == "selected" else native_reference
-                for label, rule in record["rules"].items():
-                    if rule["rows"] != rule["generated_scene_rows"]:
-                        raise AssertionError("reported evidence rows differ from acquired scenes")
-                    if record["status"] == "selected":
-                        cap = plan["primary_cap"] if label.startswith("stopped") else int(label[5:])
-                        replayed = certify_fresh_mixture(arrays["certification_reference"][:cap],
-                            arrays["certification_candidate"][:cap], gain_bounds=record["gain_bounds"],
-                            noninferiority_margins=plan["margins"], anchor=2,
-                            min_anchor_gain=plan["minimum_anchor_gain"], alpha=plan["alpha"],
-                            batch=plan["inspection_batch"] if label.startswith("stopped") else cap,
-                            metric_names=plan["fresh_metrics"])
-                        for key in ("admitted", "rows", "crossing_rows", "locked", "exact_gain_bounds", "exact_thresholds"):
-                            if rule[key] != replayed[key]:
-                                raise AssertionError((method, record["seed"], label, key))
-                    elif rule["admitted"] or rule["rows"] or rule["reason"] != "no_candidate":
-                        raise AssertionError("invalid no-candidate fallback")
-                    expected_movement = record["movement"]["count"] if rule["admitted"] else 0
-                    if rule["terminal_migrations"] != expected_movement:
-                        raise AssertionError("invalid terminal movement")
-                    fresh = action if rule["admitted"] else reference
-                    native = native_action if rule["admitted"] else native_reference
-                    means = {name: float(fresh[:, i].mean()) for i, name in enumerate(FRESH_NAMES)}
-                    means.update({"native_" + name: float(native[:, i].mean()) for i, name in enumerate(PROFILE_NAMES)})
-                    for name, value in means.items():
-                        if value != rule["terminal_outcomes"][name]:
-                            raise AssertionError("Evaluation mean mismatch")
-                        checked_means += 1
-                    checked_rules += 1
-        report["methods"][method] = {"environments": len(records), "exact_rules": checked_rules,
-                                      "evaluation_means": checked_means}
-    if "No-footprint" in indexed:
-        for key, record in indexed["No-footprint"].items():
-            if record["candidate_assignment"] != indexed["CARA"][key]["candidate_assignment"]:
-                raise AssertionError("No-footprint changed the selected action")
-    save(output / "verification.json", report)
-    return report
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--phase", choices=("plan", "development", "validation", "smoke", "verify"), default="plan")
-    parser.add_argument("--config", type=Path)
-    parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--methods", nargs="+", choices=METHODS, default=["CARA", "Swap", "Anneal", "Best-seed", "No-batch", "No-footprint"])
-    parser.add_argument("--fixed-caps", nargs="+", type=int, default=[8192])
-    parser.add_argument("--workers", type=int, default=1)
-    args = parser.parse_args()
-    if args.phase == "verify":
-        print(json.dumps(verify_directory(args.output), indent=2), flush=True)
-        return
-    if args.config is None:
-        parser.error("--config is required when planning or running experiments")
-    if args.workers < 1 or len(set(args.methods)) != len(args.methods):
-        raise ValueError("positive workers and distinct methods required")
-    if "No-footprint" in args.methods and "CARA" not in args.methods:
-        raise ValueError("No-footprint is a fixed-action control and requires CARA")
-    config = json.loads(args.config.read_text())
-    plan = study_plan(config, args.methods, args.phase, tuple(sorted(set(args.fixed_caps))))
-    binding = sha256(json.dumps(plan, sort_keys=True).encode()).hexdigest()
-    path = args.output / "study_plan.json"
-    if path.exists() and json.loads(path.read_text()) != json.loads(json.dumps(plan)):
-        raise ValueError("existing output has a different frozen study design")
-    save(path, plan)
-    for method in args.methods:
-        save(args.output / method / "study_plan.json", {**plan, "search_method": method})
-    if args.phase == "plan":
-        print(f"Planned {len(plan['validation_environments'])} environments for {', '.join(args.methods)}", flush=True)
-        return
-    jobs = [(item["law"], item["seed"], config, args.methods, plan["counts"], plan["fixed_caps"], args.output, binding)
-            for item in plan["validation_environments"]]
-    completed = []
-    if args.workers == 1:
-        for job in jobs:
-            completed.append(one_environment(job))
-            print(f"Completed {len(completed)}/{len(jobs)} environments", flush=True)
-    else:
-        with ProcessPoolExecutor(max_workers=args.workers) as executor:
-            pending = [executor.submit(one_environment, job) for job in jobs]
-            for future in as_completed(pending):
-                completed.append(future.result())
-                print(f"Completed {len(completed)}/{len(jobs)} environments", flush=True)
-    summaries = {}
-    for method in args.methods:
-        records = sorted([item[method] for item in completed], key=lambda row: (row["law"], row["seed"]))
-        save(args.output / method / "records.json", records)
-        summaries[method] = summarize(records)
-        save(args.output / method / "summary.json", summaries[method])
-    save(args.output / "summary.json", summaries)
-
-
-if __name__ == "__main__":
-    main()
+        "controls": "No-footprint reuses CARA's frozen candidate and changes only V/R supports to 1; other named controls run their own predeclared search before certification."}

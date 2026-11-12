@@ -1,0 +1,5724 @@
+{
+  "study": "complete_family_comparison",
+  "phase": "evaluation",
+  "cases": [
+    {
+      "dataset": "azure2019",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 186264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 186288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 186289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 186290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 186291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 186292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 186293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 186294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 186295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 186296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 186297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 186298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 186299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 186300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 186301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 186302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 186303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 186304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 186305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 186306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 186307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 186308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 186309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 186310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 186311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 186312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 196264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 196288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 196289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 196290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 196291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 196292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 196293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 196294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 196295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 196296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 196297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 196298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 196299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 196300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 196301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 196302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 196303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 196304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 196305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 196306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 196307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 196308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 196309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 196310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 196311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 196312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 336,
+      "seed_index": 0,
+      "seed": 196336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 360,
+      "seed_index": 0,
+      "seed": 196360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 384,
+      "seed_index": 0,
+      "seed": 196384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 408,
+      "seed_index": 0,
+      "seed": 196408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 432,
+      "seed_index": 0,
+      "seed": 196432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 456,
+      "seed_index": 0,
+      "seed": 196456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 480,
+      "seed_index": 0,
+      "seed": 196480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 206264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 206288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 206289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 206290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 206291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 206292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 206293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 206294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 206295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 206296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 206297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 206298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 206299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 206300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 206301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 206302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 206303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 206304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 206305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 206306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 206307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 206308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 206309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 206310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 206311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 206312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 336,
+      "seed_index": 0,
+      "seed": 206336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 360,
+      "seed_index": 0,
+      "seed": 206360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 384,
+      "seed_index": 0,
+      "seed": 206384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 408,
+      "seed_index": 0,
+      "seed": 206408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 432,
+      "seed_index": 0,
+      "seed": 206432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 456,
+      "seed_index": 0,
+      "seed": 206456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 480,
+      "seed_index": 0,
+      "seed": 206480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 216264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 216288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 216289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 216290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 216291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 216292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 216293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 216294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 216295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 216296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 216297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 216298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 216299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 216300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 216301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 216302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 216303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 216304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 216305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 216306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 216307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 216308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 216309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 216310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 216311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 216312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 286264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 286288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 286289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 286290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 286291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 286292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 286293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 286294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 286295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 286296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 286297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 286298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 286299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 286300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 286301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 286302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 286303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 286304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 286305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 286306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 286307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 286308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 286309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 286310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 286311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 286312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 296264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 296288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 296289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 296290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 296291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 296292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 296293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 296294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 296295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 296296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 296297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 296298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 296299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 296300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 296301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 296302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 296303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 296304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 296305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 296306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 296307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 296308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 296309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 296310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 296311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 296312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 336,
+      "seed_index": 1,
+      "seed": 296336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 360,
+      "seed_index": 1,
+      "seed": 296360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 384,
+      "seed_index": 1,
+      "seed": 296384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 408,
+      "seed_index": 1,
+      "seed": 296408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 432,
+      "seed_index": 1,
+      "seed": 296432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 456,
+      "seed_index": 1,
+      "seed": 296456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 480,
+      "seed_index": 1,
+      "seed": 296480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 306264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 306288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 306289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 306290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 306291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 306292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 306293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 306294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 306295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 306296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 306297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 306298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 306299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 306300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 306301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 306302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 306303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 306304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 306305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 306306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 306307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 306308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 306309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 306310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 306311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 306312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 336,
+      "seed_index": 1,
+      "seed": 306336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 360,
+      "seed_index": 1,
+      "seed": 306360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 384,
+      "seed_index": 1,
+      "seed": 306384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 408,
+      "seed_index": 1,
+      "seed": 306408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 432,
+      "seed_index": 1,
+      "seed": 306432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 456,
+      "seed_index": 1,
+      "seed": 306456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 480,
+      "seed_index": 1,
+      "seed": 306480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 316264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 316288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 316289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 316290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 316291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 316292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 316293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 316294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 316295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 316296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 316297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 316298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 316299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 316300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 316301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 316302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 316303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 316304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 316305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 316306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 316307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 316308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 316309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 316310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 316311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 316312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 386264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 386288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 386289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 386290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 386291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 386292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 386293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 386294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 386295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 386296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 386297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 386298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 386299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 386300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 386301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 386302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 386303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 386304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 386305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 386306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 386307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 386308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 386309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 386310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 386311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 386312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 396264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 396288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 396289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 396290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 396291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 396292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 396293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 396294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 396295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 396296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 396297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 396298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 396299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 396300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 396301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 396302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 396303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 396304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 396305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 396306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 396307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 396308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 396309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 396310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 396311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 396312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 336,
+      "seed_index": 2,
+      "seed": 396336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 360,
+      "seed_index": 2,
+      "seed": 396360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 384,
+      "seed_index": 2,
+      "seed": 396384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 408,
+      "seed_index": 2,
+      "seed": 396408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 432,
+      "seed_index": 2,
+      "seed": 396432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 456,
+      "seed_index": 2,
+      "seed": 396456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 480,
+      "seed_index": 2,
+      "seed": 396480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 406264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 406288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 406289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 406290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 406291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 406292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 406293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 406294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 406295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 406296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 406297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 406298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 406299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 406300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 406301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 406302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 406303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 406304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 406305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 406306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 406307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 406308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 406309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 406310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 406311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 406312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 336,
+      "seed_index": 2,
+      "seed": 406336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 360,
+      "seed_index": 2,
+      "seed": 406360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 384,
+      "seed_index": 2,
+      "seed": 406384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 408,
+      "seed_index": 2,
+      "seed": 406408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 432,
+      "seed_index": 2,
+      "seed": 406432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 456,
+      "seed_index": 2,
+      "seed": 406456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 480,
+      "seed_index": 2,
+      "seed": 406480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 416264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 416288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 416289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 416290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 416291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 416292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 416293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 416294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 416295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 416296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 416297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 416298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 416299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 416300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 416301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 416302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 416303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 416304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 416305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 416306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 416307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 416308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 416309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 416310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 416311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 416312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    }
+  ],
+  "methods": [
+    "CARA",
+    "Family-CARA",
+    "Component-CARA",
+    "Compact-CARA",
+    "Eager-CARA",
+    "Joint-SA",
+    "Anneal",
+    "Risk-SA",
+    "Broad",
+    "Swap",
+    "No-residual",
+    "No-frontier",
+    "Best-seed",
+    "Raw-order",
+    "Scenario-MIP"
+  ],
+  "protocol": {
+    "name": "Complete-window CARA evaluation",
+    "forecast": "Trailing 24-hour mean, repeated over the 24-hour target; identical for all methods in a case.",
+    "incumbent": "Common FFD placement constructed from the current forecast for each case.",
+    "historical_roles": {
+      "build": {
+        "older": 192,
+        "newer": 64
+      },
+      "selection": {
+        "older": 64,
+        "newer": 32
+      },
+      "audit": {
+        "older": 32,
+        "newer": 0
+      }
+    },
+    "window_hours": 8,
+    "window_stride": 1,
+    "row_caps": null,
+    "expected_rows": {
+      "build": 121,
+      "selection": 25,
+      "audit": 25
+    },
+    "target_hours": 24,
+    "development": {
+      "origins": [
+        216,
+        228,
+        240
+      ],
+      "target_end_exclusive": 264,
+      "default_streams": [
+        0
+      ]
+    },
+    "primary": {
+      "first_origin": 288,
+      "last_origin": 312,
+      "stride": 1,
+      "streams": [
+        0,
+        1,
+        2
+      ],
+      "cases": 300,
+      "distinct_target_hours_per_cohort": 48
+    },
+    "longitudinal": {
+      "first_origin": 264,
+      "stride": 24,
+      "streams": [
+        0,
+        1,
+        2
+      ],
+      "cohort_days": 26,
+      "cases": 78,
+      "distinct_cohort_target_hours": 624,
+      "partial_final_days": "Excluded; every evaluated target has 24 observed hours for every cohort VM."
+    },
+    "evaluation_union": {
+      "unique_cases": 354,
+      "cases_shared_by_both_views": 24,
+      "reuse": "A cohort/origin/stream is executed once per method and reused in every applicable analysis view."
+    },
+    "decision_cohorts": {
+      "azure2019": {
+        "vms": 150,
+        "capacity": 4.0,
+        "common_start": "2019-01-01T00:00:00",
+        "minimum_hours": 355,
+        "maximum_hours": 719,
+        "longitudinal_origins": [
+          264,
+          288,
+          312
+        ]
+      },
+      "borg2019_d": {
+        "vms": 127,
+        "capacity": 1.0,
+        "common_start": "2019-05-01T00:00:00",
+        "minimum_hours": 508,
+        "maximum_hours": 745,
+        "longitudinal_origins": [
+          264,
+          288,
+          312,
+          336,
+          360,
+          384,
+          408,
+          432,
+          456,
+          480
+        ]
+      },
+      "borg2019_e": {
+        "vms": 68,
+        "capacity": 1.0,
+        "common_start": "2019-05-01T00:00:00",
+        "minimum_hours": 506,
+        "maximum_hours": 745,
+        "longitudinal_origins": [
+          264,
+          288,
+          312,
+          336,
+          360,
+          384,
+          408,
+          432,
+          456,
+          480
+        ]
+      },
+      "huawei2025": {
+        "vms": 575,
+        "capacity": 4.0,
+        "common_start": "2025-01-01T00:00:00",
+        "minimum_hours": 344,
+        "maximum_hours": 743,
+        "longitudinal_origins": [
+          264,
+          288,
+          312
+        ]
+      }
+    },
+    "hourly_query_sources": {
+      "azure2019": {
+        "series": 10800,
+        "minimum_hours": 188,
+        "maximum_hours": 719,
+        "complete_eight_hour_windows": 181,
+        "nan_cpu_values": 0
+      },
+      "borg2019_d_trace": {
+        "series": 414,
+        "minimum_hours": 189,
+        "maximum_hours": 744,
+        "complete_eight_hour_windows": 182,
+        "nan_cpu_values": 0
+      },
+      "borg2019_e_trace": {
+        "series": 618,
+        "minimum_hours": 188,
+        "maximum_hours": 649,
+        "complete_eight_hour_windows": 181,
+        "nan_cpu_values": 0
+      },
+      "huawei2025": {
+        "series": 174,
+        "minimum_hours": 212,
+        "maximum_hours": 743,
+        "complete_eight_hour_windows": 205,
+        "nan_cpu_values": 10
+      }
+    },
+    "hourly_scope": "Complete-series query execution in original CPU units. No source provides 192 history hours plus a 24-hour target for every series, so these objects are not enlarged placement-quality cohorts under the same protocol.",
+    "development_rule": "Method and parameter choices use only the development cases. Freeze the method before the evaluation union is run; retain all evaluation cases and methods.",
+    "temporal_interpretation": "Primary targets overlap. Longitudinal targets do not overlap within a cohort, but this is a sequence of paired decision contexts with a current common incumbent, not a stateful deployment rollout. Random streams repeat search, not observed workloads.",
+    "native_metrics": [
+      "hosts",
+      "Util",
+      "VR",
+      "VS",
+      "PAR",
+      "raw",
+      "PICP",
+      "MPIW",
+      "WinklerScore"
+    ],
+    "prediction_intervals": {
+      "history_hours": 24,
+      "simulations_per_host": 100,
+      "confidence": 0.95,
+      "host_seed": "42 + active canonical host index",
+      "scale": "Per-VM preceding-24-hour sample standard deviation, ddof=1; no target fitting."
+    },
+    "proposal_allowance_seconds": 2.0,
+    "budget_scope": "Per-method historical representation construction, RNG and controller setup, and proposal processing consume the same process-CPU allowance. Selection and historical admission are reported separately and in the complete decision cost. Atomic operations already begun may finish after the allowance, with observed overshoot retained.",
+    "solver_scope": "Scenario-MIP runs separately with one worker. Model construction is charged before the remaining allowance is passed to HiGHS as a wall-time limit; actual construction, solver CPU, solver wall time, and overshoot are reported.",
+    "evaluation_access": "Target slices and outcomes are computed only after all methods in the case have frozen their actions and historical admission decisions. Search inputs contain only the declared history. Shared interval diagnostics are then computed for every terminal placement, including incumbent fallbacks."
+  },
+  "config": {
+    "cpu_limit": 2.0,
+    "top_p": 16,
+    "mutable_limit": 12,
+    "broad_fraction": 0.25,
+    "broad_batch": 32,
+    "migration_fraction": 0.2,
+    "diagnostic": false,
+    "sketch_preview": false,
+    "score_mode": "gain",
+    "mode": "cara",
+    "objective_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "selection_guard_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "frontier_fraction": 0.5,
+    "frontier_seed": true,
+    "projected_views": "auto",
+    "archive_mode": "balanced",
+    "seed_schedule": "coverage",
+    "anneal_temperature_fraction": 0.01,
+    "shared_queries": true,
+    "batch_queries": true,
+    "record_seed_assignments": false,
+    "record_query_paths": "seed0",
+    "selection_dispersion": 0.0,
+    "query_cache_views": 2048,
+    "query_cache_bytes": 33554432,
+    "query_batch_values": 1048576,
+    "family_execution": "certified",
+    "family_forecast_strategy": "leaf",
+    "family_score_strategy": "leaf",
+    "family_score_min_hosts": 128,
+    "family_score_min_leaves": 32,
+    "family_migration_reuse": true,
+    "frontier_engine": "swap",
+    "frontier_objective": "joint",
+    "family_factor_matching": true,
+    "family_defer_physical": true,
+    "family_matching_backend": "compiled",
+    "family_unique_physical": true,
+    "family_unique_physical_min_hosts": 16,
+    "family_bootstrap_bounds": true,
+    "family_progressive_batch": 16,
+    "family_seed_compilation": true,
+    "family_bound_views": true,
+    "family_metric_cascade": true,
+    "family_subset_views": true,
+    "family_structural_bound_gate": true,
+    "family_bound_work_min": 192,
+    "family_compiled_bounds": true,
+    "family_staged_acquisition": true
+  },
+  "inputs": [
+    "azure2019",
+    "borg2019_d",
+    "borg2019_e",
+    "huawei2025"
+  ],
+  "proposal_allowance_seconds": 2.0,
+  "method_settings": {
+    "CARA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Family-CARA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": false,
+      "family_bound_views": false,
+      "family_metric_cascade": false,
+      "family_subset_views": false,
+      "family_structural_bound_gate": false,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": false,
+      "family_staged_acquisition": false,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Component-CARA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "factorized",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Compact-CARA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "compact",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": false,
+      "family_defer_physical": false,
+      "family_matching_backend": "dense",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Eager-CARA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Joint-SA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true,
+      "anneal_objective": "joint"
+    },
+    "Anneal": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Risk-SA": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true,
+      "anneal_objective": "risk"
+    },
+    "Broad": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "broad",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": false,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Swap": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "No-residual": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true,
+      "frontier_only": true
+    },
+    "No-frontier": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": false,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Best-seed": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "best",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Raw-order": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "raw",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "certified",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    },
+    "Scenario-MIP": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 12,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.5,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576,
+      "family_execution": "eager",
+      "family_forecast_strategy": "leaf",
+      "family_score_strategy": "leaf",
+      "family_score_min_hosts": 128,
+      "family_score_min_leaves": 32,
+      "family_migration_reuse": true,
+      "frontier_engine": "swap",
+      "frontier_objective": "joint",
+      "family_factor_matching": true,
+      "family_defer_physical": true,
+      "family_matching_backend": "compiled",
+      "family_unique_physical": true,
+      "family_unique_physical_min_hosts": 16,
+      "family_bootstrap_bounds": true,
+      "family_progressive_batch": 16,
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_bound_work_min": 192,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true,
+      "family_certificate_forecast": true,
+      "family_certificate_migration": true,
+      "family_certificate_score": true
+    }
+  },
+  "execution_groups": {
+    "0": {
+      "methods": [
+        "CARA",
+        "Family-CARA",
+        "Component-CARA",
+        "Compact-CARA",
+        "Eager-CARA",
+        "Joint-SA",
+        "Anneal",
+        "Risk-SA",
+        "Broad",
+        "Swap",
+        "No-residual",
+        "No-frontier",
+        "Best-seed",
+        "Raw-order"
+      ],
+      "method_settings": {
+        "CARA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Family-CARA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": false,
+          "family_bound_views": false,
+          "family_metric_cascade": false,
+          "family_subset_views": false,
+          "family_structural_bound_gate": false,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": false,
+          "family_staged_acquisition": false,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Component-CARA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "factorized",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Compact-CARA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "compact",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": false,
+          "family_defer_physical": false,
+          "family_matching_backend": "dense",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Eager-CARA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Joint-SA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true,
+          "anneal_objective": "joint"
+        },
+        "Anneal": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Risk-SA": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true,
+          "anneal_objective": "risk"
+        },
+        "Broad": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "broad",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": false,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Swap": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "No-residual": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true,
+          "frontier_only": true
+        },
+        "No-frontier": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": false,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Best-seed": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "best",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        },
+        "Raw-order": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "raw",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "certified",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        }
+      },
+      "config": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 12,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled",
+        "family_unique_physical": true,
+        "family_unique_physical_min_hosts": 16,
+        "family_bootstrap_bounds": true,
+        "family_progressive_batch": 16,
+        "family_seed_compilation": true,
+        "family_bound_views": true,
+        "family_metric_cascade": true,
+        "family_subset_views": true,
+        "family_structural_bound_gate": true,
+        "family_bound_work_min": 192,
+        "family_compiled_bounds": true,
+        "family_staged_acquisition": true
+      },
+      "workers": 5,
+      "rotation": "Each case rotates the declared method order by its index; the separate solver study is not in that joint rotation.",
+      "timing": "Actual process CPU. Preparation and proposal share the allowance; Selection, physical-action validation and Audit are included in complete decision cost. Common data loading, forecast/FFD construction, outcome evaluation and serialization are excluded. Solver CPU and wall observations retain their separate meaning."
+    },
+    "1": {
+      "methods": [
+        "Scenario-MIP"
+      ],
+      "method_settings": {
+        "Scenario-MIP": {
+          "cpu_limit": 2.0,
+          "top_p": 16,
+          "mutable_limit": 12,
+          "broad_fraction": 0.25,
+          "broad_batch": 32,
+          "migration_fraction": 0.2,
+          "diagnostic": false,
+          "sketch_preview": false,
+          "score_mode": "gain",
+          "mode": "cara",
+          "objective_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "selection_guard_names": [
+            "J",
+            "V",
+            "VR",
+            "raw",
+            "VS",
+            "PAR"
+          ],
+          "frontier_fraction": 0.5,
+          "frontier_seed": true,
+          "projected_views": "auto",
+          "archive_mode": "balanced",
+          "seed_schedule": "coverage",
+          "anneal_temperature_fraction": 0.01,
+          "shared_queries": true,
+          "batch_queries": true,
+          "record_seed_assignments": false,
+          "record_query_paths": "seed0",
+          "selection_dispersion": 0.0,
+          "query_cache_views": 2048,
+          "query_cache_bytes": 33554432,
+          "query_batch_values": 1048576,
+          "family_execution": "eager",
+          "family_forecast_strategy": "leaf",
+          "family_score_strategy": "leaf",
+          "family_score_min_hosts": 128,
+          "family_score_min_leaves": 32,
+          "family_migration_reuse": true,
+          "frontier_engine": "swap",
+          "frontier_objective": "joint",
+          "family_factor_matching": true,
+          "family_defer_physical": true,
+          "family_matching_backend": "compiled",
+          "family_unique_physical": true,
+          "family_unique_physical_min_hosts": 16,
+          "family_bootstrap_bounds": true,
+          "family_progressive_batch": 16,
+          "family_seed_compilation": true,
+          "family_bound_views": true,
+          "family_metric_cascade": true,
+          "family_subset_views": true,
+          "family_structural_bound_gate": true,
+          "family_bound_work_min": 192,
+          "family_compiled_bounds": true,
+          "family_staged_acquisition": true,
+          "family_certificate_forecast": true,
+          "family_certificate_migration": true,
+          "family_certificate_score": true
+        }
+      },
+      "config": {
+        "cpu_limit": 2.0,
+        "top_p": 16,
+        "mutable_limit": 12,
+        "broad_fraction": 0.25,
+        "broad_batch": 32,
+        "migration_fraction": 0.2,
+        "diagnostic": false,
+        "sketch_preview": false,
+        "score_mode": "gain",
+        "mode": "cara",
+        "objective_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "selection_guard_names": [
+          "J",
+          "V",
+          "VR",
+          "raw",
+          "VS",
+          "PAR"
+        ],
+        "frontier_fraction": 0.5,
+        "frontier_seed": true,
+        "projected_views": "auto",
+        "archive_mode": "balanced",
+        "seed_schedule": "coverage",
+        "anneal_temperature_fraction": 0.01,
+        "shared_queries": true,
+        "batch_queries": true,
+        "record_seed_assignments": false,
+        "record_query_paths": "seed0",
+        "selection_dispersion": 0.0,
+        "query_cache_views": 2048,
+        "query_cache_bytes": 33554432,
+        "query_batch_values": 1048576,
+        "family_execution": "certified",
+        "family_forecast_strategy": "leaf",
+        "family_score_strategy": "leaf",
+        "family_score_min_hosts": 128,
+        "family_score_min_leaves": 32,
+        "family_migration_reuse": true,
+        "frontier_engine": "swap",
+        "frontier_objective": "joint",
+        "family_factor_matching": true,
+        "family_defer_physical": true,
+        "family_matching_backend": "compiled",
+        "family_unique_physical": true,
+        "family_unique_physical_min_hosts": 16,
+        "family_bootstrap_bounds": true,
+        "family_progressive_batch": 16,
+        "family_seed_compilation": true,
+        "family_bound_views": true,
+        "family_metric_cascade": true,
+        "family_subset_views": true,
+        "family_structural_bound_gate": true,
+        "family_bound_work_min": 192,
+        "family_compiled_bounds": true,
+        "family_staged_acquisition": true
+      },
+      "workers": 1,
+      "rotation": "Each case rotates the declared method order by its index; the separate solver study is not in that joint rotation.",
+      "timing": "Actual process CPU. Preparation and proposal share the allowance; Selection, physical-action validation and Audit are included in complete decision cost. Common data loading, forecast/FFD construction, outcome evaluation and serialization are excluded. Solver CPU and wall observations retain their separate meaning."
+    }
+  },
+  "method_groups": {
+    "CARA": 0,
+    "Family-CARA": 0,
+    "Component-CARA": 0,
+    "Compact-CARA": 0,
+    "Eager-CARA": 0,
+    "Joint-SA": 0,
+    "Anneal": 0,
+    "Risk-SA": 0,
+    "Broad": 0,
+    "Swap": 0,
+    "No-residual": 0,
+    "No-frontier": 0,
+    "Best-seed": 0,
+    "Raw-order": 0,
+    "Scenario-MIP": 1
+  },
+  "execution": "Heuristic method orders rotate within their stated execution groups. Scenario-MIP runs separately with one worker and a wall-limited solve."
+}

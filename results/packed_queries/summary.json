@@ -1,0 +1,22 @@
+{
+  "complete": true,
+  "contexts": 24,
+  "all_exact": true,
+  "all_series_and_windows": true,
+  "total_median_cpu_seconds": {
+    "family_only": 117.5696659999997,
+    "family_cost_gate": 77.62869799999925,
+    "indexed": 38.58822699999996,
+    "no_seed_index": 38.527397000000505,
+    "no_bound_views": 38.41194299999974,
+    "no_metric_cascade": 33.52157500000048,
+    "no_subset_views": 39.11373500000222,
+    "no_compiled_bounds": 97.52282500000106,
+    "sparse": 38.69282199999907,
+    "components": 38.515313999998575,
+    "static": 38.60379600000005,
+    "replay": 38.49107700000182,
+    "full_uniform": 39.57291799999948,
+    "recomputed_bounds": 73.38690000000113
+  }
+}

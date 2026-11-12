@@ -1,6 +1,6 @@
 """Build strict floating-point kernels from the shipped C sources."""
 import ctypes
-from hashlib import sha256
+from hashlib import blake2b
 import os
 from pathlib import Path
 import platform
@@ -17,13 +17,13 @@ _FLAGS = ("-std=c99", "-O3", "-ffp-contract=off", "-fno-fast-math")
 def load_kernel(name):
     if name in _LIBRARIES:
         return _LIBRARIES[name]
-    if name not in ("canonical", "fused", "fused_canonical", "saturation", "factored", "edge", "prefix_canonical", "prefix_late", "assignment"):
+    if name not in ("canonical", "fused_canonical", "prefix_canonical", "assignment", "subset_sums"):
         raise ValueError("Unknown shipped kernel")
     source = Path(__file__).with_name("kernels") / (name + ".c")
     compiler = shutil.which(os.environ.get("CC", "cc"))
     if compiler is None:
         raise RuntimeError("A C99 compiler is required for native paired queries")
-    key = sha256(source.read_bytes() + repr((_FLAGS, compiler, platform.machine(), platform.system())).encode()).hexdigest()[:20]
+    key = blake2b(source.read_bytes() + repr((_FLAGS, compiler, platform.machine(), platform.system())).encode()).hexdigest()[:20]
     cache = Path(tempfile.gettempdir()) / "cara-paired-kernels"
     cache.mkdir(exist_ok=True)
     suffix = ".dylib" if platform.system() == "Darwin" else ".so"

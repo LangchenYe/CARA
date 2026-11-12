@@ -1,0 +1,240 @@
+{
+  "name": "Complete-source short-history repair utility",
+  "sources": [
+    "azure2019",
+    "borg2019_d_trace",
+    "borg2019_e_trace",
+    "huawei2025"
+  ],
+  "data_root": "data/raw/cloudcons_hourly",
+  "config": {
+    "cpu_limit": 2.0,
+    "top_p": 16,
+    "mutable_limit": 12,
+    "broad_fraction": 0.25,
+    "broad_batch": 32,
+    "migration_fraction": 0.2,
+    "diagnostic": false,
+    "sketch_preview": false,
+    "score_mode": "gain",
+    "mode": "cara",
+    "objective_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "selection_guard_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "frontier_fraction": 0.5,
+    "frontier_seed": true,
+    "projected_views": "auto",
+    "archive_mode": "balanced",
+    "seed_schedule": "coverage",
+    "anneal_temperature_fraction": 0.01,
+    "shared_queries": true,
+    "batch_queries": true,
+    "record_seed_assignments": false,
+    "record_query_paths": "seed0",
+    "selection_dispersion": 0.0,
+    "query_cache_views": 2048,
+    "query_cache_bytes": 33554432,
+    "query_batch_values": 1048576,
+    "family_execution": "certified",
+    "family_forecast_strategy": "leaf",
+    "family_score_strategy": "leaf",
+    "family_score_min_hosts": 128,
+    "family_score_min_leaves": 32,
+    "family_migration_reuse": true,
+    "frontier_engine": "swap",
+    "frontier_objective": "joint",
+    "family_factor_matching": true,
+    "family_defer_physical": true,
+    "family_matching_backend": "compiled",
+    "family_unique_physical": true,
+    "family_unique_physical_min_hosts": 16,
+    "family_bootstrap_bounds": true,
+    "family_progressive_batch": 16,
+    "family_seed_compilation": true,
+    "family_bound_views": true,
+    "family_metric_cascade": true,
+    "family_subset_views": true,
+    "family_structural_bound_gate": true,
+    "family_bound_work_min": 192,
+    "family_compiled_bounds": true,
+    "family_staged_acquisition": true
+  },
+  "methods": [
+    "Swap",
+    "Joint-SA",
+    "Family-only",
+    "CARA"
+  ],
+  "budgets": [
+    2.0,
+    10.0
+  ],
+  "streams": [
+    0,
+    1,
+    2
+  ],
+  "upgrade_flags": [
+    "family_seed_compilation",
+    "family_bound_views",
+    "family_metric_cascade",
+    "family_subset_views",
+    "family_structural_bound_gate",
+    "family_compiled_bounds",
+    "family_staged_acquisition"
+  ],
+  "cases": [
+    {
+      "source": "azure2019",
+      "origin": 96
+    },
+    {
+      "source": "azure2019",
+      "origin": 120
+    },
+    {
+      "source": "azure2019",
+      "origin": 144
+    },
+    {
+      "source": "borg2019_d_trace",
+      "origin": 96
+    },
+    {
+      "source": "borg2019_d_trace",
+      "origin": 120
+    },
+    {
+      "source": "borg2019_d_trace",
+      "origin": 144
+    },
+    {
+      "source": "borg2019_e_trace",
+      "origin": 96
+    },
+    {
+      "source": "borg2019_e_trace",
+      "origin": 120
+    },
+    {
+      "source": "borg2019_e_trace",
+      "origin": 144
+    },
+    {
+      "source": "huawei2025",
+      "origin": 96
+    },
+    {
+      "source": "huawei2025",
+      "origin": 120
+    },
+    {
+      "source": "huawei2025",
+      "origin": 144
+    },
+    {
+      "source": "huawei2025",
+      "origin": 168
+    }
+  ],
+  "source_metadata": {
+    "azure2019": {
+      "source": "azure2019",
+      "series": 10800,
+      "common_hours": 188,
+      "absolute_start": "2019-01-01T00:00:00",
+      "frequency": "hourly",
+      "cpu_channel": 0,
+      "nan_values_in_all_cpu_series": 0,
+      "interpolated_values_in_common_interval": 0,
+      "interpolation": "Within each common-interval CPU series, deterministic linear interpolation; endpoint gaps use the nearest observed endpoint.",
+      "series_order": "ascending item_id, every series included",
+      "raw_units_preserved": true
+    },
+    "borg2019_d_trace": {
+      "source": "borg2019_d_trace",
+      "series": 414,
+      "common_hours": 189,
+      "absolute_start": "2019-05-01T00:00:00",
+      "frequency": "hourly",
+      "cpu_channel": 0,
+      "nan_values_in_all_cpu_series": 0,
+      "interpolated_values_in_common_interval": 0,
+      "interpolation": "Within each common-interval CPU series, deterministic linear interpolation; endpoint gaps use the nearest observed endpoint.",
+      "series_order": "ascending item_id, every series included",
+      "raw_units_preserved": true
+    },
+    "borg2019_e_trace": {
+      "source": "borg2019_e_trace",
+      "series": 618,
+      "common_hours": 188,
+      "absolute_start": "2019-05-01T00:00:00",
+      "frequency": "hourly",
+      "cpu_channel": 0,
+      "nan_values_in_all_cpu_series": 0,
+      "interpolated_values_in_common_interval": 0,
+      "interpolation": "Within each common-interval CPU series, deterministic linear interpolation; endpoint gaps use the nearest observed endpoint.",
+      "series_order": "ascending item_id, every series included",
+      "raw_units_preserved": true
+    },
+    "huawei2025": {
+      "source": "huawei2025",
+      "series": 174,
+      "common_hours": 212,
+      "absolute_start": "2025-01-01T00:00:00",
+      "frequency": "hourly",
+      "cpu_channel": 0,
+      "nan_values_in_all_cpu_series": 10,
+      "interpolated_values_in_common_interval": 10,
+      "interpolation": "Within each common-interval CPU series, deterministic linear interpolation; endpoint gaps use the nearest observed endpoint.",
+      "series_order": "ascending item_id, every series included",
+      "raw_units_preserved": true
+    }
+  },
+  "protocol": {
+    "historical_roles": {
+      "build": {
+        "older": 96,
+        "newer": 48
+      },
+      "selection": {
+        "older": 48,
+        "newer": 24
+      },
+      "audit": {
+        "older": 24,
+        "newer": 0
+      }
+    },
+    "window_hours": 8,
+    "window_stride": 1,
+    "target_hours": 24,
+    "expected_rows": {
+      "build": 41,
+      "selection": 17,
+      "audit": 17
+    }
+  },
+  "smoke": false,
+  "workers": 4,
+  "capacity": "1.05 * max(maximum VM trailing-24h mean, 8 * average VM trailing-24h mean)",
+  "history": "Every eight-hour window in disjoint outer Build/Selection/Audit intervals: 41/17/17 rows",
+  "forecast": "Same trailing-24h mean and ddof=1 scale for every policy; MASE/CRPS from the benchmark diagnostic functions",
+  "target_access": "History-only Dataset ends at origin; every budget/stream/method at the origin freezes before target slicing",
+  "imputation": "Current source reader's evaluation interpolation; historical missing values are recomputed solely within the pre-origin prefix",
+  "budget_scope": "Per-policy historical representation, setup and proposals use process CPU; complete last operations may overrun and are recorded. Selection/Audit and common trace/FFD preparation are separately recorded",
+  "scope": "Additional all-hourly-source short-history study, not a replacement of CloudCons long-history evaluation or observed deployment replay"
+}

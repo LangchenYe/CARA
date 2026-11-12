@@ -1,26 +1,10 @@
-"""SQL join/aggregate reference for the same placement what-if query batches.
-
-DuckDB input-table materialization is included. SQL SUM is not claimed to have
-the canonical NumPy reduction sequence; the benchmark measures its observed
-load, threshold and profile differences separately from exact execution plans.
-"""
-import argparse
-import json
-import os
-from pathlib import Path
+"""SQL and canonical reference operators for identical placement queries."""
 from time import process_time
-
-for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
-    os.environ[_name] = "1"
-
 import numpy as np
 import pyarrow as pa
 import duckdb
-
-from benchmark_query_engine import candidates
-from cara.data import CAPACITIES, canonical_assignment, host_loads, load_dataset
+from cara.data import canonical_assignment, host_loads
 from cara.query_engine import SharedQueryReplay, _profiles
-from cara.repair import _mutable, _pair_order, ffd
 from cara.workload_views import host_projection
 
 
@@ -119,73 +103,3 @@ def shared_queries(panel, incumbent, assignments, capacity):
     # Loads are retrieved outside timing only to compare returned arithmetic.
     loads = session.loads_many(assignments)
     return costs, loads, profiles
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--cohorts", nargs="+", default=list(CAPACITIES), choices=list(CAPACITIES))
-    parser.add_argument("--origins", nargs="+", type=int, default=[216, 228, 240])
-    parser.add_argument("--pairs", type=int, default=4)
-    parser.add_argument("--width", type=int, default=8)
-    parser.add_argument("--repetitions", type=int, default=4)
-    parser.add_argument("--output", type=Path, required=True)
-    args = parser.parse_args()
-    records = []
-    plans = ("sql", "sql_shared", "full", "shared")
-    for name in args.cohorts:
-        data = load_dataset(name)
-        for origin in args.origins:
-            panel = data.window_panel(origin, 192, 64, max_rows=24)
-            forecast = data.forecast(origin)
-            incumbent = ffd(forecast, data.capacity)
-            pairs = _pair_order(panel, incumbent, data.capacity, np.random.default_rng(519 + origin))[:args.pairs]
-            assignments = [assignment for pair in pairs
-                for assignment, _ in candidates(forecast, incumbent, pair,
-                    _mutable(panel, incumbent, pair, args.width, data.capacity), data.capacity, int(.2 * len(incumbent)))]
-            record = {"cohort": name, "origin": origin, "N": data.n_vms, "H": len(set(incumbent)),
-                      "B": len(panel), "T": panel.shape[2], "candidates": len(assignments)}
-            if assignments:
-                trials = {plan: [] for plan in plans}
-                diagnostics = {name: [] for name in ("sql", "sql_shared")}
-                for repetition in range(args.repetitions):
-                    output = {}
-                    for plan in plans[repetition % len(plans):] + plans[:repetition % len(plans)]:
-                        costs, loads, profiles = (sql_queries(panel, assignments, data.capacity, plan == "sql_shared") if plan.startswith("sql") else
-                            full_queries(panel, assignments, data.capacity) if plan == "full" else
-                            shared_queries(panel, incumbent, assignments, data.capacity))
-                        trials[plan].append(costs)
-                        output[plan] = loads, profiles
-                    reference, expected_profiles = output["full"]
-                    if output["shared"][0].tobytes() != reference.tobytes() or output["shared"][1].tobytes() != expected_profiles.tobytes():
-                        raise AssertionError("Shared batch changes canonical arithmetic")
-                    for sql_name in diagnostics:
-                        sql_loads, sql_profiles = output[sql_name]
-                        diagnostics[sql_name].append({"maximum_absolute_load_difference": float(np.max(np.abs(sql_loads - reference))),
-                            "strict_threshold_flips": int(np.sum((sql_loads > data.capacity) != (reference > data.capacity))),
-                            "tolerant_threshold_flips": int(np.sum((sql_loads > data.capacity + 1e-12) != (reference > data.capacity + 1e-12))),
-                            "maximum_absolute_profile_difference": float(np.max(np.abs(sql_profiles - expected_profiles))),
-                            "canonical_load_bitwise_equal": sql_loads.tobytes() == reference.tobytes(),
-                            "canonical_profile_bitwise_equal": sql_profiles.tobytes() == expected_profiles.tobytes()})
-                median = {plan: float(np.median([value["total_cpu_seconds"] for value in values])) for plan, values in trials.items()}
-                record.update({"trials": trials, "median_cpu_seconds": median, "sql_arithmetic_diagnostics": diagnostics["sql"],
-                               "shared_sql_arithmetic_diagnostics": diagnostics["sql_shared"],
-                               "shared_canonical_identity": True})
-            else:
-                record.update({"trials": {}, "median_cpu_seconds": {plan: 0. for plan in plans},
-                               "sql_arithmetic_diagnostics": [], "shared_sql_arithmetic_diagnostics": [], "shared_canonical_identity": True})
-            records.append(record)
-            args.output.parent.mkdir(parents=True, exist_ok=True)
-            args.output.write_text(json.dumps({"scope": "Identical fixed complete-family Build queries. "
-                "SQL includes construction and materialization of D(i,b,t,x) and Q(q,i,h), join/group-by, "
-                "and the same host-profile reduction as NumPy. Candidate filtering/matching are shared untimed inputs. "
-                "SQL-shared interns complete resident-group memberships, aggregates each distinct group once, "
-                "then maps group loads to every (query,host); construction and materialization of membership/mapping relations are timed. "
-                "No claim is made that SQL SUM preserves canonical floating-point arithmetic. "
-                "Zero-query cases issue no query and are retained with zero query cost.",
-                "duckdb_version": duckdb.__version__, "records": records}, indent=2) + "\n")
-            print(json.dumps({"cohort": name, "origin": origin, "candidates": len(assignments),
-                              "median_cpu_seconds": record["median_cpu_seconds"]}), flush=True)
-
-
-if __name__ == "__main__":
-    main()

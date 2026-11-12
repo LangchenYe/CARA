@@ -1,0 +1,267 @@
+{
+  "study": "complete_hourly_family_consumers",
+  "sources": [
+    "azure2019",
+    "borg2019_d_trace",
+    "borg2019_e_trace",
+    "huawei2025"
+  ],
+  "plans": [
+    "eager",
+    "compact",
+    "sparse",
+    "no_factorization",
+    "no_late_matching",
+    "no_progressive",
+    "no_bootstrap",
+    "no_score",
+    "no_matching_reuse",
+    "compiled_no_unique_maps",
+    "family_only",
+    "family_cost_gate",
+    "indexed",
+    "no_seed_index",
+    "no_bound_views",
+    "no_metric_cascade",
+    "no_subset_views",
+    "no_compiled_bounds",
+    "full_uniform",
+    "recomputed_bounds"
+  ],
+  "settings": {
+    "eager": {
+      "family_execution": "eager"
+    },
+    "compact": {
+      "family_execution": "compact",
+      "family_factor_matching": false,
+      "family_matching_backend": "dense",
+      "family_defer_physical": false
+    },
+    "sparse": {
+      "family_execution": "certified",
+      "family_matching_backend": "sparse"
+    },
+    "no_factorization": {
+      "family_execution": "certified",
+      "family_factor_matching": false,
+      "family_matching_backend": "dense"
+    },
+    "no_late_matching": {
+      "family_execution": "certified",
+      "family_defer_physical": false
+    },
+    "no_progressive": {
+      "family_execution": "certified",
+      "family_progressive": false
+    },
+    "no_bootstrap": {
+      "family_execution": "certified",
+      "family_bootstrap_bounds": false
+    },
+    "no_score": {
+      "family_execution": "certified",
+      "family_certificate_score": false
+    },
+    "no_matching_reuse": {
+      "family_execution": "certified",
+      "family_migration_reuse": false
+    },
+    "compiled_no_unique_maps": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_unique_physical": false
+    },
+    "family_only": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": false,
+      "family_bound_views": false,
+      "family_metric_cascade": false,
+      "family_subset_views": false,
+      "family_structural_bound_gate": false,
+      "family_compiled_bounds": false,
+      "family_staged_acquisition": false
+    },
+    "family_cost_gate": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": false,
+      "family_bound_views": false,
+      "family_metric_cascade": false,
+      "family_subset_views": false,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": false,
+      "family_staged_acquisition": false
+    },
+    "indexed": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true
+    },
+    "no_seed_index": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": false,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true
+    },
+    "no_bound_views": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": false,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true
+    },
+    "no_metric_cascade": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": false,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": false
+    },
+    "no_subset_views": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": false,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": true
+    },
+    "no_compiled_bounds": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": false,
+      "family_staged_acquisition": true
+    },
+    "full_uniform": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": true,
+      "family_staged_acquisition": false
+    },
+    "recomputed_bounds": {
+      "family_execution": "certified",
+      "family_matching_backend": "compiled",
+      "family_seed_compilation": true,
+      "family_bound_views": true,
+      "family_metric_cascade": true,
+      "family_subset_views": true,
+      "family_structural_bound_gate": true,
+      "family_compiled_bounds": false,
+      "family_staged_acquisition": false
+    }
+  },
+  "config": {
+    "cpu_limit": 2.0,
+    "top_p": 16,
+    "mutable_limit": 12,
+    "broad_fraction": 0.25,
+    "broad_batch": 32,
+    "migration_fraction": 0.2,
+    "diagnostic": false,
+    "sketch_preview": false,
+    "score_mode": "gain",
+    "mode": "cara",
+    "objective_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "selection_guard_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "frontier_fraction": 0.5,
+    "frontier_seed": true,
+    "projected_views": "auto",
+    "archive_mode": "balanced",
+    "seed_schedule": "coverage",
+    "anneal_temperature_fraction": 0.01,
+    "shared_queries": true,
+    "batch_queries": true,
+    "record_seed_assignments": false,
+    "record_query_paths": "seed0",
+    "selection_dispersion": 0.0,
+    "query_cache_views": 2048,
+    "query_cache_bytes": 33554432,
+    "query_batch_values": 1048576,
+    "family_execution": "certified",
+    "family_forecast_strategy": "leaf",
+    "family_score_strategy": "leaf",
+    "family_score_min_hosts": 128,
+    "family_score_min_leaves": 32,
+    "family_migration_reuse": true,
+    "frontier_engine": "swap",
+    "frontier_objective": "joint",
+    "family_factor_matching": true,
+    "family_defer_physical": true,
+    "family_matching_backend": "compiled",
+    "family_unique_physical": true,
+    "family_unique_physical_min_hosts": 16,
+    "family_bootstrap_bounds": true,
+    "family_progressive_batch": 16,
+    "family_seed_compilation": true,
+    "family_bound_views": true,
+    "family_metric_cascade": true,
+    "family_subset_views": true,
+    "family_structural_bound_gate": true,
+    "family_bound_work_min": 192,
+    "family_compiled_bounds": true,
+    "family_staged_acquisition": true
+  },
+  "families": 8,
+  "mutable_width": 8,
+  "horizon": 8,
+  "windows": "every valid common-interval window",
+  "repetitions": 3,
+  "memory_probe": true,
+  "inputs": [
+    "azure2019",
+    "borg2019_d_trace",
+    "borg2019_e_trace",
+    "huawei2025"
+  ],
+  "timing": "Serial rotated process CPU includes reader/forecast setup, family preparation, exact predicates and bounds, matching, canonical profiles, scoring, retained pools and original physical tie mapping. Raw Arrow loading, immutable panel construction, correctness oracles, garbage collection and serialization are outside timing.",
+  "resource_scope": "Separate optional tracemalloc probes start after the raw matrix, full input panel and forecast exist. Report incremental traced Python/NumPy peak and retained view-array bytes; these values are not process RSS.",
+  "correctness": "Untimed eager reference and every comparison verify exact scalar/group profile bytes, every ordered family pool including original rich physical movement, and every active excluded leaf. Independent canonical answers are memoized only during verification and discarded before timed and memory runs, which reproduce the full pool sequence.",
+  "scope": "All original CPU series in each hourly input, with deterministic within-series NaN interpolation from the existing loader. Deterministic partition and threshold define query workloads, not official placement-quality benchmarks."
+}

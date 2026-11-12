@@ -403,6 +403,10 @@ def search_refined(inc, forecast, build, selection, capacity, config, rng):
     shared_cache = None
     forecast_views = None
     family_score_context = None
+    seed_compiler = None
+    if config.get("family_seed_compilation", False) and config.get("family_matching_backend") == "compiled":
+        from .seed_matching import SeedMatchingCache
+        seed_compiler = SeedMatchingCache(inc)
     if config.get("shared_queries", False):
         from .query_engine import SharedQueryReplay, ForecastViews
         shared_cache = SharedQueryReplay.from_config(build, inc, capacity, config)
@@ -531,7 +535,8 @@ def search_refined(inc, forecast, build, selection, capacity, config, rng):
                                 factor_matching=config.get("family_factor_matching", True),
                                 matching_backend=config.get("family_matching_backend"),
                                 use_unique_physical=config.get("family_unique_physical", True),
-                                unique_physical_min_hosts=config.get("family_unique_physical_min_hosts", 16))
+                                unique_physical_min_hosts=config.get("family_unique_physical_min_hosts", 16),
+                                seed_matching_index=None if seed_compiler is None else seed_compiler.get(seed))
         certificates = FamilyCertificates(family, forecast_views)
         certified = family_execution == "certified"
         observer = config.get("certificate_observer")
@@ -547,23 +552,35 @@ def search_refined(inc, forecast, build, selection, capacity, config, rng):
             strategy=config.get("family_forecast_strategy", "tree"))
         active = tuple(mask for mask in passed if family.identity(mask, membership_index) not in seen)
         cutoff = min(record["key"] for record in pool.values()) if len(pool) == top else None
+        bootstrap_bounds = (config.get("family_bootstrap_bounds", False)
+                            and config.get("family_progressive", True)
+                            and config.get("family_score_strategy", "tree") == "leaf")
+        from .family_score_bounds import should_bound_profiles
         can_score = (certified and config.get("family_certificate_score", True)
-                     and cutoff is not None and archive_mode == "balanced"
+                     and (cutoff is not None or bootstrap_bounds)
+                     and archive_mode == "balanced"
                      and score_mode == "gain" and movement_weights is None
-                     and hosts >= int(config.get("family_score_min_hosts", 0)))
+                     and should_bound_profiles(config, hosts, build.shape[2],
+                         sum(len(family.seed_groups[h]) for h in pair)))
         minimum = int(config.get("family_score_min_leaves", 8))
         score_bounds = None
         if can_score and len(active) >= minimum:
             from .family_score_bounds import FamilyScoreContext
             if family_score_context is None:
-                family_score_context = FamilyScoreContext.from_reader(cache, reference, objective_names=objectives)
-            score_bounds = family_score_context.for_family(seed, pair, mutable, seed_loads=cache.loads(seed))
+                family_score_context = FamilyScoreContext.from_reader(cache, reference, objective_names=objectives,
+                    compiled_views=config.get("family_bound_views", False),
+                    compiled_subsets=config.get("family_subset_views", False),
+                    compiled_bounds=config.get("family_compiled_bounds", False))
+            score_bounds = family_score_context.for_family(seed, pair, mutable,
+                seed_loads=None if config.get("family_bound_views", False) else cache.loads(seed))
         count_limit = (min(migration_limit, cost_limit) if movement_weights is None else migration_limit)
         surviving, excluded = certificates.prune(active, migration_limit=count_limit,
             cutoff=cutoff, score_bounds=score_bounds,
             certify_migration=certified and config.get("family_certificate_migration", True),
             certify_score=can_score, score_min_leaves=minimum,
             score_strategy=config.get("family_score_strategy", "tree"),
+            metric_cascade=config.get("family_metric_cascade", False),
+            staged_acquisition=config.get("family_staged_acquisition", False), top_p=top,
             observer=observe if observer is not None else None)
         for witness in excluded:
             for mask in witness["active_masks"]:
@@ -587,7 +604,7 @@ def search_refined(inc, forecast, build, selection, capacity, config, rng):
             actions.append(mask)
             movements.append(movement)
         progressive = (can_score and config.get("family_score_strategy", "tree") == "leaf"
-                       and config.get("family_progressive", True) and bool(certificates.leaf_upper_keys))
+                       and config.get("family_progressive", True) and certificates.has_score_schedule)
         batches = (certificates.score_batches(actions,
                    lambda: min(record["key"] for record in pool.values()) if len(pool) == top else None,
                    batch_size=config.get("family_progressive_batch", 32),
@@ -644,6 +661,8 @@ def search_refined(inc, forecast, build, selection, capacity, config, rng):
         work = {**family.stats, **certificates.stats, "declared_masks": family.mask_count,
                 "forecast_passed_masks": len(passed), "duplicate_masks": len(passed) - len(active),
                 "profiled_masks": profiled, "physical_matching_calls": rich_matchings}
+        if score_bounds is not None:
+            work.update(score_bounds.diagnostics())
         for name, value in work.items():
             stats["family_work"][name] = stats["family_work"].get(name, 0) + value
         return work

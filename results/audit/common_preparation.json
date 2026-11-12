@@ -1,0 +1,55 @@
+{
+  "cache_hit": true,
+  "compiler": "/usr/bin/cc",
+  "flags": [
+    "-std=c99",
+    "-O3",
+    "-ffp-contract=off",
+    "-fno-fast-math"
+  ],
+  "build_and_load_cpu_seconds": 0.0010390000000000121,
+  "build_and_load_wall_seconds": 0.005110042009619065,
+  "native_runtime": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 0.00707808299921453,
+    "build_and_load_parent_cpu_seconds": 0.0010679999999999579,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/var/folders/36/3b100jwn3t10g2mzwqp3c9lr0000gn/T/cara-native-aggregate/4d8a65b8591f3f1a3fb1.dylib"
+  },
+  "fused_runtime": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 0.005798708996735513,
+    "build_and_load_parent_cpu_seconds": 0.0009560000000000679,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/var/folders/36/3b100jwn3t10g2mzwqp3c9lr0000gn/T/cara-paired-kernels/fused_canonical-69f67504ac719ea2664e.dylib"
+  },
+  "prefix_runtime": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 0.005398958004661836,
+    "build_and_load_parent_cpu_seconds": 0.0009059999999999624,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/var/folders/36/3b100jwn3t10g2mzwqp3c9lr0000gn/T/cara-paired-kernels/prefix_canonical-3f24d49b8f58265a8ff7.dylib"
+  },
+  "library": "/var/folders/36/3b100jwn3t10g2mzwqp3c9lr0000gn/T/cara-window-kernels/cf5ca92eec1c1b7f7a1e.dylib"
+}

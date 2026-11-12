@@ -1,0 +1,3241 @@
+{
+  "study": "complete_family_historical_audit",
+  "plans": [
+    "direct_original",
+    "direct_dyadic",
+    "keyed_original",
+    "keyed_dyadic"
+  ],
+  "repetitions": 3,
+  "inputs": [
+    "azure2019",
+    "borg2019_d",
+    "borg2019_e",
+    "huawei2025"
+  ],
+  "cases": [
+    {
+      "dataset": "azure2019",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 186264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 186288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 186289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 186290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 186291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 186292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 186293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 186294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 186295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 186296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 186297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 186298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 186299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 186300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 186301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 186302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 186303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 186304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 186305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 186306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 186307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 186308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 186309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 186310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 186311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 186312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 196264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 196288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 196289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 196290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 196291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 196292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 196293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 196294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 196295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 196296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 196297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 196298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 196299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 196300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 196301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 196302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 196303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 196304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 196305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 196306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 196307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 196308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 196309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 196310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 196311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 196312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 336,
+      "seed_index": 0,
+      "seed": 196336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 360,
+      "seed_index": 0,
+      "seed": 196360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 384,
+      "seed_index": 0,
+      "seed": 196384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 408,
+      "seed_index": 0,
+      "seed": 196408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 432,
+      "seed_index": 0,
+      "seed": 196432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 456,
+      "seed_index": 0,
+      "seed": 196456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 480,
+      "seed_index": 0,
+      "seed": 196480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 206264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 206288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 206289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 206290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 206291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 206292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 206293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 206294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 206295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 206296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 206297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 206298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 206299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 206300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 206301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 206302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 206303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 206304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 206305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 206306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 206307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 206308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 206309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 206310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 206311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 206312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 336,
+      "seed_index": 0,
+      "seed": 206336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 360,
+      "seed_index": 0,
+      "seed": 206360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 384,
+      "seed_index": 0,
+      "seed": 206384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 408,
+      "seed_index": 0,
+      "seed": 206408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 432,
+      "seed_index": 0,
+      "seed": 206432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 456,
+      "seed_index": 0,
+      "seed": 206456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 480,
+      "seed_index": 0,
+      "seed": 206480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 264,
+      "seed_index": 0,
+      "seed": 216264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 288,
+      "seed_index": 0,
+      "seed": 216288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 289,
+      "seed_index": 0,
+      "seed": 216289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 290,
+      "seed_index": 0,
+      "seed": 216290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 291,
+      "seed_index": 0,
+      "seed": 216291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 292,
+      "seed_index": 0,
+      "seed": 216292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 293,
+      "seed_index": 0,
+      "seed": 216293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 294,
+      "seed_index": 0,
+      "seed": 216294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 295,
+      "seed_index": 0,
+      "seed": 216295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 296,
+      "seed_index": 0,
+      "seed": 216296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 297,
+      "seed_index": 0,
+      "seed": 216297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 298,
+      "seed_index": 0,
+      "seed": 216298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 299,
+      "seed_index": 0,
+      "seed": 216299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 300,
+      "seed_index": 0,
+      "seed": 216300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 301,
+      "seed_index": 0,
+      "seed": 216301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 302,
+      "seed_index": 0,
+      "seed": 216302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 303,
+      "seed_index": 0,
+      "seed": 216303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 304,
+      "seed_index": 0,
+      "seed": 216304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 305,
+      "seed_index": 0,
+      "seed": 216305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 306,
+      "seed_index": 0,
+      "seed": 216306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 307,
+      "seed_index": 0,
+      "seed": 216307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 308,
+      "seed_index": 0,
+      "seed": 216308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 309,
+      "seed_index": 0,
+      "seed": 216309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 310,
+      "seed_index": 0,
+      "seed": 216310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 311,
+      "seed_index": 0,
+      "seed": 216311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 312,
+      "seed_index": 0,
+      "seed": 216312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 286264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 286288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 286289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 286290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 286291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 286292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 286293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 286294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 286295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 286296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 286297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 286298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 286299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 286300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 286301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 286302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 286303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 286304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 286305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 286306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 286307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 286308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 286309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 286310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 286311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 286312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 296264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 296288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 296289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 296290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 296291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 296292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 296293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 296294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 296295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 296296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 296297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 296298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 296299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 296300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 296301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 296302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 296303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 296304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 296305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 296306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 296307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 296308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 296309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 296310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 296311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 296312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 336,
+      "seed_index": 1,
+      "seed": 296336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 360,
+      "seed_index": 1,
+      "seed": 296360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 384,
+      "seed_index": 1,
+      "seed": 296384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 408,
+      "seed_index": 1,
+      "seed": 296408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 432,
+      "seed_index": 1,
+      "seed": 296432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 456,
+      "seed_index": 1,
+      "seed": 296456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 480,
+      "seed_index": 1,
+      "seed": 296480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 306264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 306288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 306289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 306290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 306291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 306292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 306293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 306294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 306295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 306296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 306297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 306298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 306299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 306300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 306301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 306302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 306303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 306304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 306305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 306306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 306307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 306308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 306309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 306310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 306311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 306312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 336,
+      "seed_index": 1,
+      "seed": 306336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 360,
+      "seed_index": 1,
+      "seed": 306360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 384,
+      "seed_index": 1,
+      "seed": 306384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 408,
+      "seed_index": 1,
+      "seed": 306408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 432,
+      "seed_index": 1,
+      "seed": 306432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 456,
+      "seed_index": 1,
+      "seed": 306456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 480,
+      "seed_index": 1,
+      "seed": 306480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 264,
+      "seed_index": 1,
+      "seed": 316264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 288,
+      "seed_index": 1,
+      "seed": 316288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 289,
+      "seed_index": 1,
+      "seed": 316289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 290,
+      "seed_index": 1,
+      "seed": 316290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 291,
+      "seed_index": 1,
+      "seed": 316291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 292,
+      "seed_index": 1,
+      "seed": 316292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 293,
+      "seed_index": 1,
+      "seed": 316293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 294,
+      "seed_index": 1,
+      "seed": 316294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 295,
+      "seed_index": 1,
+      "seed": 316295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 296,
+      "seed_index": 1,
+      "seed": 316296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 297,
+      "seed_index": 1,
+      "seed": 316297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 298,
+      "seed_index": 1,
+      "seed": 316298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 299,
+      "seed_index": 1,
+      "seed": 316299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 300,
+      "seed_index": 1,
+      "seed": 316300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 301,
+      "seed_index": 1,
+      "seed": 316301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 302,
+      "seed_index": 1,
+      "seed": 316302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 303,
+      "seed_index": 1,
+      "seed": 316303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 304,
+      "seed_index": 1,
+      "seed": 316304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 305,
+      "seed_index": 1,
+      "seed": 316305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 306,
+      "seed_index": 1,
+      "seed": 316306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 307,
+      "seed_index": 1,
+      "seed": 316307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 308,
+      "seed_index": 1,
+      "seed": 316308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 309,
+      "seed_index": 1,
+      "seed": 316309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 310,
+      "seed_index": 1,
+      "seed": 316310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 311,
+      "seed_index": 1,
+      "seed": 316311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 312,
+      "seed_index": 1,
+      "seed": 316312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 386264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 386288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 386289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 386290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 386291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 386292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 386293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 386294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 386295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 386296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 386297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 386298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 386299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 386300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 386301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 386302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 386303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 386304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 386305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 386306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 386307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 386308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 386309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 386310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 386311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "azure2019",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 386312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 396264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 396288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 396289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 396290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 396291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 396292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 396293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 396294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 396295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 396296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 396297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 396298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 396299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 396300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 396301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 396302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 396303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 396304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 396305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 396306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 396307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 396308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 396309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 396310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 396311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 396312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 336,
+      "seed_index": 2,
+      "seed": 396336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 360,
+      "seed_index": 2,
+      "seed": 396360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 384,
+      "seed_index": 2,
+      "seed": 396384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 408,
+      "seed_index": 2,
+      "seed": 396408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 432,
+      "seed_index": 2,
+      "seed": 396432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 456,
+      "seed_index": 2,
+      "seed": 396456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_d",
+      "origin": 480,
+      "seed_index": 2,
+      "seed": 396480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 406264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 406288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 406289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 406290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 406291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 406292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 406293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 406294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 406295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 406296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 406297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 406298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 406299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 406300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 406301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 406302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 406303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 406304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 406305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 406306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 406307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 406308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 406309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 406310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 406311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 406312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 336,
+      "seed_index": 2,
+      "seed": 406336,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 360,
+      "seed_index": 2,
+      "seed": 406360,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 384,
+      "seed_index": 2,
+      "seed": 406384,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 408,
+      "seed_index": 2,
+      "seed": 406408,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 432,
+      "seed_index": 2,
+      "seed": 406432,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 456,
+      "seed_index": 2,
+      "seed": 406456,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "borg2019_e",
+      "origin": 480,
+      "seed_index": 2,
+      "seed": 406480,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 264,
+      "seed_index": 2,
+      "seed": 416264,
+      "views": [
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 288,
+      "seed_index": 2,
+      "seed": 416288,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 289,
+      "seed_index": 2,
+      "seed": 416289,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 290,
+      "seed_index": 2,
+      "seed": 416290,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 291,
+      "seed_index": 2,
+      "seed": 416291,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 292,
+      "seed_index": 2,
+      "seed": 416292,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 293,
+      "seed_index": 2,
+      "seed": 416293,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 294,
+      "seed_index": 2,
+      "seed": 416294,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 295,
+      "seed_index": 2,
+      "seed": 416295,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 296,
+      "seed_index": 2,
+      "seed": 416296,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 297,
+      "seed_index": 2,
+      "seed": 416297,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 298,
+      "seed_index": 2,
+      "seed": 416298,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 299,
+      "seed_index": 2,
+      "seed": 416299,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 300,
+      "seed_index": 2,
+      "seed": 416300,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 301,
+      "seed_index": 2,
+      "seed": 416301,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 302,
+      "seed_index": 2,
+      "seed": 416302,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 303,
+      "seed_index": 2,
+      "seed": 416303,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 304,
+      "seed_index": 2,
+      "seed": 416304,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 305,
+      "seed_index": 2,
+      "seed": 416305,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 306,
+      "seed_index": 2,
+      "seed": 416306,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 307,
+      "seed_index": 2,
+      "seed": 416307,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 308,
+      "seed_index": 2,
+      "seed": 416308,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 309,
+      "seed_index": 2,
+      "seed": 416309,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 310,
+      "seed_index": 2,
+      "seed": 416310,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 311,
+      "seed_index": 2,
+      "seed": 416311,
+      "views": [
+        "primary"
+      ]
+    },
+    {
+      "dataset": "huawei2025",
+      "origin": 312,
+      "seed_index": 2,
+      "seed": 416312,
+      "views": [
+        "primary",
+        "longitudinal"
+      ]
+    }
+  ],
+  "population": "All 354 current frozen CARA decisions, including every no-action fallback; no selected-count condition or search rerun.",
+  "audit": {
+    "older": 32,
+    "newer": 0,
+    "horizon": 8,
+    "stride": 1,
+    "rows": 25
+  },
+  "factorial": "Direct/Keyed candidate profiles crossed with Fraction/dyadic exact gates, using the same stored native six-coordinate profiles.",
+  "timing": "Cold candidate planning, source validation, canonical profile and one gate are inside each process-CPU timer. Gate cost is nested, not added a second time. Dataset loading, native preparation, role extraction, shared incumbent reference, independent canonical target and correctness passes are separately recorded outside every arm.",
+  "rotation": "Three cyclic rotations per selected case, offset by the frozen case index; no-action cases retain zero costs in all-decision aggregates.",
+  "correctness": "A full-population Fraction/dyadic check precedes timing. Every plan's untimed and timed candidate bytes and complete gate dictionary, including float bits, exact strings and key order, must equal the current frozen decision.",
+  "scope": "Historical admission query execution only. These costs are not attributed to end-to-end search speedup."
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "context": "uniform-h128-b32-w12",
+    "actual_scenes": 3,
+    "families": 1,
+    "rich_pools_exact": true,
+    "complete_seen_state_exact": true,
+    "plans": {
+      "recomputed_bounds": {
+        "forecast_passed_masks": 2615,
+        "profiled_masks": 16,
+        "score_nodes": 2614,
+        "aggregate_bound_nodes": 0,
+        "aggregate_excluded_masks": 0,
+        "staged_pilot_profiles": 0,
+        "uniform_radius_compilations": 0,
+        "full_uniform_fast_nodes": 0,
+        "aggregate_uniform_fast_nodes": 0,
+        "seen_identities": 2615,
+        "verification": {
+          "materialized_profiles": 17,
+          "scalar_profiles": 1,
+          "witnesses": 996,
+          "forecast_leaves": 1481,
+          "score_leaves": 2598
+        }
+      },
+      "indexed": {
+        "forecast_passed_masks": 2615,
+        "profiled_masks": 32,
+        "score_nodes": 2598,
+        "aggregate_bound_nodes": 64,
+        "aggregate_excluded_masks": 0,
+        "staged_pilot_profiles": 16,
+        "uniform_radius_compilations": 1,
+        "full_uniform_fast_nodes": 2598,
+        "aggregate_uniform_fast_nodes": 64,
+        "seen_identities": 2615,
+        "verification": {
+          "materialized_profiles": 33,
+          "scalar_profiles": 1,
+          "witnesses": 1011,
+          "forecast_leaves": 1481,
+          "forecast_oracle_memo_hits": 1481,
+          "score_leaves": 2582,
+          "exact_key_memo_hits": 2582
+        }
+      }
+    }
+  },
+  {
+    "context": "uniform-h256-b96-w16",
+    "actual_scenes": 3,
+    "families": 1,
+    "rich_pools_exact": true,
+    "complete_seen_state_exact": true,
+    "plans": {
+      "recomputed_bounds": {
+        "forecast_passed_masks": 8152,
+        "profiled_masks": 16,
+        "score_nodes": 8151,
+        "aggregate_bound_nodes": 0,
+        "aggregate_excluded_masks": 0,
+        "staged_pilot_profiles": 0,
+        "uniform_radius_compilations": 0,
+        "full_uniform_fast_nodes": 0,
+        "aggregate_uniform_fast_nodes": 0,
+        "seen_identities": 8152,
+        "verification": {
+          "materialized_profiles": 17,
+          "scalar_profiles": 1,
+          "witnesses": 11488,
+          "forecast_leaves": 24615,
+          "score_leaves": 8135
+        }
+      },
+      "indexed": {
+        "forecast_passed_masks": 8152,
+        "profiled_masks": 32,
+        "score_nodes": 6766,
+        "aggregate_bound_nodes": 8135,
+        "aggregate_excluded_masks": 1369,
+        "staged_pilot_profiles": 16,
+        "uniform_radius_compilations": 1,
+        "full_uniform_fast_nodes": 6766,
+        "aggregate_uniform_fast_nodes": 8135,
+        "seen_identities": 8152,
+        "verification": {
+          "materialized_profiles": 33,
+          "scalar_profiles": 1,
+          "witnesses": 12105,
+          "forecast_leaves": 24615,
+          "forecast_oracle_memo_hits": 24615,
+          "score_leaves": 8119,
+          "exact_key_memo_hits": 8119
+        }
+      }
+    }
+  },
+  {
+    "context": "heterogeneous-h24-b192-w16",
+    "actual_scenes": 3,
+    "families": 1,
+    "rich_pools_exact": true,
+    "complete_seen_state_exact": true,
+    "plans": {
+      "recomputed_bounds": {
+        "forecast_passed_masks": 65536,
+        "profiled_masks": 16,
+        "score_nodes": 65535,
+        "aggregate_bound_nodes": 0,
+        "aggregate_excluded_masks": 0,
+        "staged_pilot_profiles": 0,
+        "uniform_radius_compilations": 0,
+        "full_uniform_fast_nodes": 0,
+        "aggregate_uniform_fast_nodes": 0,
+        "seen_identities": 65536,
+        "verification": {
+          "materialized_profiles": 17,
+          "scalar_profiles": 1,
+          "witnesses": 1,
+          "score_leaves": 65519
+        }
+      },
+      "indexed": {
+        "forecast_passed_masks": 65536,
+        "profiled_masks": 32,
+        "score_nodes": 49208,
+        "aggregate_bound_nodes": 65519,
+        "aggregate_excluded_masks": 16311,
+        "staged_pilot_profiles": 16,
+        "uniform_radius_compilations": 1,
+        "full_uniform_fast_nodes": 49208,
+        "aggregate_uniform_fast_nodes": 65519,
+        "seen_identities": 65536,
+        "verification": {
+          "materialized_profiles": 33,
+          "scalar_profiles": 1,
+          "witnesses": 2,
+          "score_leaves": 65503,
+          "exact_key_memo_hits": 65503
+        }
+      }
+    }
+  }
+]

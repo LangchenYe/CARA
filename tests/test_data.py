@@ -67,12 +67,15 @@ def test_chronological_roles_are_disjoint_and_complete():
             for other, (left2, right2) in intervals.items():
                 if role != other:
                     assert max(left, left2) >= min(right, right2)
+        protocol = json.loads((Path(__file__).resolve().parents[1] / "configs/release/family_protocol.json").read_text())
+        for role, offsets in protocol["historical_roles"].items():
+            assert intervals[role] == (origin - offsets["older"], origin - offsets["newer"])
         panels = trace_panels(dataset, origin)
-        assert {role: panel.shape[0] for role, panel in panels.items()} == {"build": 24, "selection": 25, "audit": 57}
-        assert np.array_equal(panels["audit"][0], dataset.panel(origin - 192, 8))
-        assert np.array_equal(panels["audit"][-1], dataset.panel(origin - 136, 8))
-        assert np.array_equal(panels["build"][0], dataset.panel(origin - 96, 8))
-        assert np.array_equal(panels["build"][-1], dataset.panel(origin - 8, 8))
+        assert {role: panel.shape[0] for role, panel in panels.items()} == {"build": 121, "selection": 25, "audit": 25}
+        assert np.array_equal(panels["audit"][0], dataset.panel(origin - 32, 8))
+        assert np.array_equal(panels["audit"][-1], dataset.panel(origin - 8, 8))
+        assert np.array_equal(panels["build"][0], dataset.panel(origin - 192, 8))
+        assert np.array_equal(panels["build"][-1], dataset.panel(origin - 72, 8))
     with pytest.raises(ValueError):
         trace_panels(dataset, 191)
     with pytest.raises(ValueError):

@@ -1,0 +1,15 @@
+{
+  "contexts": 118,
+  "forecast_identical_for_all_policies": true,
+  "forecast": "Trailing-24-hour mean repeated for 24 target hours; the zero-clipped Gaussian quantiles use the preceding-24-hour sample standard deviation (ddof=1), exactly as the shared host-interval diagnostics.",
+  "MASE": "Mean over VM-target cells of absolute median forecast error divided by the VM's mean absolute lag-24 difference over its complete pre-origin history. Zero-scale VM contexts are masked and counted, following the upstream masked-array metric.",
+  "CRPS": "CloudCons executable approximation: average over q=0.1,...,0.9 of the sum of twice the pinball loss, divided by the sum of absolute target values. This is GluonTS MeanWeightedSumQuantileLoss, not an unnormalized exact CRPS integral.",
+  "aggregation": "Each distinct cohort/origin appears once, regardless of search stream or placement policy. Cohort metrics aggregate the underlying sufficient sums over every context; equal_cohort averages the four cohort metrics.",
+  "scope": "Forecast diagnostics on the consolidation decision targets; the separate CloudCons forecasting leaderboard uses additional frequencies/horizons and seasonal-naive normalization.",
+  "sources": [
+    "https://github.com/dmwyd/CloudCons/blob/main/forecasting_bench/chronos2_eval.py",
+    "https://github.com/dmwyd/CloudCons/blob/main/forecasting_bench/get_results.py",
+    "https://github.com/awslabs/gluonts/blob/v0.15.1/src/gluonts/ev/stats.py",
+    "https://github.com/awslabs/gluonts/blob/v0.15.1/src/gluonts/ev/ts_stats.py"
+  ]
+}

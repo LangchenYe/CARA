@@ -1,0 +1,12 @@
+{
+  "complete": true,
+  "contexts": 6,
+  "all_family_pools_equal": true,
+  "total_median_cpu_seconds": {
+    "8": 0.5246859999999977,
+    "16": 0.5200390000000001,
+    "32": 0.5380310000000007,
+    "64": 0.5683970000000003
+  },
+  "selected_batch_limit": 16
+}

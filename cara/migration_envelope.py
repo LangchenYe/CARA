@@ -95,15 +95,24 @@ def migration_cut_bound(incumbent, aligned_candidate, demand_upper=1,
 
 
 def stored_topology_gain_bound(incumbent, aligned_candidate, capacity, *, horizon,
-                               demand_upper=1, exact_component_limit=18):
-    """Outward-rounded bound on stored fixed-H raw gain, with replay error."""
+                               demand_upper=1, exact_component_limit=18,
+                               component_conservation=True):
+    """Bound stored fixed-H raw gain using each migration component.
+
+    A component with v hosts conserves its own demand, so its total excess
+    can change by at most v-1 capacity units. Combining that cap with its
+    directed-cut bound before adding components is stronger than a global
+    conservation cap. Set ``component_conservation=False`` for that control.
+    """
     result = migration_cut_bound(incumbent, aligned_candidate, demand_upper,
                                 exact_component_limit=exact_component_limit)
     return _stored_graph_gain_bound(result, len(incumbent), len(set(incumbent)),
-                                    capacity, horizon, demand_upper)
+                                    capacity, horizon, demand_upper,
+                                    component_conservation=component_conservation)
 
 
-def _stored_graph_gain_bound(result, vm_count, hosts, capacity, horizon, demand_upper):
+def _stored_graph_gain_bound(result, vm_count, hosts, capacity, horizon, demand_upper,
+                             *, component_conservation=True):
     capacity = _rational(capacity)
     if capacity <= 0:
         raise ValueError("capacity must be positive")
@@ -113,7 +122,12 @@ def _stored_graph_gain_bound(result, vm_count, hosts, capacity, horizon, demand_
     # errors alone. Keeping that excess rounding is conservative.
     roundoff = stored_raw_gain_bound(0, hosts, capacity, vm_count=vm_count,
                                      horizon=horizon, demand_upper=upper)
-    physical = min(result["bound"] / (hosts * capacity), Fraction(hosts - 1, hosts))
+    if component_conservation:
+        physical = sum((min(Fraction(component["bound"]) / capacity,
+                            Fraction(len(component["hosts"]) - 1))
+                        for component in result["components"]), Fraction()) / hosts
+    else:
+        physical = min(result["bound"] / (hosts * capacity), Fraction(hosts - 1, hosts))
     bound = physical + Fraction(roundoff)
     stored = nextafter(float(bound), float("inf"))
     if not isfinite(stored):
@@ -122,13 +136,15 @@ def _stored_graph_gain_bound(result, vm_count, hosts, capacity, horizon, demand_
 
 
 def stored_action_gain_bounds(incumbent, aligned_candidate, capacity, *, horizon,
-                              demand_upper=1, exact_component_limit=18):
+                              demand_upper=1, exact_component_limit=18,
+                              component_conservation=True):
     """Predeclared (J, V, R, raw) bounds for a frozen physical action.
 
     Only hosts incident to a moved VM can change Boolean overload projections.
     Each stored Boolean ratio contributes at most 2**-53 absolute rounding, so
     two paired ratios add at most 2**-52. The raw coordinate combines the
-    migration cut and conserved-capacity envelopes with its replay allowance.
+    component migration cuts and conserved-capacity envelopes with its replay
+    allowance. ``component_conservation=False`` retains the global-cap control.
     """
     graph = migration_cut_bound(incumbent, aligned_candidate, demand_upper,
                                 exact_component_limit=exact_component_limit)
@@ -150,7 +166,8 @@ def stored_action_gain_bounds(incumbent, aligned_candidate, capacity, *, horizon
     if Fraction(stored_ratio) < ratio:
         stored_ratio = nextafter(stored_ratio, float("inf"))
     raw = _stored_graph_gain_bound(graph, len(incumbent), hosts,
-                                   capacity, horizon, demand_upper)
+                                   capacity, horizon, demand_upper,
+                                   component_conservation=component_conservation)
     return {"gain_bounds": (1., stored_ratio, stored_ratio, raw),
             "touched_hosts": touched, "touched_fraction": len(touched) / hosts,
             "graph": graph}

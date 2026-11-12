@@ -9,10 +9,10 @@ import pytest
 import run_frozen_fresh as study
 
 
-SOURCE = Path(__file__).resolve().parents[1] / "results/icde2027_shared_streaming"
+SOURCE = Path(__file__).resolve().parents[1] / "data/fresh_actions"
 
 
-def test_original_population_is_complete_and_new_runner_does_not_require_lost_arrays():
+def test_fixed_action_population_is_complete_and_does_not_require_saved_evidence_arrays():
     plan, records = study.load_contracts(SOURCE)
     assert len(records) == 96
     assert Counter(row["law"] for row in records) == dict.fromkeys(plan["scene_laws"], 32)

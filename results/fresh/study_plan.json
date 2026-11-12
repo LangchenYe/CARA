@@ -1,0 +1,620 @@
+{
+  "source": "data/fresh_actions",
+  "source_study": {
+    "phase": "validation",
+    "validation_environments": [
+      {
+        "law": "complementary",
+        "seed": 246001
+      },
+      {
+        "law": "complementary",
+        "seed": 246002
+      },
+      {
+        "law": "complementary",
+        "seed": 246003
+      },
+      {
+        "law": "complementary",
+        "seed": 246004
+      },
+      {
+        "law": "complementary",
+        "seed": 246005
+      },
+      {
+        "law": "complementary",
+        "seed": 246006
+      },
+      {
+        "law": "complementary",
+        "seed": 246007
+      },
+      {
+        "law": "complementary",
+        "seed": 246008
+      },
+      {
+        "law": "complementary",
+        "seed": 246009
+      },
+      {
+        "law": "complementary",
+        "seed": 246010
+      },
+      {
+        "law": "complementary",
+        "seed": 246011
+      },
+      {
+        "law": "complementary",
+        "seed": 246012
+      },
+      {
+        "law": "complementary",
+        "seed": 246013
+      },
+      {
+        "law": "complementary",
+        "seed": 246014
+      },
+      {
+        "law": "complementary",
+        "seed": 246015
+      },
+      {
+        "law": "complementary",
+        "seed": 246016
+      },
+      {
+        "law": "complementary",
+        "seed": 246017
+      },
+      {
+        "law": "complementary",
+        "seed": 246018
+      },
+      {
+        "law": "complementary",
+        "seed": 246019
+      },
+      {
+        "law": "complementary",
+        "seed": 246020
+      },
+      {
+        "law": "complementary",
+        "seed": 246021
+      },
+      {
+        "law": "complementary",
+        "seed": 246022
+      },
+      {
+        "law": "complementary",
+        "seed": 246023
+      },
+      {
+        "law": "complementary",
+        "seed": 246024
+      },
+      {
+        "law": "complementary",
+        "seed": 246025
+      },
+      {
+        "law": "complementary",
+        "seed": 246026
+      },
+      {
+        "law": "complementary",
+        "seed": 246027
+      },
+      {
+        "law": "complementary",
+        "seed": 246028
+      },
+      {
+        "law": "complementary",
+        "seed": 246029
+      },
+      {
+        "law": "complementary",
+        "seed": 246030
+      },
+      {
+        "law": "complementary",
+        "seed": 246031
+      },
+      {
+        "law": "complementary",
+        "seed": 246032
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247001
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247002
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247003
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247004
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247005
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247006
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247007
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247008
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247009
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247010
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247011
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247012
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247013
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247014
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247015
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247016
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247017
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247018
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247019
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247020
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247021
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247022
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247023
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247024
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247025
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247026
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247027
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247028
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247029
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247030
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247031
+      },
+      {
+        "law": "bursty_common",
+        "seed": 247032
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248001
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248002
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248003
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248004
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248005
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248006
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248007
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248008
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248009
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248010
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248011
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248012
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248013
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248014
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248015
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248016
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248017
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248018
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248019
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248020
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248021
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248022
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248023
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248024
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248025
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248026
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248027
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248028
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248029
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248030
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248031
+      },
+      {
+        "law": "weak_complementarity",
+        "seed": 248032
+      }
+    ],
+    "methods": [
+      "CARA",
+      "Swap",
+      "Broad",
+      "Anneal",
+      "Joint-SA",
+      "Best-seed",
+      "No-batch",
+      "No-footprint"
+    ],
+    "search_config": {
+      "cpu_limit": 2.0,
+      "top_p": 16,
+      "mutable_limit": 8,
+      "broad_fraction": 0.25,
+      "broad_batch": 32,
+      "migration_fraction": 0.2,
+      "diagnostic": false,
+      "sketch_preview": false,
+      "score_mode": "gain",
+      "mode": "cara",
+      "objective_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "selection_guard_names": [
+        "J",
+        "V",
+        "VR",
+        "raw",
+        "VS",
+        "PAR"
+      ],
+      "frontier_fraction": 0.25,
+      "frontier_seed": true,
+      "projected_views": "auto",
+      "archive_mode": "balanced",
+      "seed_schedule": "coverage",
+      "anneal_temperature_fraction": 0.01,
+      "shared_queries": true,
+      "batch_queries": true,
+      "record_seed_assignments": false,
+      "record_query_paths": "seed0",
+      "selection_dispersion": 0.0,
+      "query_cache_views": 2048,
+      "query_cache_bytes": 33554432,
+      "query_batch_values": 1048576
+    },
+    "base_environment_law": {
+      "vms": 48,
+      "horizon": 8,
+      "capacity": 1.0,
+      "phase_groups": 4,
+      "mean_range": [
+        0.15,
+        0.23
+      ],
+      "amplitude_range": [
+        0.03,
+        0.09
+      ],
+      "common_loading_range": [
+        0.015,
+        0.035
+      ],
+      "group_loading_range": [
+        0.04,
+        0.1
+      ],
+      "idiosyncratic_scale_range": [
+        0.015,
+        0.035
+      ],
+      "factor_ar": 0.55,
+      "groups": "independently permuted balanced phase and shock groups",
+      "nonnegativity": "clip the sampled Gaussian demand at zero"
+    },
+    "scene_laws": {
+      "complementary": {
+        "amplitude_multiplier": 1.0,
+        "common_multiplier": 1.0,
+        "group_multiplier": 1.0,
+        "burst_probability": 0.0,
+        "burst_amplitude": [
+          0.0,
+          0.0
+        ]
+      },
+      "bursty_common": {
+        "amplitude_multiplier": 1.0,
+        "common_multiplier": 3.0,
+        "group_multiplier": 1.25,
+        "burst_probability": 0.12,
+        "burst_amplitude": [
+          0.1,
+          0.25
+        ]
+      },
+      "weak_complementarity": {
+        "amplitude_multiplier": 0.1,
+        "common_multiplier": 2.0,
+        "group_multiplier": 0.25,
+        "burst_probability": 0.0,
+        "burst_amplitude": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "roles": {
+      "fit": 11,
+      "build": 12,
+      "selection": 13,
+      "proposal": 14,
+      "certification": 15,
+      "evaluation": 16
+    },
+    "counts": {
+      "fit": 128,
+      "build": 64,
+      "selection": 128,
+      "certification": 8192,
+      "evaluation": 16384
+    },
+    "fresh_metrics": [
+      "J",
+      "V",
+      "R",
+      "raw_fixed_H"
+    ],
+    "native_metrics": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "margins": [
+      0.01,
+      0.01,
+      0.0,
+      0.001
+    ],
+    "anchor": "R",
+    "minimum_anchor_gain": 0.005,
+    "alpha": 0.05,
+    "primary_cap": 8192,
+    "inspection_batch": 32,
+    "replay_batch": 32,
+    "fixed_caps": [
+      2048,
+      4096,
+      8192
+    ],
+    "sampling": "Separate seeded streams for common, group, noise, burst occurrence and magnitude. Consecutive scene prefixes are invariant to batch partition. Roles are distinct; scenes are conditionally iid.",
+    "timing": "Every inspected paired batch is generated and replayed on demand. Fixed caps use the same 32-scene replay shape but inspect evidence only at the cap. Total CPU includes acquisition, replay and exact statistical arithmetic; action bounds are separately timed.",
+    "controls": "No-footprint reuses CARA's frozen candidate and changes only V/R supports to 1; other named controls run their own predeclared search before certification."
+  },
+  "contracts": 96,
+  "selected": 90,
+  "no_action_fallbacks": 6,
+  "search_rerun": false,
+  "arms": {
+    "CARA": [
+      "graph",
+      8192,
+      32
+    ],
+    "NoComponent": [
+      "no_component",
+      8192,
+      32
+    ],
+    "NoGraph": [
+      "count",
+      8192,
+      32
+    ],
+    "NoBoolean": [
+      "no_boolean",
+      8192,
+      32
+    ],
+    "Global": [
+      "global",
+      8192,
+      32
+    ],
+    "Fixed2048": [
+      "graph",
+      2048,
+      2048
+    ],
+    "Fixed4096": [
+      "graph",
+      4096,
+      4096
+    ],
+    "Fixed8192": [
+      "graph",
+      8192,
+      8192
+    ]
+  },
+  "support_variants": {
+    "CARA": "Component-wise directed-cut/conservation raw bound; changed-host Boolean bounds.",
+    "NoComponent": "Same directed cuts and changed-host Boolean bounds; one global conservation cap.",
+    "NoGraph": "Moved-count raw bound with global conservation cap; changed-host Boolean bounds.",
+    "NoBoolean": "Same component-wise raw bound as CARA; unit Boolean bounds.",
+    "Global": "Global conservation raw cap and unit Boolean bounds.",
+    "Fixed2048/4096/8192": "Same bounds as CARA; inspection only at the stated fixed cap."
+  },
+  "repetitions": 3,
+  "keep_evaluation_arrays": false,
+  "population_support": {
+    "demand_interval": [
+      0.0,
+      1.0
+    ],
+    "source": "SceneStream.next applies np.clip(values, 0., 1.) to every generated scene; this fixed population bound is not estimated from observed samples."
+  },
+  "execution": "All arms regenerate their actual 48-VM iid scene prefixes and use identical fused canonical paired queries plus native directed-evidence evaluation with exact fallback. Complete support, reader construction, generation, replay and evidence CPU are timed; common kernel compilation and immutable environment construction are separate.",
+  "verification": "All 8192 certification loss rows per selected action are independently reconstructed and byte-compared with native losses. Every arm's full semantic result is compared with the Decimal-filter/exact-integer-fallback array oracle outside timing. All 16384 independent Evaluation rows are regenerated for each of 96 environments, including six fallbacks.",
+  "statistics": "One action, support and thresholds frozen before fresh evidence. Conditional iid laws are synthetic controls; no iid or future-law claim is attached to overlapping historical trace windows. Repetitions reuse prefixes for CPU measurements and are not independent statistical trials."
+}

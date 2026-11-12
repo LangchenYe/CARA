@@ -99,7 +99,7 @@ def test_forecast_views_preserve_capacity_predicate_at_boundaries_and_eviction()
 
 
 def test_complete_fixed_search_path_keeps_retained_keys_and_selected_action():
-    from benchmark_revised_execution import result_signature
+    from execution_signatures import result_signature
     rng = np.random.default_rng(91731)
     forecast = np.full((24, 8), .18)
     from cara.repair import ffd
@@ -118,7 +118,7 @@ def test_complete_fixed_search_path_keeps_retained_keys_and_selected_action():
 
 def test_feedback_allocator_replays_recorded_costs_across_execution_plans():
     from benchmark_query_engine import _run_path
-    from benchmark_revised_execution import result_signature
+    from execution_signatures import result_signature
     from cara.repair import ffd
     rng = np.random.default_rng(4017)
     forecast = np.full((24, 8), .18)

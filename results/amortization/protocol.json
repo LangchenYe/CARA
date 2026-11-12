@@ -1,0 +1,103 @@
+{
+  "sources": [
+    "azure2019"
+  ],
+  "prefixes": [
+    1,
+    4,
+    16,
+    64,
+    128
+  ],
+  "width": 8,
+  "plans": [
+    "family_only",
+    "family_cost_gate",
+    "sparse",
+    "no_seed_index",
+    "no_bound_views",
+    "indexed"
+  ],
+  "config": {
+    "cpu_limit": 2.0,
+    "top_p": 16,
+    "mutable_limit": 12,
+    "broad_fraction": 0.25,
+    "broad_batch": 32,
+    "migration_fraction": 0.2,
+    "diagnostic": false,
+    "sketch_preview": false,
+    "score_mode": "gain",
+    "mode": "cara",
+    "objective_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "selection_guard_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "frontier_fraction": 0.5,
+    "frontier_seed": true,
+    "projected_views": "auto",
+    "archive_mode": "balanced",
+    "seed_schedule": "coverage",
+    "anneal_temperature_fraction": 0.01,
+    "shared_queries": true,
+    "batch_queries": true,
+    "record_seed_assignments": false,
+    "record_query_paths": "seed0",
+    "selection_dispersion": 0.0,
+    "query_cache_views": 2048,
+    "query_cache_bytes": 33554432,
+    "query_batch_values": 1048576,
+    "family_execution": "certified",
+    "family_forecast_strategy": "leaf",
+    "family_score_strategy": "leaf",
+    "family_score_min_hosts": 128,
+    "family_score_min_leaves": 32,
+    "family_migration_reuse": true,
+    "frontier_engine": "swap",
+    "frontier_objective": "joint",
+    "family_factor_matching": true,
+    "family_defer_physical": true,
+    "family_matching_backend": "compiled",
+    "family_unique_physical": true,
+    "family_unique_physical_min_hosts": 16,
+    "family_bootstrap_bounds": true,
+    "family_progressive_batch": 16,
+    "family_seed_compilation": true,
+    "family_bound_views": true,
+    "family_metric_cascade": true,
+    "family_subset_views": true,
+    "family_structural_bound_gate": true,
+    "family_bound_work_min": 192,
+    "family_compiled_bounds": true,
+    "family_staged_acquisition": true
+  },
+  "repetitions": 3,
+  "memory_prefixes": [
+    1,
+    128
+  ],
+  "memory_plans": [
+    "family_only",
+    "indexed"
+  ],
+  "reference_plan": "no_score",
+  "seed": "Feasible full-span one-resident-per-host cycle; original incumbent remains the movement reference",
+  "query_schedule": "One fixed sequence of max(prefixes) distinct uniformly spread host pairs; all smaller runs use exact prefixes",
+  "correctness": "One full sequence per plan checked against an exhaustive-profile reference, independent NumPy profiles, dense assignment once per count class, every excluded leaf, and every retained rich record; each measured prefix is checked against that sequence",
+  "timing": "Fresh query session per prefix and serial rotated trial. Seed-index and bound-view construction are charged inside each session. All source loading, immutable panel construction, seed construction, correctness observers, garbage collection and output comparison are outside measurement",
+  "memory_scope": "Separate tracemalloc probes after source/panel/forecast/seed exist: incremental Python and NumPy allocations, not process RSS or untracked solver allocations",
+  "scope": "Complete-source what-if query execution under controlled connected overlap; not an observed production placement",
+  "smoke": false
+}

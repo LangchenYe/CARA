@@ -1,0 +1,232 @@
+{
+  "contexts": [
+    [
+      8,
+      16,
+      8,
+      726041
+    ],
+    [
+      8,
+      16,
+      64,
+      726042
+    ],
+    [
+      8,
+      64,
+      8,
+      726043
+    ],
+    [
+      8,
+      64,
+      64,
+      726044
+    ],
+    [
+      8,
+      128,
+      8,
+      726045
+    ],
+    [
+      8,
+      128,
+      64,
+      726046
+    ],
+    [
+      32,
+      16,
+      8,
+      726047
+    ],
+    [
+      32,
+      16,
+      64,
+      726048
+    ],
+    [
+      32,
+      64,
+      8,
+      726049
+    ],
+    [
+      32,
+      64,
+      64,
+      726050
+    ],
+    [
+      32,
+      128,
+      8,
+      726051
+    ],
+    [
+      32,
+      128,
+      64,
+      726052
+    ],
+    [
+      64,
+      16,
+      8,
+      726053
+    ],
+    [
+      64,
+      16,
+      64,
+      726054
+    ],
+    [
+      64,
+      64,
+      8,
+      726055
+    ],
+    [
+      64,
+      64,
+      64,
+      726056
+    ],
+    [
+      64,
+      128,
+      8,
+      726057
+    ],
+    [
+      64,
+      128,
+      64,
+      726058
+    ],
+    [
+      128,
+      16,
+      8,
+      726059
+    ],
+    [
+      128,
+      16,
+      64,
+      726060
+    ],
+    [
+      128,
+      64,
+      8,
+      726061
+    ],
+    [
+      128,
+      64,
+      64,
+      726062
+    ],
+    [
+      128,
+      128,
+      8,
+      726063
+    ],
+    [
+      128,
+      128,
+      64,
+      726064
+    ]
+  ],
+  "config": {
+    "cpu_limit": 2.0,
+    "top_p": 16,
+    "mutable_limit": 12,
+    "broad_fraction": 0.25,
+    "broad_batch": 32,
+    "migration_fraction": 0.2,
+    "diagnostic": false,
+    "sketch_preview": false,
+    "score_mode": "gain",
+    "mode": "cara",
+    "objective_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "selection_guard_names": [
+      "J",
+      "V",
+      "VR",
+      "raw",
+      "VS",
+      "PAR"
+    ],
+    "frontier_fraction": 0.5,
+    "frontier_seed": true,
+    "projected_views": "auto",
+    "archive_mode": "balanced",
+    "seed_schedule": "coverage",
+    "anneal_temperature_fraction": 0.01,
+    "shared_queries": true,
+    "batch_queries": true,
+    "record_seed_assignments": false,
+    "record_query_paths": "seed0",
+    "selection_dispersion": 0.0,
+    "query_cache_views": 2048,
+    "query_cache_bytes": 33554432,
+    "query_batch_values": 1048576,
+    "family_execution": "certified",
+    "family_forecast_strategy": "leaf",
+    "family_score_strategy": "leaf",
+    "family_score_min_hosts": 0,
+    "family_score_min_leaves": 32,
+    "family_migration_reuse": true,
+    "frontier_engine": "swap",
+    "frontier_objective": "joint",
+    "family_factor_matching": true,
+    "family_defer_physical": true,
+    "family_matching_backend": "compiled",
+    "family_unique_physical": true,
+    "family_unique_physical_min_hosts": 16,
+    "family_bootstrap_bounds": true,
+    "family_progressive_batch": 16,
+    "family_seed_compilation": true,
+    "family_bound_views": true,
+    "family_metric_cascade": true,
+    "family_subset_views": true
+  },
+  "horizon": 8,
+  "mutable_width": 8,
+  "families": 1,
+  "repetitions": 3,
+  "plans": [
+    "indexed",
+    "no_score"
+  ],
+  "thresholds": [
+    128,
+    160,
+    192,
+    224,
+    256,
+    384,
+    512,
+    768
+  ],
+  "seed_scope": "Independent synthetic demands only; no trace data or targets read",
+  "comparison": "Both plans share seed matching; indexed acquires score certificates and no_score evaluates every eligible profile",
+  "policy_evaluation": "Sum per-context median CPU of the selected physical plan. Selection uses only H,T,r_pair and candidate availability; no extra workload data are consulted.",
+  "timing": "Serial rotated trials after independent profile, exclusion and complete-result checks",
+  "measurement_gate": "family_score_min_hosts=0 forces always-acquire in the indexed measurement arm; metadata policy selection is offline"
+}

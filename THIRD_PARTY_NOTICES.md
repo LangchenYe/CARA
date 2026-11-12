@@ -2,7 +2,7 @@
 
 ## CloudCons benchmark data
 
-CARA uses four processed decision-trace objects from **CloudCons: A
+This artifact uses four processed decision-trace objects from **CloudCons: A
 Comprehensive End-to-End Benchmark for Cloud Resource Consolidation** (KDD
 2026 Datasets and Benchmarks Track), by Xiaobin Zhang, Lefei Shen, Mouxiang
 Chen, Zhuo Li, Hongkai Li, Han Fu, Jianling Sun, Xiaoxue Ren, and Chenghao Liu.
@@ -28,3 +28,4 @@ dataset or claim forecasting accuracy from this processing workload.
 ## Dependencies
 
 Python packages retain their upstream licenses. Dependencies are installed separately.
+

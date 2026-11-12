@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "settings": 12,
+  "zero_query_settings": 2,
+  "total_queries": 1418,
+  "all_121_build_windows": true,
+  "summed_median_seconds": {
+    "sql": 1.9043459999999994,
+    "sql_shared": 1.165722000000002,
+    "sql_shared_resident": 1.165722000000002,
+    "full": 0.14118000000000241,
+    "shared": 0.08556300000000006,
+    "shared_resident": 0.08556300000000006
+  },
+  "all_canonical_controls_exact": true,
+  "sql_semantics": "Inspect each recorded arithmetic diagnostic; observed equality is not a universal SQL floating-point guarantee."
+}

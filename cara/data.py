@@ -173,14 +173,15 @@ def burdens_from_loads(loads, capacity, h0=None, kappa=.01, tolerance=1e-12):
 
 
 def trace_intervals(origin, target_horizon=24):
-    """Half-open intervals for the unchanged complete-cohort protocol."""
+    """Half-open intervals for the released chronological decision protocol."""
     if origin < 192 or target_horizon <= 0:
         raise ValueError("The protocol requires 192 historical hours")
-    return {"audit": (origin - 192, origin - 128), "selection": (origin - 128, origin - 96), "build": (origin - 96, origin), "target": (origin, origin + target_horizon)}
+    return {"build": (origin - 192, origin - 64), "selection": (origin - 64, origin - 32), "audit": (origin - 32, origin), "target": (origin, origin + target_horizon)}
 
 
-def trace_panels(dataset, origin, build_rows=24):
+def trace_panels(dataset, origin, build_rows=None):
+    """Read all released historical windows; an explicit cap is optional."""
     trace_intervals(origin)
     if origin + 24 > dataset.min_length:
         raise ValueError("The complete cohort does not cover the target interval")
-    return {"build": dataset.window_panel(origin, 96, 0, max_rows=build_rows), "selection": dataset.window_panel(origin, 128, 96), "audit": dataset.window_panel(origin, 192, 128)}
+    return {"build": dataset.window_panel(origin, 192, 64, max_rows=build_rows), "selection": dataset.window_panel(origin, 64, 32), "audit": dataset.window_panel(origin, 32, 0)}

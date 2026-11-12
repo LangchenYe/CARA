@@ -21,15 +21,19 @@ import subprocess
 import sys
 
 
-STAGES = ("data", "test", "assignment", "physical", "development", "quality", "analysis", "generality",
-          "execution", "queries", "fresh", "calibration", "audit", "sql", "figures")
-QUALITY_METHODS = ("CARA", "Component-CARA", "Compact-CARA", "Eager-CARA", "Joint-SA", "Anneal", "Risk-SA",
+STAGES = ("data", "test", "assignment", "physical", "development", "acquisition_parameters", "bound_gate", "quality", "analysis", "forecast_metrics", "generality",
+          "execution", "queries", "packed_queries", "amortization", "source_repair", "selection_budget", "fresh", "calibration", "audit", "sql", "figures")
+QUALITY_METHODS = ("CARA", "Family-CARA", "Component-CARA", "Compact-CARA", "Eager-CARA", "Joint-SA", "Anneal", "Risk-SA",
                    "Broad", "Swap", "No-residual", "No-frontier", "Best-seed", "Raw-order")
 QUERY_PLANS = ("eager", "compact", "sparse", "no_factorization", "no_late_matching",
-               "no_progressive", "no_score", "no_matching_reuse", "compiled_no_unique_maps", "compiled")
-EXECUTION_PLANS = ("eager", "compact", "components", "compiled_no_unique_maps",
-                   "no_late_matching", "no_forecast", "no_matching_reuse", "compiled")
-GENERALITY_PLANS = ("components", "sparse", "static", "replay", "locked", "compiled_no_unique_maps", "compiled")
+               "no_progressive", "no_bootstrap", "no_score", "no_matching_reuse", "compiled_no_unique_maps", "family_only", "family_cost_gate", "indexed",
+               "no_seed_index", "no_bound_views", "no_metric_cascade", "no_subset_views")
+QUERY_PLANS += ("no_compiled_bounds", "full_uniform", "recomputed_bounds")
+EXECUTION_PLANS = ("eager", "compact", "components", "sparse", "compiled", "family_only")
+GENERALITY_PLANS = ("components", "sparse", "static", "replay", "locked", "compiled_no_unique_maps", "no_bootstrap", "compiled")
+PACKED_PLANS = ("family_only", "family_cost_gate", "indexed", "no_seed_index", "no_bound_views", "no_metric_cascade", "no_subset_views",
+                "sparse", "components", "static", "replay")
+PACKED_PLANS += ("no_compiled_bounds", "full_uniform", "recomputed_bounds")
 HOURLY_SOURCES = ("azure2019", "borg2019_d_trace", "borg2019_e_trace", "huawei2025")
 
 
@@ -87,7 +91,11 @@ def main():
             workers = args.workers or 6
             development_base = destination / "development_base.json"
             raw = json.loads(config.read_text())
-            development_settings = {**raw.get("config", raw), "family_unique_physical": False}
+            development_settings = {**raw.get("config", raw), "family_unique_physical": False,
+                "family_seed_compilation": False, "family_bound_views": False,
+                "family_metric_cascade": False, "family_subset_views": False,
+                "family_structural_bound_gate": False, "family_compiled_bounds": False,
+                "family_staged_acquisition": False}
             print("# Development-only base: " + str(development_base)
                   + " (family_unique_physical=False)", flush=True)
             if not args.dry_run:
@@ -110,21 +118,31 @@ def main():
                     "--methods", specification["method"], "--seeds", *specification["streams"], "--workers", workers,
                     "--output", destination / "runs" / identity)
             run(stage, "family_parameter_study.py", "summarize", "--output", destination)
+        elif stage == "acquisition_parameters":
+            run(stage, "benchmark_acquisition_parameters.py", "--repetitions", args.repetitions,
+                "--output", output / "acquisition_parameters")
+        elif stage == "bound_gate":
+            run(stage, "benchmark_bound_gate.py", "--repetitions", args.repetitions,
+                "--output", output / "bound_gate")
+        elif stage == "forecast_metrics":
+            run(stage, "benchmark_forecast_metrics.py", "--output", output / "forecast_metrics")
         elif stage == "quality":
             run(stage, "run_family_study.py", "--phase", "evaluation", "--config", config,
                 "--methods", *QUALITY_METHODS, "--workers", args.workers or 5, "--output", output / "quality")
             run(stage, "run_family_study.py", "--phase", "evaluation", "--config", config,
                 "--methods", "Scenario-MIP", "--workers", 1, "--output", output / "solver")
         elif stage == "analysis":
-            run(stage, "analyze_family_study.py", "--inputs", output / "quality", output / "solver",
-                "--output", output / "analysis", "--case", "huawei2025", 297, 0)
+            inputs = [output / "quality", output / "solver"] if (args.dry_run or
+                all((output / name / "records.json").exists() for name in ("quality", "solver"))) else [root / "results/quality"]
+            run(stage, "analyze_family_study.py", "--inputs", *inputs,
+                "--output", output / "analysis", "--verify-outcomes", "--case", "huawei2025", 297, 0)
         elif stage == "generality":
             run(stage, "benchmark_family_generality.py", "--config", config, "--sources", *HOURLY_SOURCES,
                 "--kinds", "cycles", "dispersed", "concentrated", "adaptive", "--spans", 8, 32, 128, "full",
                 "--residents", 1, "--plans", *GENERALITY_PLANS, "--families", 8, "--adaptive-families", 16,
-                "--width", 8, "--repetitions", args.repetitions, "--memory", "--output", output / "generality")
+                "--width", 8, "--repetitions", args.repetitions, "--output", output / "generality")
         elif stage == "execution":
-            replay = args.fixed_paths or root / "results/strengthened_execution/frozen_paths.json"
+            replay = args.fixed_paths or root / "data/execution_paths.json"
             replay = replay.resolve() if replay.is_absolute() else root / replay
             target = output / "execution/frozen_paths.json"
             if args.fixed_paths and not args.dry_run and not replay.is_file():
@@ -142,21 +160,44 @@ def main():
         elif stage == "queries":
             run(stage, "benchmark_family_queries.py", "--config", config, "--plans", *QUERY_PLANS,
                 "--sources", *HOURLY_SOURCES, "--repetitions", args.repetitions, "--memory", "--output", output / "queries")
+        elif stage == "selection_budget":
+            run(stage, "benchmark_selection_budget.py", "--repetitions", args.repetitions,
+                "--output", output / "selection_budget")
+        elif stage == "packed_queries":
+            run(stage, "benchmark_trace_packing.py", "--config", config, "--plans", *PACKED_PLANS,
+                "--widths", 8, 12, 16, "--repetitions", args.repetitions, "--output", output / "packed_queries")
+        elif stage == "amortization":
+            run(stage, "benchmark_seed_amortization.py", "--config", config, "--repetitions", args.repetitions,
+                "--plans", "family_only", "family_cost_gate", "sparse", "no_seed_index", "no_bound_views", "indexed",
+                "--memory-plans", "family_only", "indexed",
+                "--output", output / "amortization")
+        elif stage == "source_repair":
+            run(stage, "benchmark_source_repair.py", "--config", config, "--workers", args.workers or 4,
+                "--output", output / "source_repair")
         elif stage == "fresh":
-            run(stage, "run_frozen_fresh.py", "--source", root / "results/icde2027_shared_streaming",
+            run(stage, "run_frozen_fresh.py", "--source", root / "data/fresh_actions",
                 "--repetitions", args.repetitions, "--output", output / "fresh")
         elif stage == "calibration":
             run(stage, "benchmark_fresh_calibration.py", "--laws", "symmetric", "rare_positive", "single_null",
                 "--replicates", 1024, "--start-replica", 0, "--seed", 20271113, "--cap", 1024,
                 "--batch", 32, "--alpha", "1/20", "--confidence", .95, "--output", output / "calibration")
         elif stage == "audit":
-            run(stage, "benchmark_family_audit.py", "--source", output / "quality", "--output", output / "audit")
+            quality = output / "analysis" if (args.dry_run or (output / "analysis/records.json").exists()) else root / "results/quality"
+            run(stage, "benchmark_family_audit.py", "--source", quality, "--output", output / "audit")
         elif stage == "sql":
             run(stage, "benchmark_family_sql.py", "--output", output / "sql")
         elif stage == "figures":
-            run(stage, "draw_strengthened_results.py", "--method", "--parameters", output / "parameters",
-                "--quality", output / "analysis", "--case", output / "analysis", "--queries", output / "queries",
-                "--generality", output / "generality", "--output", output / "figures")
+            def recorded(name, bundled=None):
+                current = output / name
+                return current if current.exists() else root / "results" / (bundled or name)
+
+            run(stage, "draw_results.py", "--method", "--parameters", recorded("parameters"),
+                "--quality", recorded("analysis", "quality"), "--case", recorded("analysis", "quality"),
+                "--queries", recorded("queries"), "--generality", recorded("generality"),
+                "--output", output / "figures")
+            run(stage, "draw_compiled_results.py", "--packed", recorded("packed_queries"),
+                "--amortization", recorded("amortization"), "--selection-budget", recorded("selection_budget"),
+                "--source-repair", recorded("source_repair"), "--output", output / "figures")
 
 
 if __name__ == "__main__":

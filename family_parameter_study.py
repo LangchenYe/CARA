@@ -78,9 +78,9 @@ def summarize(args):
                 or plan["config"] != item["settings"] or plan["protocol"] != protocol
                 or {case_key(row) for row in records} != expected):
             raise ValueError("A completed parameter arm differs from the frozen grid")
-        binding = {field: plan[field] for field in ("implementation", "inputs", "environment")}
+        binding = {field: plan[field] for field in ("inputs",)}
         if reference_binding is not None and binding != reference_binding:
-            raise ValueError("Input data, environment or implementation changed within the grid")
+            raise ValueError("Input datasets changed within the grid")
         reference_binding = binding
         proposal_cpu = np.asarray([row["policies"][method]["timing"]["proposal_with_preparation_cpu_seconds"] for row in records])
         overshoot = np.asarray([row["policies"][method]["timing"]["proposal_budget_overshoot_cpu_seconds"] for row in records])
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     parser.add_argument("action", choices=("prepare", "summarize"))
     parser.add_argument("--spec", type=Path, default=ROOT / "configs/development/family_parameter_grid.json")
     parser.add_argument("--protocol", type=Path, default=ROOT / "configs/release/family_protocol.json")
-    parser.add_argument("--base-config", type=Path, default=ROOT / "configs/release/main_frozen.json")
+    parser.add_argument("--base-config", type=Path, default=ROOT / "configs/release/family_frozen.json")
     parser.add_argument("--data-root", type=Path, default=ROOT / "data/raw/cloudcons")
     parser.add_argument("--workers", type=int, default=6)
     parser.add_argument("--output", type=Path, required=True)

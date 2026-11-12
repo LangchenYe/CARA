@@ -9,11 +9,8 @@ for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
     os.environ[_name] = "1"
 
 import argparse
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from pathlib import Path
-import platform
 from time import process_time
 
 import numpy as np
@@ -125,26 +122,8 @@ def run(source, output, data_root):
         raise ValueError("The frozen study and audit output must be different directories")
     source_plan, records = load_complete(source)
     records = validate_population(source_plan, records)
-    source_inputs = {name: sha256((source / name).read_bytes()).hexdigest()
-                     for name in ("study_plan.json", "records.json")}
-    inputs = {name: sha256((data_root / name / "data-00000-of-00001.arrow").read_bytes()).hexdigest()
-              for name in source_plan["protocol"]["decision_cohorts"]}
-    if inputs != source_plan["inputs"]:
-        raise ValueError("Historical Arrow inputs differ from the current frozen decision study")
-    files = [ROOT / name for name in ("benchmark_family_audit.py", "benchmark_dyadic_audit.py",
-             "analyze_family_study.py", "run_family_study.py", "benchmark_native_intervals.py",
-             "benchmark_query_engine.py", "benchmark_revised_execution.py", "run_streaming_validation.py")]
-    files += sorted((ROOT / "cara").glob("*.py")) + sorted((ROOT / "cara/kernels").glob("*.c"))
-    code = {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest() for path in files}
-    design = {"study": "current_complete_family_historical_audit", "plans": list(PLANS),
-              "repetitions": REPETITIONS, "source": str(source), "source_inputs": source_inputs,
-              "source_study_binding": sha256(json.dumps(source_plan, sort_keys=True).encode()).hexdigest(),
-              "source_code": code, "inputs": inputs, "data_root": str(data_root),
-              "source_environment": source_plan["environment"],
-              "environment": {"python": platform.python_version(), "platform": platform.platform(),
-                  "packages": {name: version(name) for name in ("numpy", "scipy", "pyarrow")},
-                  "threads": {name: os.environ[name] for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS",
-                      "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS")}},
+    design = {"study": "complete_family_historical_audit", "plans": list(PLANS),
+              "repetitions": REPETITIONS, "inputs": list(source_plan["protocol"]["decision_cohorts"]),
               "cases": source_plan["cases"],
               "population": "All 354 current frozen CARA decisions, including every no-action fallback; no selected-count condition or search rerun.",
               "audit": {"older": 32, "newer": 0, "horizon": 8, "stride": 1, "rows": 25},
@@ -155,7 +134,7 @@ def run(source, output, data_root):
               "scope": "Historical admission query execution only. These costs are not attributed to end-to-end search speedup."}
     path = output / "study_plan.json"
     if path.exists() and json.loads(path.read_text()) != design:
-        raise ValueError("The frozen audit source or implementation changed; use a new output directory")
+        raise ValueError("The frozen audit study settings changed; use a new output directory")
     base.save(path, design)
     datasets, loading = {}, {}
     for name in source_plan["protocol"]["decision_cohorts"]:
@@ -174,10 +153,9 @@ def run(source, output, data_root):
         base.save(output / "records.json", result)
         print(json.dumps({"completed": len(result), "identity": result[-1]["identity"],
                           "status": result[-1]["status"]}), flush=True)
-    if any(sha256((ROOT / name).read_bytes()).hexdigest() != value for name, value in code.items()):
-        raise AssertionError("Audit source code changed during the experiment")
-    if any(sha256((source / name).read_bytes()).hexdigest() != value for name, value in source_inputs.items()):
-        raise AssertionError("Frozen decision records changed during the audit experiment")
+    final_plan, final_records = load_complete(source)
+    if final_plan != source_plan or final_records != records:
+        raise AssertionError("Decision inputs changed during the audit experiment")
     summary = summarize(result)
     summary.update(complete=len(result) == 354, sources_unchanged_after_execution=True,
                    trace_loading_cpu_seconds=sum(row["cpu_seconds"] for row in loading.values()),

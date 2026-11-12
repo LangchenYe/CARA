@@ -40,7 +40,7 @@ def test_zero_penalty_keeps_original_selector_and_negative_is_rejected(monkeypat
 
 def test_real_cpu_frontier_replays_with_observed_cooling_and_family_costs():
     from benchmark_query_engine import _run_path
-    from benchmark_revised_execution import result_signature
+    from execution_signatures import result_signature
 
     rng = np.random.default_rng(7719)
     incumbent = tuple(np.repeat(np.arange(4), 3))

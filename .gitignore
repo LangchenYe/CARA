@@ -19,4 +19,5 @@ reproduced/
 .env.*
 !.env.example
 /CARA_ICDE.pdf
-/CARA_ICDE2027_code.zip
+/CARA_ICDE.zip
+/CARA_ICDE_Code.zip

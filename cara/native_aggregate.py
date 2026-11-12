@@ -6,7 +6,7 @@ plan comparisons. This module aggregates load centres, not canonical answers;
 callers must use the certified load/projection allowances and exact refinement.
 """
 import ctypes
-from hashlib import sha256
+from hashlib import blake2b
 import os
 from pathlib import Path
 import platform
@@ -35,7 +35,7 @@ def prepare_native():
     compiler = shutil.which(os.environ.get("CC", "cc"))
     if compiler is None:
         raise RuntimeError("A C99 compiler is required for the optional native aggregate backend")
-    key = sha256(source.read_bytes() + repr((_FLAGS, compiler, platform.machine(), platform.system())).encode()).hexdigest()[:20]
+    key = blake2b(source.read_bytes() + repr((_FLAGS, compiler, platform.machine(), platform.system())).encode()).hexdigest()[:20]
     cache = Path(tempfile.gettempdir()) / "cara-native-aggregate"
     cache.mkdir(exist_ok=True)
     suffix = ".dylib" if platform.system() == "Darwin" else ".so"

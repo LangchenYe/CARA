@@ -1,124 +1,102 @@
 # CARA
 
-Code and experiments for **CARA: Exact Repair Queries with One-Action Certification for Cloud Consolidation**.
+CARA implements the method in *CARA: Exact Local Repair Queries for Cloud Consolidation*. It evaluates workload redistributions under fixed host and migration budgets, reusing movement constraints and load summaries across related queries. Ranking bounds determine which candidates need exact evaluation. A separate selection and admission stage decides whether to apply one physical repair.
 
-CARA evaluates related placement repairs by sharing workload aggregates and migration constraints across a repair family. It compiles a family-wide matching core, reuses assignment updates, and constructs full profiles and physical mappings when they are needed by the retained candidate pool. The selected action is checked separately by historical or fresh-scene certification.
+Each local family shares load-error bounds across its candidates. Large eligible sets can use an exact pilot to establish a ranking cutoff before refining the remaining bounds. Small sets use indicator screening and refined-key scheduling. Exact profiles use the canonical workload reader.
 
-## Setup
+## Installation
 
-The experiments use Python 3.12 on Linux and a C99 compiler, available as `cc` or through `CC`. No GPU is needed. Native kernels compile on first use and are cached in the system temporary directory.
+Use Python 3.12 and a C99 compiler (`cc`, or the compiler selected by `CC`) on Linux or macOS. All experiments run on the CPU.
 
 ```sh
-git clone https://github.com/LangchenYe/CARA.git
-cd CARA
 python3.12 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 python download_data.py
-python -m pytest -q
+python reproduce.py test
 ```
 
-Use `requirements.txt` if you do not need pytest. The downloader retrieves eight public CloudCons Arrow files, about 128 MB. The raw data are downloaded separately. Sources and terms are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md); data options are described in [data/README.md](data/README.md).
+The eight public CloudCons Arrow objects occupy approximately 128 MB under `data/raw`. Dataset attribution and licenses are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-## Run the experiments
+## Reproduction
 
-Run commands from the repository root. The controller settings are in [family_frozen.json](configs/release/family_frozen.json), and the evaluation protocol is in [family_protocol.json](configs/release/family_protocol.json).
+Run commands from this directory. Experiment settings are in `configs/release/family_frozen.json`; chronological data roles and decision cases are in `configs/release/family_protocol.json`.
 
 ```sh
-# Inspect the commands, then run all stages.
-python reproduce.py all --dry-run
 python reproduce.py all
 ```
 
-The driver runs stages in sequence, limits numerical libraries to one thread per worker, and runs Scenario-MIP separately. It writes outputs and logs to `reproduced/`. Run timing experiments without competing numerical jobs.
-
-Stages can also be selected individually:
+The driver writes results under `reproduced/`. Groups can also run separately:
 
 ```sh
-python reproduce.py data test
-python reproduce.py assignment physical development
 python reproduce.py quality analysis
-python reproduce.py generality execution queries
+python reproduce.py queries packed_queries amortization generality execution
+python reproduce.py source_repair
+python reproduce.py acquisition_parameters bound_gate selection_budget forecast_metrics
 python reproduce.py fresh calibration audit sql
 python reproduce.py figures
 ```
 
-`--output` chooses another output directory. `--workers` sets the development and quality worker counts; their defaults are six and five. Timing studies use three serial rotated repetitions, controlled by `--repetitions`.
+Use `--output PATH` for a separate destination and `--workers N` for independent quality cases. Query timings use three serial rotations and one numerical-library thread. Their independent correctness passes and memory probes are outside timed trials. Run these timing groups on an otherwise idle machine.
 
-The development stage evaluates twelve controller configurations on 24 contexts each. It disables unique physical-map recovery to match the executor used in the parameter study. Quality evaluation uses the final configuration: residual width 12, a half-budget swap frontier, direct matching through core size 64, and physical-map recovery from 16 hosts. Calibration stages report their results without changing these settings.
+Runtime dependencies are listed in `requirements.txt`; `requirements-dev.txt` also installs the test dependencies. The C kernels compile automatically when first needed. Compiled binaries are not distributed.
 
-Quality evaluation covers 354 cohort/origin/search-stream contexts, with 14 methods and the FFD reference. The primary and daily views contain 300 and 78 decisions, with 24 shared contexts. The generality study covers 19 settings and 184 repair families. Fixed-operation and hourly-query studies compare eight and ten execution plans, respectively. Fresh certification replays 96 supplied action contracts, including six no-action cases.
+## Experimental protocol
 
-## Included results
+The CloudCons decision protocol contains 354 unique cohort/origin/stream contexts, including the primary 300-context and daily 78-context views. Every method uses the same forecast, physical migration limit, held-out Selection and Audit rules, and native outcome evaluation. Metrics include cases that fall back to the incumbent. The supplied quality records were generated by the included executor, with the family-local control named `Family-CARA`.
 
-The `results/` directory contains the recorded observations and study protocols:
+Query studies use all 12,006 hourly CPU series and every complete eight-hour window in each source's common interval. Controlled placements include connected, concentrated and dispersed overlaps, as well as adaptive query sequences. Heterogeneous placements come from a common forecast-feasible packing; repaired seeds are derived from completed prefix queries. These are trace-derived what-if placements, not observed physical deployment assignments. Widths eight, twelve and sixteen cover complete neighborhoods; actual mutable widths are recorded if a pair contains fewer residents.
 
-| Path under `results/` | Contents |
+The amortization study uses one fixed connected-seed sequence of 128 distinct families and its 1/4/16/64/128-family prefixes. Timings include seed compilation, numerical views, family preparation, eligibility and physical retention. The shared-representation ablations use the same structural acquisition policy; `family_cost_gate` applies that policy to the family-local executor to isolate policy selection from the representation itself. Sparse, component and dynamic-update controls retain their specified assignment engines while sharing the numerical acquisition path.
+
+The numerical compiler and staged acquisition have independent switches, `family_compiled_bounds` and `family_staged_acquisition`. The compiler shares one pair of load-error radii across a family's coarse and full certificates. Staged acquisition uses the retained-pool cutoff, with an exact pilot of at most `P` candidates when needed, and refines survivors in full-key order. The default policy applies staging above 1,024 eligible candidates and uses the fixed structural and sample-selectivity rules.
+
+The numerical controls form a complete two-by-two comparison, while keeping the seed, summary and subset views fixed:
+
+| Plan | Compiled load radii | Staged acquisition |
+| --- | --- | --- |
+| `recomputed_bounds` | Off | Off |
+| `full_uniform` | On | Off |
+| `no_compiled_bounds` | Off | On |
+| `indexed` | On | On |
+
+The recorded `retention_cpu_seconds` includes certificate scheduling inside the progressive iterator, pool retention and deferred physical output. It is not a pure pool-update timer. Complete query CPU includes every stage.
+
+A separate shorter-history study uses every hourly-source VM and all 13 available nonoverlapping daily targets after hour 96, at two CPU budgets and three search streams. Search receives only the pre-origin history, and all policies are frozen before target evaluation. This study supplements the original long-history decision protocol. Native placement and interval metrics, forecast accuracy, decision costs and overruns are retained.
+
+The fresh-source study covers all 96 fixed-action contracts, including six no-action fallbacks. It compares action-dependent supports on independent certification streams and 16,384 Evaluation scenes per environment. Null calibration includes 1,024 streams for each of three laws.
+
+The query and quality studies were run on an Apple M5 CPU with 16 GB memory and one numerical thread. Independent quality contexts may run concurrently; fixed-work query timings run serially. Parameter-development records are stored separately from the evaluation comparisons.
+
+## Supplied results
+
+| Directory under `results/` | Contents |
 | --- | --- |
-| `strengthened_parameters/` | Development grid, records, and rankings |
-| `strengthened_quality/` | Thirteen heuristic and ablation policies on all 354 contexts |
-| `strengthened_solver/` | Scenario-MIP on the same contexts |
-| `strengthened_quality_maps/` | Reruns of CARA, No-frontier, Best-seed, and Raw-order with unique physical-map recovery |
-| `strengthened_analysis/` | Combined metrics, paired differences, and the Huawei case study |
-| `strengthened_generality/` | Seven execution plans across all 19 settings |
-| `strengthened_execution/` | Fixed-operation comparison and replay paths |
-| `strengthened_queries/` | Hourly-source query comparison |
-| `strengthened_audit/` | Historical-admission comparison |
-| `assignment_calibration.json` | Assignment-kernel calibration |
-| `physical_gate_calibration/` | Physical-map recovery calibration |
-| `revision_fresh/` | Fresh-action certification |
-| `revision_null_calibration/` | Null-calibration protocol and 3,072 replicate outcomes |
-| `revision_sql/` | SQL and canonical-query controls |
-| `icde2027_shared_streaming/` | Action inputs for fresh certification |
+| `quality/` | Decision comparisons, native metrics and physical case study |
+| `queries/` | Complete-source query execution and acquisition controls |
+| `packed_queries/` | Heterogeneous packed and repair-derived queries at widths 8/12/16 |
+| `amortization/` | Cold and amortized seed compilation, counters and memory |
+| `source_repair/` | Full-hourly-source shorter-history budgeted decisions |
+| `generality/` | Connected and adaptive query comparison |
+| `execution/` | Identical-operation execution comparison |
+| `parameters/`, `acquisition_parameters/`, `bound_gate/` | Independent controller, batch and cost-policy development |
+| `selection_budget/` | Requested result size and exact data acquisition |
+| `forecast_metrics/` | Common-forecast accuracy |
+| `fresh/`, `calibration/` | Complete fixed-action certification and null checks |
+| `audit/`, `sql/` | Historical admission and relational query controls |
 
-To reconstruct the supplied quality comparison, combine the original quality and solver studies with the four-policy rerun:
+The quality comparison can be reanalyzed without rerunning search:
 
 ```sh
-python analyze_family_study.py \
-  --inputs results/strengthened_quality results/strengthened_solver \
-  --replacement results/strengthened_quality_maps \
-  --output reproduced/analysis --case huawei2025 297 0
+python analyze_family_study.py --inputs results/quality --output reproduced/analysis --verify-outcomes
 ```
 
-A new `reproduce.py quality analysis` run evaluates all heuristic policies with the final configuration and combines them with a separate solver run; it does not need a replacement input. The audit stage normally reads these new quality results. To audit the supplied final CARA actions instead:
+This command recomputes all nine outcome metrics and validates selected and released physical actions from the public data. Vector figures are included in `figures/`. `python reproduce.py figures` uses reproduced study directories when present and otherwise reads the supplied results, so figures can be regenerated without repeating search.
 
-```sh
-python benchmark_family_audit.py \
-  --source results/strengthened_quality_maps \
-  --output reproduced/supplied_audit
-```
+## Implementation and derivations
 
-The execution stage reuses `results/strengthened_execution/frozen_paths.json`. Use `--fixed-paths` to select another replay file.
+`cara/` contains the executor, controller, assignment algorithms and admission procedures. `tests/` checks exact matching, physical ties, canonical profiles, certificate enclosures, pruning, continuation, temporal roles and statistical evidence. `data/execution_paths.json` contains the declared complete-operation paths; `data/fresh_actions/` contains the 96 frozen contracts.
 
-## Figures and derivations
+Detailed proofs are in `theory/derivations.pdf`, with the source in `theory/derivations.tex`.
 
-Plot the included results without rerunning the experiments:
-
-```sh
-python draw_strengthened_results.py --method \
-  --parameters results/strengthened_parameters \
-  --quality results/strengthened_analysis \
-  --case results/strengthened_analysis \
-  --queries results/strengthened_queries \
-  --generality results/strengthened_generality \
-  --output reproduced/figures
-```
-
-The plotting script also exports the plotted observations as JSON and CSV. Repetition ranges describe the recorded timings; they are not confidence intervals.
-
-Mathematical derivations are provided as [PDF](theory/derivations.pdf) and [LaTeX source](theory/derivations.tex).
-
-## Code layout
-
-| Files | Purpose |
-| --- | --- |
-| `cara/matching_core.py` | Family-wide fixed-edge elimination and support decomposition |
-| `cara/compiled_matching.py`, `cara/assignment_replay.py`, `cara/kernels/assignment.c` | Residual-core matching and two-column assignment replay |
-| `cara/family_certificates.py`, `cara/family_score_bounds.py` | Family certificates, score bounds, and physical-map recovery |
-| `cara/query_engine.py`, `cara/kernels/` | Shared query evaluation and native kernels |
-| `cara/refinement.py` | Repair controller and candidate retention |
-| `cara/certification.py`, `cara/migration_envelope.py`, `cara/scene_stream.py` | One-action certification and action-dependent supports |
-| `benchmark_*.py`, `run_*.py` | Experiment entry points |
-| `tests/` | Matching, query, controller, and certificate tests |
-
-Source code is licensed under the [MIT License](LICENSE). Third-party data and dependencies retain their own licenses.
+The source is distributed under [LICENSE](LICENSE).

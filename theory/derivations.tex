@@ -13,13 +13,13 @@
 \newcommand{\act}{\widehat\pi}
 \newcommand{\up}{\operatorname{up}}
 \DeclareMathOperator*{\argmax}{arg\,max}
-\title{CARA: Mathematical Derivations}
+\title{Mathematical Derivations for CARA}
 \author{}
 \date{}
-\hypersetup{pdftitle={CARA: Mathematical Derivations}}
+\hypersetup{pdftitle={Mathematical Derivations for CARA}}
 \begin{document}
 \maketitle
-This note develops the guarantees used by CARA's family query processor and one-action admission rule. The first part establishes exact preservation of the candidate pool under shared workload views, family-wide matching cores, component matching, progressive certified evaluation, and deferred physical assignment. The second part derives the historical census and fresh expected-gain certificate, including the numerical enclosures needed to preserve their decisions.
+We give complete derivations for CARA's query-preservation and one-action admission guarantees. The query results cover family compilation, seed-universal matching, incremental summary views, certified profile acquisition, and deferred physical assignment. The admission results cover finite historical tables and fresh expected gains, including component-conservation supports and numerical enclosures at strict decision boundaries.
 
 \section{Placement, workload profiles, and observation roles}
 Let $N$ workloads occupy $H$ nonempty homogeneous physical hosts with common capacity $C>0$. A placement assigns every workload exactly once. Hosts have no additional affinity or pinning restrictions. The incumbent is $\inc$, and the selected repair is $\act$. A scene $Z_b$ supplies finite nonnegative demands $x_{bit}$ for workload $i\in[N]$ and time $t\in[T]$. Its real-arithmetic load is
@@ -412,7 +412,7 @@ Here each matching selects total overlap at most $N$, rather than $H$ times the 
 \begin{equation}\label{eq:lift-score-gap}
 \sum_{e\in M_*}w(W_e)-\sum_{e\in M}w(W_e)\ge1-2E>0.748>0.
 \end{equation}
-The same matching is the unique optimum of the sum of stored scores. Under the prescribed assignment solver's optimality contract, its deterministic tie rule therefore returns precisely this matching. This argument concerns the stored objective; it does not replace that solver contract with a separate proof of its internal floating-point implementation.
+The same matching is the unique optimum of the sum of stored scores. Under the prescribed assignment solver's optimality contract, its deterministic tie rule therefore returns precisely this matching. The statement assumes that the prescribed assignment solver optimizes its supplied stored-score objective.
 
 Finally, a count signature does not specify which individual residents chose each group, nor the resulting canonical group order. For the particular mask $a$, let $j_a(v)$ be workload $v$'s group in the fixed seed-column order, and let $\gamma_a$ map those group labels to canonical labels by ascending smallest resident identity. Then its canonical assignment is $a(v)=\gamma_a(j_a(v))$. The physical mapping for canonical columns and the resulting aligned assignment are
 \begin{equation}\label{eq:lift-canonical-map}
@@ -491,13 +491,131 @@ The $NBT$ startup term is paid once per immutable session. Across batches, the m
 
 A resident-view cache stores $O(MBT)$ numerical values for $M$ retained memberships, plus their identities. The immutable input uses $O(NBT)$ values. Candidate gathers require $O(QHB)$ values, and grouped materialization is tiled. These storage terms are separate from the compact partition and component-matching structures.
 
+\section{Seed-universal constraint compilation}\label{sec:seed-universal}
+Let $W^0\in\mathbb Z_{\ge0}^{H\times H}$ be a seed overlap matrix. Its row sums $s_i=\sum_kW^0_{ik}$ are incumbent occupancies, and its column sums $t_j=\sum_\ell W^0_{\ell j}$ are seed-group sizes. A repair family edits a set $J$ of $p$ columns, retains every other column, and preserves each row sum. The following construction is independent of the family's mutable workload set.
+
+\begin{lemma}[A seed-universal edge]\label{lem:seed-universal-edge}
+If $w=W^0_{ij}>0$ and $3w\ge s_i+t_j$, then every repair family with $j\notin J$ has an optimum containing $(i,j)$ in each of its overlap matrices. If $3w>s_i+t_j$, every optimum contains the edge.
+\end{lemma}
+\begin{proof}
+For every matrix $W^a$ in such a family, the unchanged target column gives $W^a_{ij}=w$. Row conservation and nonnegativity imply
+\begin{align}
+\max_{k\ne j}W^a_{ik}&\le\sum_{k\ne j}W^a_{ik}=s_i-w,\\
+\max_{\ell\ne i}W^a_{\ell j}&=\max_{\ell\ne i}W^0_{\ell j}\le\sum_{\ell\ne i}W^0_{\ell j}=t_j-w.
+\end{align}
+Thus the certificate gives
+\begin{equation}
+w\ge(s_i-w)+(t_j-w)\ge\max_{k\ne j}W^a_{ik}+\max_{\ell\ne i}W^a_{\ell j}.
+\end{equation}
+If an optimum omits $(i,j)$, its two incident edges are $(i,k)$ and $(\ell,j)$, with $k\ne j$ and $\ell\ne i$. Replacing them by $(i,j)$ and $(\ell,k)$ changes its weight by
+\begin{align}
+\Delta&=w+W^a_{\ell k}-W^a_{ik}-W^a_{\ell j}\\
+&\ge w-(s_i-w)-(t_j-w)=3w-s_i-t_j\ge0.
+\end{align}
+The replacement is a valid permutation and preserves optimality. Strict positivity contradicts optimality of any permutation omitting the edge.
+\end{proof}
+
+\begin{lemma}[A linear first-fit seed compilation]\label{lem:seed-first-fit}
+The graph of positive seed-universal edges is a disjoint union of stars and isolated edges. Any maximal matching $F$ of this graph is maximum-cardinality and can be constructed by one first-fit pass.
+\end{lemma}
+\begin{proof}
+Suppose two certified edges share row $i$, with positive weights $x=W^0_{ij}$ and $y=W^0_{ik}$. Put $r=\sum_{c\notin\{j,k\}}W^0_{ic}$, $c_j=\sum_{\ell\ne i}W^0_{\ell j}$, and $c_k=\sum_{\ell\ne i}W^0_{\ell k}$. Their certificates become
+\begin{equation}
+x\ge y+r+c_j,\qquad y\ge x+r+c_k.
+\end{equation}
+Adding gives $2r+c_j+c_k\le0$. Nonnegativity forces $r=c_j=c_k=0$, and the two inequalities then force $x=y$. Both column endpoints have degree one even in the full positive overlap support. The column-symmetric argument implies that a vertex of degree at least two can be adjacent only to degree-one vertices. Hence every connected certificate component is a star. A maximal matching contains one edge from each nonempty component, which is maximum-cardinality. First-fit over all certificate edges is maximal.
+\end{proof}
+
+For edited columns $J$, define $F_J=\{(i,j)\in F:j\notin J\}$. Its excluded edges have distinct columns, so
+\begin{equation}\label{eq:seed-restored-edges}
+|F\setminus F_J|\le p.
+\end{equation}
+Every edge remaining in $F_J$ is valid independently of the restored edges. Fix its edges sequentially. Previously fixed edges have disjoint endpoints; deleting their rows and columns only decreases competitors, so the exchange proof remains valid at every step. If $R_J,C_J$ are the remaining row and column sets, then
+\begin{equation}\label{eq:seed-specialization}
+\operatorname{opt}(W^a)=\sum_{(i,j)\in F_J}W^0_{ij}+\operatorname{opt}(W^a[R_J,C_J]).
+\end{equation}
+Restoring a selected edge does not require restoring its whole star: $F$ stored only one edge from that star, and no other stored certificate depends on deleting its endpoints.
+
+\subsection{Inheritance of the migration-dependent bound}
+Theorem~\ref{thm:migration-core} already supplies an optimum-alignment witness with retained, outgoing, and incoming counts $d_i,a_i,b_i$, and the bad-row set $B=\{i:d_i<a_i+b_i\}$. Its established integer-count argument gives
+\begin{equation}
+\sum_{i\in B}(s_i+1)\le3m_0,\qquad |B|\le\left\lfloor3m_0/(q+1)\right\rfloor.
+\end{equation}
+The additional step needed for the seed index is that every good witness edge is seed-universal:
+\begin{equation}
+d_i\ge a_i+b_i\quad\Longrightarrow\quad 3d_i\ge(d_i+a_i)+(d_i+b_i)=s_i+t_{\sigma(i)}.
+\end{equation}
+These edges are positive, because $d_i=0$ and $d_i\ge a_i+b_i$ would contradict $s_i\ge q\ge1$. They provide $H-|B|$ disjoint edges in the seed-certificate graph. Its maximum-cardinality first-fit matching therefore has $|F|\ge H-|B|$, without computing the witness alignment. Restoring at most $p$ edited-column edges gives
+\begin{equation}
+k_J=H-|F_J|\le H-(|F|-p)\le p+|B|.
+\end{equation}
+Thus the same dimension guarantee in Eq.~\eqref{eq:core-size-bound} applies to the actual seed-index compiler. The weighted occupancy refinement following Eq.~\eqref{eq:core-weighted-bound} also carries over unchanged: with sorted occupancies $s_{(i)}$ and $b^*=\max\{b:\sum_{i=1}^b(s_{(i)}+1)\le3m_0\}$, one has $k_J\le\min\{H,p+b^*\}$. Family-local envelope peeling can only reduce this dimension further. This inherits the existing theorem rather than requiring a separate migration hypothesis.
+
+The index uses $O(N+H+E)$ time and space for $N$ resident identities and $E$ positive seed overlaps. It stores adjacency maps, cardinalities, resident groups, and a first-fit certificate matching. To specialize a family, it restores at most $p$ matched endpoints and inspects either their incident row supports or the $k_J^2$ residual entries by direct lookup, whichever is smaller. Mutable-origin updates cost $O(wp)$ for width $w$. Thus preparing the local envelope costs $O(k_J^2+wp)$, followed by the previous reduction and assignment algorithms on that local envelope. Shared fixed-edge metadata is a sequence view rather than an $H$-record copy. Rich physical output construction may still traverse those records and all workload identities; this is output work, not a count-query preparation cost.
+
+For strict physical certificates, an unaffected origin row reuses its exact seed alternative maximum. An affected row retains the conservative $s_i-w$ bound, while an unchanged target column reuses its exact other-row maximum. These quantities dominate the corresponding family competitors. Only if every fixed edge is strict and the remaining complete matching is unique may the index recover the rich output. All other cases use the unchanged original matcher and tie policy.
+
+\section{Incremental views for score certificates}\label{sec:bound-view-index}
+The view index stores host projections produced by the unchanged canonical resident reader. They comprise integer-valued activity and overload indicators, native overload frequency, stored mean excess and severity, and peak load. The index uses stable resident slots rather than canonical host positions. Its numeric sum summaries enclose real sums of stored projections; they do not replace the canonical stored host reduction used to produce exact profiles.
+
+\begin{lemma}[Recovering the native overload count]\label{lem:frequency-count-recovery}
+Let $0\le n\le T\le2^{50}$ be integers and $f=\operatorname{RN}(n/T)$ be a stored native host frequency. Then
+\begin{equation}
+\operatorname{rint}\bigl(\operatorname{RN}(fT)\bigr)=n.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $n=0$ both operations are exact. Otherwise $n/T\ge2^{-50}$ is normal and $T$ is exactly represented. With unit roundoff $u=2^{-53}$, write
+\begin{equation}
+f=\frac nT(1+\delta_1),\qquad y=\operatorname{RN}(fT)=n(1+\delta_1)(1+\delta_2),\quad |\delta_1|,|\delta_2|\le u.
+\end{equation}
+There is neither overflow nor subnormal underflow in these operations. Their error satisfies
+\begin{align}
+|y-n|&\le n\bigl(|\delta_1|+|\delta_2|+|\delta_1\delta_2|\bigr)\\
+&\le2^{50}(2u+u^2)=\frac14+2^{-56}<\frac12.
+\end{align}
+Nearest-integer rounding therefore returns $n$ uniquely. The recovered count fits exactly in binary64 and signed 64-bit integers. Under the index guard $HT\le2^{50}$, all partial and complete count sums also fit in signed 64-bit integers.
+\end{proof}
+
+Let $z_{he}\ge0$ denote one stored numeric projection for host $h$ in a fixed scene. A leaf has the exact real interval $[z_{he},z_{he}]$. Each internal node groups at most $f=16$ children. For lower endpoints $l_c$ and upper endpoints $u_c$, its nonnegative reduction enclosures produce
+\begin{equation}
+l_v\le\sum_c l_c,\qquad u_v\ge\sum_c u_c.
+\end{equation}
+These inequalities include the rounding and subnormal allowances of the nonnegative sum enclosure. If each child's interval contains its real stored-projection sum $S_c$, then
+\begin{equation}
+l_v\le\sum_c l_c\le\sum_c S_c=S_v\le\sum_c u_c\le u_v.
+\end{equation}
+Induction over the tree therefore encloses every numeric projection sum at the root independently of slot order. Integer counts are added exactly. Updating a changed leaf and its ancestors reestablishes the same induction; all other nodes keep their valid intervals.
+
+For two edited slots $a,b$, let $L_e,U_e$ be root enclosures and let $z_{ae},z_{be}$ be their exact stored leaf values. Directed arithmetic gives the common-group bounds
+\begin{align}
+L_e^{\mathrm{com}}&=\max\{0,\operatorname{down}(\operatorname{down}(L_e-z_{ae})-z_{be})\}\\
+&\le\sum_{h\notin\{a,b\}}z_{he},\\
+U_e^{\mathrm{com}}&=\max\{0,\operatorname{up}(\operatorname{up}(U_e-z_{ae})-z_{be})\}\\
+&\ge\sum_{h\notin\{a,b\}}z_{he}.
+\end{align}
+Clamping preserves both claims because the target sum is nonnegative. An unrepresentable finite upper enclosure requests the existing exact-refinement fallback; it does not establish an exclusion.
+
+\begin{lemma}[A top-three view for two exclusions]\label{lem:top-three-common}
+Store the three largest leaf peaks and their distinct real slot identities at each node, allowing zero-valued dummy records for small subtrees. Merging child records and keeping their three largest values gives the exact maximum peak outside any two excluded real slots.
+\end{lemma}
+\begin{proof}
+A leaf not in its child's largest three has at least three values no smaller in that child alone and cannot be needed for the parent's largest three. Thus repeated merging retains three largest leaf values at every node. Real slot identities are distinct because disjoint children contain disjoint leaves; dummy zeros may repeat but contribute no positive value. Deleting two real slots can remove at most two of the three retained real records. If a common peak is positive, a retained nonexcluded peak no smaller than it remains; maximality prevents it from exceeding the true common maximum. If every common peak is zero, both the retained eligible maximum and the convention for no remaining hosts are zero. Ties do not affect these conclusions.
+\end{proof}
+
+When the seed changes, equality of complete resident tuples identifies unchanged leaves. New resident groups reuse released slots, their canonical projections are recomputed or retrieved, and only their ancestor nodes are refreshed. Slot reuse does not alter the resident tuple's stored projection, the real-sum induction, or the top-three argument. The current canonical-group-to-slot map selects the correct edited leaves even when canonical host labels shift.
+
+The common-view operation returns independent arrays: integer subtraction, directed numeric subtraction, the filtered peak maximum, and stacked edited loads all allocate snapshots. A family bound reads this view once during construction and retains its own common summaries, mutable observations, and background enclosures. Later slot updates cannot change an earlier family's bounds. Exact retained profiles continue to use the original canonical reduction and are unaffected by the summary tree's order.
+
+For $B$ scenes, the stored tree occupies $O(BH)$ values. Refreshing $r$ changed groups requires their missing canonical projections and at most $O(r\log_f H)$ changed ancestors, with $O(Bf)$ work per refreshed node. After the changed resident tuples have been identified and their canonical projections obtained, updating the tree nodes costs $O(Bfr\log_f H)$ and each two-group common summary costs $O(B)$. Projection cache misses require additional resident-load and time-reduction work. A full new assignment can still require $O(N)$ membership identification; this structural input cost must not be described as logarithmic. These valid common summaries feed the unchanged native-loss lower bounds and optimistic gain keys, so the previous strict-exclusion and Top-$P$ preservation proofs apply without changing the query order or physical tie semantics.
+
 \section{Native-profile certificates for complete residual subtrees}
 \label{sec:family-score-certificates}
 
 \paragraph{Scope.}
 Fix a finite nonnegative binary64 source panel with $B$ scenes and $T$ times, a complete $H$-host seed, two edited host groups, and an ordered mutable set. Every admitted descendant retains exactly $H$ nonempty resident groups. All unchanged groups keep their complete ascending-VM memberships.  A numeric mask has its canonical meaning: zero routes a free VM to the first edited group, and one routes it to the second.  When both fixed backgrounds are empty, the first mutable VM is fixed in the first group, as in the reference search. An aligned interval $[s,s+2^k)$ fixes the high mask bits and leaves the low $k$ bits unresolved.  We bound every complete descendant of this interval, before constructing an $N$-label assignment or its complete profile.
 
-The consumer is a full retained pool using the prescribed balanced relative-gain key.  The bounded consumer is balanced retention. A family containing a globally idle scene uses canonical evaluation, preserving the native $\mathrm{VR}=\mathrm{PAR}=-1$ sentinels. A nonfinite enclosure uses the same fallback.
+The consumer retains the best $P$ repairs under the prescribed balanced relative-gain order. Bounds can order candidates before the pool is full; score exclusion begins only after $P$ distinct exactly evaluated repairs have entered the pool. A family containing a globally idle scene uses canonical evaluation, preserving the native $\mathrm{VR}=\mathrm{PAR}=-1$ sentinels. A nonfinite enclosure uses the same fallback.
 
 \subsection{Nonnegative reduction enclosures}
 
@@ -554,6 +672,65 @@ The real total demand of the two groups is conserved.  Let $S^-_{bt}$ bound this
  \label{eq:family-pair-conservation}
 \end{equation}
 This statement concerns the real sum of the two stored loads.  It remains valid when their resident counts and their canonical column positions change.
+
+\subsection{Factorized mutable-sum certificate views}\label{sec:factorized-sum-certificates}
+The two changed groups repeatedly request sums of subsets of the same ordered mutable residents. These are certificate operands, rather than replacements for the canonical exact load views in Eq.~\eqref{eq:canonical-load}. Let $w$ be the total mutable count and let $b=w-\chi$ be the number of free mask bits, where $\chi\in\{0,1\}$ records the possible symmetry-fixed first resident. Split the free bits into consecutive sets $A$ and $D$ of sizes $a=\lfloor b/2\rfloor$ and $b-a=\lceil b/2\rceil$. The source panel, bit order, symmetry-fixed resident, and background intervals remain fixed throughout this family.
+
+For each half and each scene--time cell, initialize its empty-subset entry to zero. Process its bits in the fixed ascending order. At the step for bit $i$, form one new entry for every subset $S$ of the earlier processed bits:
+\begin{align}
+F_A[\varnothing]&=0,&F_A[S\cup\{i\}]&=\operatorname{RN}(F_A[S]+x_i),\nonumber\\
+F_D[\varnothing]&=0,&F_D[S\cup\{i\}]&=\operatorname{RN}(F_D[S]+x_i).
+\label{eq:half-subset-tables}
+\end{align}
+The recurrence is applied only in this processing order; it does not assign several incompatible floating-point trees to the same subset. Thus each entry is defined exactly once.
+
+For an aligned free-mask interval $[s,s+2^k)$, put $u_k=2^k-1$ and $M=2^b-1$. Its low $k$ bits are unresolved, and alignment gives $s\mathbin{\&}u_k=0$. The mandatory and possible free-resident masks are
+\begin{align}
+M_0^-&=M\mathbin{\oplus}s\mathbin{\oplus}u_k,&M_1^-&=s,\nonumber\\
+M_0^+&=M\mathbin{\oplus}s,&M_1^+&=s\mathbin{\lor}u_k.
+\label{eq:half-subset-range-masks}
+\end{align}
+Indeed, a high bit fixed to zero belongs to the first group, a high bit fixed to one belongs to the second, and each unresolved low bit is allowed in either group. A mandatory mask excludes every unresolved bit, whereas a possible mask includes each bit that can reach that side. Split any requested mask $Q$ into $Q_A=Q\mathbin{\&}(2^a-1)$ and $Q_D=Q\mathbin{\gg}a$. Its stored sum is
+\begin{equation}
+z(Q)=\operatorname{RN}\!\left(F_A[Q_A]+F_D[Q_D]\right).
+\label{eq:half-subset-lookup}
+\end{equation}
+When $\chi=1$, add the fixed first resident to each left-side answer by one further stored addition; it is absent from both half tables. It is never added to the right-side answer.
+
+\begin{theorem}[Valid factorized sum enclosures]\label{thm:factorized-sum-enclosures}
+Assume the nonnegative finite source and numerical domain of Eq.~\eqref{eq:family-positive-tree}. For each finite stored answer $z$ of Eqs.~\eqref{eq:half-subset-tables}--\eqref{eq:half-subset-lookup}, let $S_Q$ be the exact-real sum of its selected mutable residents, including the symmetry-fixed resident when present. Then
+\begin{equation}
+\max\!\left\{0,\frac{z-d_w}{1+\gamma_w}\right\}
+\le S_Q\le\frac{z+d_w}{1-\gamma_w}.
+\label{eq:half-subset-enclosure}
+\end{equation}
+Directed evaluation gives valid endpoints for the mandatory and possible real sums used by the profile certificates.
+\end{theorem}
+\begin{proof}
+Expand a requested table entry into the additions that produced it. Each selected free resident appears once in its half; the halves are disjoint. Joining their roots introduces one addition. If present, the fixed resident is a further disjoint leaf attached to the left-side root. Hence the complete expression is a binary addition tree over $n\le w$ stored nonnegative operands. Initial additions to exact zero do not contribute nonzero rounding error. For $n\ge1$, at most $n-1\le w-1$ additions can be inexact. If $n=0$, its exact and stored sums are both zero.
+
+Applying Eq.~\eqref{eq:family-positive-tree} with the conservative count $w$ gives
+\begin{equation}
+(1-\gamma_w)S_Q-d_w\le z\le(1+\gamma_w)S_Q+d_w.
+\end{equation}
+Since $1-\gamma_w>0$, rearrange its left inequality as $S_Q\le(z+d_w)/(1-\gamma_w)$. Rearranging the right inequality gives $S_Q\ge(z-d_w)/(1+\gamma_w)$; nonnegativity permits clipping this lower endpoint at zero. These are exactly Eq.~\eqref{eq:half-subset-enclosure}. An exact zero answer can use the sharper zero upper endpoint already justified for nonnegative sums. The mandatory set is contained in every completion and the possible set contains every completion. Substitution into the existing resident-bound derivation therefore lower-bounds mandatory load and upper-bounds possible load. The final transfer to canonical resident reductions still uses Eq.~\eqref{eq:family-positive-tree}; the table result is never asserted to have the canonical load's bits.
+\end{proof}
+
+For a leaf, $k=0$ in Eq.~\eqref{eq:half-subset-range-masks}, so $M_0^-=M_0^+$ and $M_1^-=M_1^+$. Mandatory and possible answers may then share one computed array. The strict lookup/add kernel evaluates the same one joining addition, and the optional subsequent fixed-resident addition, directly into each output cell. Vectorizing independent scene--time cells does not reassociate either cell's expression. The enclosure proof is consequently unchanged while intermediate gathered arrays and duplicate leaf products are avoided.
+
+\begin{proposition}[Sum-view work and storage]\label{prop:factorized-sum-work}
+For a family with $b$ free bits, $B$ scenes and $T$ times, the enabled two-half index has $2^{\lfloor b/2\rfloor}+2^{\lceil b/2\rceil}$ rows. Constructing it and answering $q$ range requests uses
+\begin{equation}
+O\!\left((2^{\lceil b/2\rceil}+q)BT\right)
+\label{eq:half-subset-work}
+\end{equation}
+work and $O(2^{\lceil b/2\rceil}BT)$ stored table values, in addition to output workspace.
+\end{proposition}
+\begin{proof}
+The two recurrences form respectively $2^a-1$ and $2^{b-a}-1$ new rows, each by $BT$ additions. Each range supplies at most four side/mode masks. A mask uses two constant-time half indices and one $BT$-cell joining addition, with at most one further $BT$-cell addition for a fixed resident. Thus requests use $O(qBT)$ work. Summing construction and request work yields Eq.~\eqref{eq:half-subset-work}; storing exactly the two half relations gives the stated space. In particular, the construction has no $2^b$-row demand table.
+\end{proof}
+
+Construction is lazy. A fixed request-count rule, depending only on bit width and work already requested within this family, delays it on small queries; a byte budget prevents an oversized table. Before construction, a selector product obtains the same real subset sums through another floating-point tree. Equation~\eqref{eq:family-positive-tree} covers that tree too. The switch can change the tightness of a computed enclosure but not its validity. Consequently the work bound in Proposition~\ref{prop:factorized-sum-work} describes the indexed sum-view path, not a guarantee that every family chooses that path or that the entire repair query avoids identity processing.
 
 \subsection{All six native loss lower bounds}
 
@@ -622,7 +799,7 @@ The upper endpoints give individual edited-peak upper bounds.  A coupled upper b
 \]
 Each unresolved VM belongs to exactly one completed group.  This explains the single occurrence of its peak in the upper bound.  Apply the resident growth factor $1+\gamma_R$ and add $2d_R$ to cover the two stored peak values. Take the smaller of this coupled upper bound and the sum of the individual peak upper bounds.  Add the common real peak-sum upper bound, transfer through the canonical host fold, and divide by $A^-$ using the prescribed rounding. This yields an upper bound $\overline p^+$ on the canonical stored mean peak. Thus $\operatorname{RN}(P^-/\overline p^+)$ is a PAR lower bound whenever the canonical stored mean peak is positive.
 
-The implementation explicitly verifies a positive lower bound for that stored denominator: a nonnegative host sum is at least its largest operand, so $\operatorname{RN}(P^-/A^+)$ lower-bounds the stored mean peak.  Failure to prove strict positivity requests exact refinement.  The native nonpositive- mean sentinel is therefore never replaced by a positive lower loss.
+A positive lower bound for the stored denominator is required: a nonnegative host sum is at least its largest operand, so $\operatorname{RN}(P^-/A^+)$ lower-bounds the stored mean peak.  Failure to prove strict positivity requests exact refinement.  The native nonpositive-mean sentinel is therefore never replaced by a positive lower loss.
 
 \paragraph{Finite-range guard.}
 All endpoint operations must remain finite.  In addition the largest possible stored capacity ratio must not exceed $\mathrm{maxfloat}/(4HT)$, including unchanged groups.  In the stated bounded-count scope, the factor four dominates every positive reduction-growth allowance. This ensures that native excess sums cannot overflow.  Nonfinite gain or quantization intermediates request exact refinement.  These restrictions are conservative sufficient conditions, not claims of maximal supported range.
@@ -651,7 +828,7 @@ The scalar advanced-index selection produces a $B\times E$ column-major array.  
 Packing these same operands in row-major $Q\times E\times B$ order changes only their addresses.  Every $(q,e)$ row has the same sequence of rounded differences, length, unit stride, and reduction tree as the scalar column. Induction over that tree gives the same stored sum; the subsequent division by $B$ is the same operation.  Computing the reference means before packing also preserves their potentially different original strides and reduction tree.  Their saved positive scales therefore give the same final divisions. Thus all finite gains are bitwise identical, including cancellation cases. Nonfinite arithmetic is not converted into a finite certificate.
 \end{proof}
 
-This is an execution-contract statement for the fixed backend, rather than a claim that arbitrary array libraries or reassociated reductions agree. The scalar circuit remains an independent oracle.  The same packed circuit can serve exact candidate scoring and optimistic-key scoring.  Source validation and reference scales may be reused for an immutable query session; family-dependent load checks, idle sentinels, and finite-range guards remain in force.
+The scalar and packed computations use the same reduction trees. This permits the packed circuit to serve both exact candidate scoring and optimistic-key scoring. Reference scales can be shared throughout an immutable query session; family-specific load bounds, idle cases, and finite-range checks are still evaluated for each family.
 
 Multiplication by $2^{40}$, floor, and the conversion of finite results to integer preserve this ordering.  Sorting coordinate values ascending also preserves coordinatewise order: if $a_i\ge b_i$ for every $i$, the $j$th smallest $a$ cannot be less than the $j$th smallest $b$, because that would require at least $j$ entries of $b$ below its own $j$th order statistic. Equivalently, the number of coordinates below any threshold can only decrease when coordinates are increased.  Appending $-m^-$ and $-c^-$ for valid movement-count and cost lower bounds produces a complete lexicographic upper key $K^+$ for every descendant on which those movement bounds are valid. In particular, after exact nonempty-host, forecast and seen filtering, one may take the minimum movement value over the remaining active signature classes. The profile enclosure still covers every complete descendant, but this tighter complete-key bound is asserted only for that active subset.  Every excluded identity and every exclusion witness refers to the same subset.
 
@@ -659,6 +836,591 @@ Let $K_0$ be the worst key of a full balanced retained pool at any point in the 
 
 Every forecast-feasible identity is inserted into the seen set, including a candidate excluded by movement or score. Forecast-ineligible identities are not inserted. Numeric masks retain their prescribed membership meaning, but surviving candidates may be scored in any order. Equal score keys retain the canonical-assignment tie order, independently of arrival. The following results combine these state rules with progressive evaluation and deferred physical matching.
 
+
+\subsection{Compiled load-radius certificates}
+\label{sec:uniform-load-radii}
+
+The preceding resident enclosures combine stored subset sums with background intervals and transfer the results to canonical resident reductions. The same positive-tree and elementary-rounding bounds yield a family-wide absolute load-error budget. Compiling this budget once permits the supported leaf queries to form conservative stored-load endpoints with ordinary binary64 additions and subtractions.
+
+\paragraph{Operands and supported domain.}
+Consider one scene--time cell and one edited side. The scalar argument below applies independently to every such cell. Let $B$ be the exact-real sum of its fixed background residents. The existing outward background calculation supplies finite nonnegative binary64 endpoints
+\begin{equation}
+0\le B_{\rm lo}\le B\le B_{\rm hi}.
+\label{eq:uniform-background}
+\end{equation}
+Let $w$ be the total mutable count, including a symmetry-fixed resident when present, and let $R$ be the total resident count of the two edited seed groups. A requested subset uses at most $w$ mutable operands, and each completed group uses at most $R$ residents. These are conservative counts. Let $S$ denote the exact-real sum of the mutable operands assigned to this side, and let $s$ be the stored subset answer. The existing selector and two-half backends both satisfy the positive-tree contract: selected operands are nonnegative, each selected resident occurs once, and zero--one products introduce no additional nonzero multiplication error. This includes the symmetry-fixed resident; see Eq.~\eqref{eq:family-positive-tree} and Theorem~\ref{thm:factorized-sum-enclosures}.
+
+A finite binary64 upper endpoint for the real sum of all mutable residents in this cell is compiled once:
+\begin{equation}
+0\le S\le\sum_{i\in U}X_i\le S_{\max}.
+\label{eq:uniform-mutable-total}
+\end{equation}
+It is obtained with the existing real-sum upper enclosure. A side that cannot receive some mutable residents may still use this conservative total. Let $C_{\rm can}$ be the binary64 value produced by the prescribed canonical reduction of the completed group's residents; its real operand sum is $B+S$. All counts obey the existing $2^{50}$ bound. Source, reference, capacity, memberships, subset order and background endpoints remain immutable during the family.
+
+\paragraph{Outward coefficients.}
+Write $\operatorname{Up}$ for the implementation's upward evaluation. Every intermediate addition, multiplication or subtraction needed for an upper bound is evaluated upwards; it is insufficient to round only the final total upwards. Let $g_n,\Delta_n$ be the stored growth and additive coefficients of the existing reduction enclosure:
+\begin{equation}
+g_n\ge1+\gamma_n,\qquad \Delta_n\ge d_n,\qquad
+\gamma_n=\frac{\max(n-1,0)u}{1-\max(n-1,0)u},
+\qquad u=2^{-53}.
+\label{eq:uniform-growth}
+\end{equation}
+For $n<2$, $g_n=1$ and $\Delta_n=0$. Define
+\begin{equation}
+\kappa_n=g_n-1.
+\label{eq:uniform-kappa}
+\end{equation}
+This subtraction is exact. The supported count gives $\gamma_n<1/7$, and its upward stored growth lies in $[1,2)$; hence $g_n$ and $1$ satisfy Sterbenz's subtraction condition. In particular $\kappa_n\ge\gamma_n$. The upper growth deviation alone bounds both absolute error directions: for a finite positive-tree result $y$ with exact-real nonnegative operand sum $Q$,
+\begin{equation}
+|y-Q|\le\gamma_nQ+d_n\le\kappa_nQ+\Delta_n.
+\label{eq:uniform-absolute-tree}
+\end{equation}
+Both deviations are therefore covered by the existing positive-tree enclosure.
+
+Compile the following quantities:
+\begin{align}
+E_s&=\operatorname{Up}(\kappa_wS_{\max}+\Delta_w),\nonumber\\
+Q_{\max}&=\operatorname{Up}(B_{\rm hi}+S_{\max}),\nonumber\\
+E_c&=\operatorname{Up}(\kappa_RQ_{\max}+\Delta_R),\nonumber\\
+M&=\operatorname{Up}\!\left(B_{\rm lo}+\operatorname{Up}(S_{\max}+E_s)\right),\nonumber\\
+E_a&=\operatorname{Up}(uM+\eta),\qquad\eta=2^{-1074},\nonumber\\
+E_b&=\operatorname{Up}(B_{\rm hi}-B_{\rm lo}),\nonumber\\
+\rho_{\rm lo}&=\operatorname{Up}\!\left(\operatorname{Up}(E_s+E_c)+E_a\right),\nonumber\\
+\rho_{\rm hi}&=\operatorname{Up}(\rho_{\rm lo}+E_b),\nonumber\\
+Z_{\max}&=\operatorname{Up}(M+\rho_{\rm hi}).
+\label{eq:uniform-budgets}
+\end{align}
+All accepted fields are finite and nonnegative. In computing $E_b$, the exact difference is nonnegative by Eq.~\eqref{eq:uniform-background}; an ordinary subtraction followed by its next representable upper value is a valid upper endpoint even when represented as addition of $-B_{\rm lo}$. This may give a positive subnormal upper endpoint for a zero width, which is conservative. Upper multiplication retains the existing positive-underflow treatment. Both $u$ and $\eta$ are exactly representable.
+
+The center-addition budget $E_a$ uses the elementary rounding bound. We first rule out overflow and then justify its $uM+\eta$ allowance.
+
+\paragraph{Acceptance and first overflow.}
+Let $F$ be the largest finite binary64 value. The fast radius is accepted only when every compiled field is finite and
+\begin{equation}
+Z_{\max}\le F/8.
+\label{eq:uniform-domain}
+\end{equation}
+The factor supplies ample representable margin. Importantly, the check controls the center upper endpoint \emph{plus} the upper radius; a check of the radius alone would not suffice. Any unsupported count, nonfinite compilation or failed guard selects the original outward-enclosure path.
+
+First consider subset acquisition. The compiled inequalities imply
+\begin{equation}
+S_{\max}+E_s\le M\le Z_{\max}\le F/8.
+\label{eq:uniform-subset-margin}
+\end{equation}
+Suppose a supported nonnegative subset reduction had a first overflowing addition. Its child results and all preceding operations are finite. Expanding those finite subtrees and leaving the root unrounded gives no more potentially inexact operations than the existing $w$-operand positive-tree bound. If the root's true operand sum is $S_{\rm root}\le S_{\max}$, its exact pre-rounding value is therefore at most
+\begin{equation}
+(1+\gamma_w)S_{\rm root}+d_w
+\le S_{\max}+\kappa_wS_{\max}+\Delta_w
+\le S_{\max}+E_s
+\le F/8.
+\end{equation}
+Such a value cannot overflow when rounded, a contradiction. Multiplication by a stored zero or one cannot be the first overflow either. The same reasoning covers all two-half table entries, since each uses a subset of the same source. Thus $s$ is finite, and the positive-tree bound is now applicable without an unproved finiteness premise:
+\begin{equation}
+|s-S|\le E_s,\qquad 0\le s\le S_{\max}+E_s.
+\label{eq:uniform-subset-error}
+\end{equation}
+
+Next, the upward compilation and the background-width inequality give
+\begin{align}
+Z_{\max}
+&\ge M+\rho_{\rm hi}\nonumber\\
+&\ge B_{\rm lo}+S_{\max}+2E_s+E_c+E_a+E_b\nonumber\\
+&\ge B_{\rm hi}+S_{\max}+E_c.
+\label{eq:uniform-canonical-margin}
+\end{align}
+If the canonical resident reduction had a first overflowing addition, the exact value formed from its finite predecessors would be at most
+\begin{equation}
+(1+\gamma_R)(B_{\rm hi}+S_{\max})+d_R
+\le B_{\rm hi}+S_{\max}+E_c
+\le Z_{\max}\le F/8.
+\end{equation}
+This again contradicts overflow. The argument uses the nonnegative operand structure, not a property of arbitrary signed reductions. Consequently the canonical load is finite and
+\begin{equation}
+|C_{\rm can}-(B+S)|\le E_c.
+\label{eq:uniform-canonical-error}
+\end{equation}
+
+For the center, Eq.~\eqref{eq:uniform-subset-error} gives
+\begin{equation}
+0\le B_{\rm lo}+s\le B_{\rm lo}+S_{\max}+E_s\le M\le F/8.
+\end{equation}
+Thus the ordinary operation
+\begin{equation}
+p=\operatorname{RN}(B_{\rm lo}+s)
+\label{eq:uniform-center}
+\end{equation}
+is finite. We may now apply the existing elementary error model:
+\begin{equation}
+|p-(B_{\rm lo}+s)|
+\le u(B_{\rm lo}+s)+\eta
+\le uM+\eta
+\le E_a.
+\label{eq:uniform-addition-error}
+\end{equation}
+In addition, $M$ is itself binary64. Monotonicity yields
+\begin{equation}
+0\le p=\operatorname{RN}(B_{\rm lo}+s)\le\operatorname{RN}(M)=M.
+\label{eq:uniform-point-max}
+\end{equation}
+The upper endpoint's exact pre-rounding value is at most $M+\rho_{\rm hi}\le Z_{\max}\le F/8$. Both $p$ and $\rho_{\rm lo}$ are at most $Z_{\max}$, so their exact difference lies in $[-Z_{\max},Z_{\max}]$. Both endpoint operations are finite. Nonfinite arithmetic encountered while attempting an unsuccessful compilation causes fallback and is never used as a valid radius.
+
+\paragraph{Asymmetric enclosure.}
+Using exact-real arithmetic on the displayed stored operands, write
+\begin{equation}
+p-C_{\rm can}
+=\bigl(p-(B_{\rm lo}+s)\bigr)+(s-S)+(B_{\rm lo}-B)
+ +\bigl(B+S-C_{\rm can}\bigr).
+\label{eq:uniform-error-decomposition}
+\end{equation}
+The background contribution satisfies $B_{\rm lo}-B\le0$, so Eqs.~\eqref{eq:uniform-subset-error}, \eqref{eq:uniform-canonical-error} and \eqref{eq:uniform-addition-error} imply
+\begin{align}
+p-C_{\rm can}&\le E_a+E_s+E_c\le\rho_{\rm lo},\\
+C_{\rm can}-p&\le E_c+(B-B_{\rm lo})+E_s+E_a
+ \le E_c+E_b+E_s+E_a\le\rho_{\rm hi}.
+\label{eq:uniform-asymmetric}
+\end{align}
+Hence, as real inequalities,
+\begin{equation}
+p-\rho_{\rm lo}\le C_{\rm can}\le p+\rho_{\rm hi}.
+\label{eq:uniform-real-interval}
+\end{equation}
+Omitting $E_b$ from the lower radius is valid specifically because the center uses the lower background endpoint.
+
+The runtime endpoints are
+\begin{equation}
+L=\max\{0,\operatorname{RN}(p-\rho_{\rm lo})\},
+\qquad U=\operatorname{RN}(p+\rho_{\rm hi}).
+\label{eq:uniform-runtime}
+\end{equation}
+They use ordinary round-to-nearest operations. Soundness does not require round-to-nearest to act as directed rounding. The target $C_{\rm can}$ is a representable binary64 value, so monotonicity and idempotence give
+\begin{align}
+\operatorname{RN}(p-\rho_{\rm lo})
+ &\le\operatorname{RN}(C_{\rm can})=C_{\rm can},\\
+\operatorname{RN}(p+\rho_{\rm hi})
+ &\ge\operatorname{RN}(C_{\rm can})=C_{\rm can}.
+\label{eq:uniform-representable-target}
+\end{align}
+Clipping the lower result at zero preserves its inequality because $C_{\rm can}\ge0$. Therefore $L\le C_{\rm can}\le U$. This proof includes subnormal endpoints and underflow to zero; the additive $\eta$ allowances were compiled already. It would not justify the same ordinary endpoints for a general unrepresentable real target.
+
+Once $p$ is formed, Eq.~\eqref{eq:uniform-runtime} requires two ordinary arithmetic endpoint operations and a lower clamp, without per-cell nextafter. Forming $p$ itself is one ordinary addition to the stored subset answer. Subset acquisition and subsequent profile-envelope work remain.
+
+\begin{proposition}[Compiled stored-load enclosure]\label{prop:uniform-load-enclosure}
+For a supported leaf whose compiled fields satisfy Eq.~\eqref{eq:uniform-domain}, the ordinary endpoints in Eq.~\eqref{eq:uniform-runtime} contain its canonical stored resident load in every scene--time cell. Unsupported families and nonleaf batches retain the original outward-enclosure path.
+\end{proposition}
+\begin{proof}
+The first-overflow argument proves finite subset, canonical, center and endpoint operations. Equations~\eqref{eq:uniform-subset-error}, \eqref{eq:uniform-canonical-error} and \eqref{eq:uniform-addition-error} imply the asymmetric real interval in Eq.~\eqref{eq:uniform-real-interval}. Representability and monotonicity in Eq.~\eqref{eq:uniform-representable-target}, followed by the nonnegative lower clamp, prove the stated stored-load enclosure. The fallback path is the existing valid resident enclosure.
+\end{proof}
+
+\paragraph{Range inclusion and the leaf-only implementation.}
+For completeness, the same radii have a range argument based on \emph{real} subset inclusion. It must not assert that canonical stored loads for different memberships are monotone, since their summation trees and shapes can differ. Let $S_{\rm m}$ and $S_{\rm p}$ be the real mandatory and possible mutable sums for a range. Every descendant obeys
+\begin{equation}
+S_{\rm m}\le S\le S_{\rm p}\le S_{\max}.
+\end{equation}
+Let $s_{\rm m},s_{\rm p}$ be their stored subset answers and let $p_{\rm m},p_{\rm p}$ be the ordinary centers formed with $B_{\rm lo}$. The same budgets prove
+\begin{align}
+p_{\rm m}&\le B_{\rm lo}+S_{\rm m}+E_s+E_a,\\
+C_{\rm can}&\ge B+S-E_c\ge B_{\rm lo}+S_{\rm m}-E_c,
+\end{align}
+so $p_{\rm m}-\rho_{\rm lo}\le C_{\rm can}$. Likewise
+\begin{align}
+C_{\rm can}&\le B+S+E_c\le B_{\rm hi}+S_{\rm p}+E_c,\\
+p_{\rm p}&\ge B_{\rm lo}+S_{\rm p}-E_s-E_a,
+\end{align}
+so $C_{\rm can}\le p_{\rm p}+\rho_{\rm hi}$. Applying Eq.~\eqref{eq:uniform-representable-target} gives stored-target endpoints for every completed descendant. No comparison between stored mandatory and stored complete canonical reductions was used.
+
+The supported compiled path applies to batches consisting entirely of leaf requests. Mandatory and possible sets then coincide, so one subset answer and one center per side suffice. A batch containing a nonleaf request, or a family whose radius compilation fails, uses the original outward resident enclosures and their existing profile bounds. Thus the range argument establishes validity of the numerical construction, while the implemented nonleaf path retains the original enclosures.
+
+\paragraph{A sufficient stored-peak upper sum.}
+The fast leaf path does not construct a real mandatory-load upper endpoint. In particular, its $U$ is not substituted for an upper endpoint on an unreduced real resident sum. The PAR bound can instead use upper endpoints on stored peaks directly.
+
+Let $\pi_h=\max_tC_{{\rm can},ht}$ be the edited groups' stored peaks. Taking maxima of valid stored-load endpoints gives
+\begin{equation}
+p_h^-:=\max_tL_{ht}\le\pi_h\le p_h^+:=\max_tU_{ht}.
+\end{equation}
+The plain upper pair sum
+\begin{equation}
+P_{\rm pair}^+=p_0^+\oplus_\uparrow p_1^+\ge\pi_0+\pi_1
+\label{eq:uniform-pair-peak}
+\end{equation}
+is therefore sufficient. Let $P_{\rm c}^+$ be the existing upper endpoint on the real sum of common groups' stored peaks. Adding it outward to $P_{\rm pair}^+$ and applying the existing canonical $H$-operand upper transfer yields
+\begin{equation}
+P_\Sigma^+\ge\operatorname{sum}^{\rm can}_{h=1,\ldots,H}\pi_h.
+\label{eq:uniform-peak-fold}
+\end{equation}
+The common and pair operands bound real sums of already stored peaks; the final host-reduction allowance is still retained.
+
+Let $P^-$ be the original lower endpoint for the largest stored peak, obtained from common peaks, edited lower peaks and half the conserved pair load. With the existing active-host endpoints $A^-\le A\le A^+$ and positive $A^-$,
+\begin{equation}
+\overline P^+=\operatorname{RN}(P_\Sigma^+/A^-)
+\ge\operatorname{RN}\!\left(\operatorname{sum}^{\rm can}_h\pi_h/A\right)
+=\overline P.
+\end{equation}
+The original check $\operatorname{RN}(P^-/A^+)>0$ guarantees $\overline P>0$: a canonical nonnegative peak fold is at least its largest operand and hence at least $P^-$. Under the retained finite and positive denominator checks, monotonicity then gives
+\begin{equation}
+\operatorname{RN}(P^-/\overline P^+)
+\le\operatorname{RN}\!\left(\max_h\pi_h/\overline P\right)
+=\mathrm{PAR}.
+\label{eq:uniform-par}
+\end{equation}
+A failed finite or positivity check leaves PAR's universal lower value $-1$. In particular, this preserves the native sentinel when a nonzero scene has a stored mean peak rounded to zero.
+
+The compiled leaf path uses this plain peak-sum upper endpoint. The original outward path retains its optional minimum with the conservation-refined upper endpoint. Both are valid; their relative tightness is not needed for preservation.
+
+\paragraph{Profile, key and family preservation.}
+Accepted compiled leaves supply finite stored-load enclosures, so the preceding six-native-loss derivation applies to their tolerant/native counts, active and affected denominators, individual time projections, common summaries and conserved-pair excess. Equation~\eqref{eq:uniform-par} supplies the guarded PAR lower coordinate. Availability of the full family enclosure, the saved-reference finite-scale check, the family-wide finite-profile guard of Lemma~\ref{lem:cascade-finite-domain}, the global-idle fallback and the local finite and stored-mean-peak positivity checks are retained. The load-domain guard alone does not bound all profile intermediates: division by a tiny capacity or a subsequent host reduction can overflow even when every resident load is finite.
+
+Each returned profile is consequently still a lower endpoint for the canonical stored loss profile. The unchanged native gain circuit, positive quantization, floor and ascending order statistics therefore yield a valid optimistic key. A failed refinement uses its existing universal lower value; an unavailable complete certificate has formal upper key $+\infty$ and excludes nothing. Proposition~\ref{prop:progressive} applies to every strict score exclusion. No compiled endpoint replaces an exact retained summary, and Theorem~\ref{thm:family-semantics} preserves the completed-family retained pool, seen set and physical record.
+
+\paragraph{Cost and storage.}
+Compilation scans the $wBT$ mutable values and $O(BT)$ background endpoints once per family, using $O(wBT)$ time and retaining an $O(BT)$ radius payload. After resident-subset acquisition, each accepted leaf uses one center addition and two ordinary endpoint operations per changed load cell, without candidate-wise nextafter operations on those endpoints. Enclosing $q$ inspected leaves still costs $O(qBT)$; the reuse reduces repeated arithmetic rather than removing the dependence on $q$ or making the procedure output-sensitive. Bounded candidate-axis tiling limits endpoint workspace as in Lemma~\ref{lem:certificate-tiling}, separately from scalar mask and key metadata. Resident subset-table construction and storage, selector fallback, the subsequent native-profile calculations, eligibility, identity and complete seen bookkeeping, exact retained profiles and final physical materialization keep their separate costs.
+
+
+\subsection{Endpoint-selective certificate acquisition}\label{sec:endpoint-cascade}
+A two-coordinate indicator filter is one valid certificate-acquisition plan. Occurrence and tolerant host fraction require only mandatory load endpoints and conserved pair load; this filter leaves the remaining losses at universal lower values. When used on its own, it starts after $P$ distinct exact records establish an input cutoff. Sections~\ref{sec:aggregate-peak-acquisition}--\ref{sec:aggregate-pilot-composition} then derive the supported aggregate-and-peak plan, including exact pilot acquisition before the first full cutoff.
+
+Fix one scene $b$ and let $C_\tau=\operatorname{RN}(C+\tau)$. Let $c_b$ be the exact number of unchanged family groups whose stored load exceeds $C_\tau$ at some time. For changed groups $h\in\{0,1\}$ let $L_{hbt}$ be their stored-load lower endpoints and let $D^-_{bt}$ be the conserved-pair lower bound from Eq.~\eqref{eq:family-pair-conservation}. Set
+\begin{align}
+d_b^-&=\sum_{h=0}^1\mathbf1\{\exists t:L_{hbt}>C_\tau\},\nonumber\\
+r_b^-&=\mathbf1\{\exists t:D^-_{bt}>2C_\tau\},\nonumber\\
+k_b^-&=c_b+\max\{d_b^-,r_b^-\}.
+\label{eq:indicator-cascade-count}
+\end{align}
+An individually counted group certainly violates by monotonicity. If the coupled test holds and neither changed group violated, their two stored loads would sum to at most $2C_\tau$, contradicting the definition of $D^-_{bt}$. Thus $k_b^-$ is a lower bound on the actual affected-host count $k_b$.
+
+Define the coarse stored profile
+\begin{equation}
+C_b^-=\left(\mathbf1\{k_b^->0\},\ \operatorname{RN}(k_b^-/H),\ -1,\ 0,\ 0,\ -1\right).
+\label{eq:indicator-cascade-profile}
+\end{equation}
+Counts and $H$ are exactly represented in the stated domain. Monotonicity of fixed positive division gives $\operatorname{RN}(k_b^-/H)\le\operatorname{RN}(k_b/H)$. The native definitions give $\mathrm{VR}_b\ge-1$, $\mathrm{PAR}_b\ge-1$, $u_b\ge0$ and $\mathrm{VS}_b\ge0$, including idle sentinels. Therefore $C_b^-\le L_b(a)$ coordinatewise for every covered candidate. The values $-1$ for VR and PAR are essential: replacing an unknown sentinel-bearing loss by zero would not be a valid universal lower bound. This stage evaluates no candidate peak, severity denominator, or excess projection.
+
+\paragraph{A family-uniform finite-profile guard.}
+A finite seed and a finite reference profile alone do not prove that every alternative group's canonical reduction is finite. Let $n_0,n_1$ be the two seed resident counts, $R=n_0+n_1$, and let $s_{hbt}$ be their stored seed loads. Outward inversion of Eq.~\eqref{eq:family-invert-sum} supplies real upper endpoints $s^+_{hbt}$. Conservation gives
+\begin{equation}
+\sum_{i\text{ in the two seed groups}}x_{bit}\le
+S^+_{bt}:=\up(s^+_{0bt}+s^+_{1bt}).
+\end{equation}
+Every edited descendant group is a subset of this resident union. Its real load is at most $S^+_{bt}$, and it has at most $R$ residents, so its canonical stored load is at most
+\begin{equation}
+U^*_{bt}=\operatorname{StoredUpper}_R(S^+_{bt})
+:=\up\!\left((1+\gamma_R)S^+_{bt}+d_R\right).
+\label{eq:cascade-uniform-load-upper}
+\end{equation}
+This is a bound on each changed group's load, rather than an assertion that the two stored descendant reductions sum to their seed reductions.
+
+Put $K_b^+=\max_tU^*_{bt}$. Let $P_{\rm com,b}^+$ be a real upper bound on the sum of stored unchanged-host peaks, and $P_{\rm com,b}^{\max}$ their stored maximum. Before using Eq.~\eqref{eq:indicator-cascade-profile}, the coarse stage requires finite $U^*$ and, for every scene,
+\begin{align}
+\operatorname{StoredUpper}_H\!\left(\up(P_{\rm com,b}^++\up(2K_b^+))\right)&<\infty,\nonumber\\
+\up\!\left(\frac{\max\{K_b^+,P_{\rm com,b}^{\max}\}}{C}\right)
+&\le\bar r:=\operatorname{RN}\!\left(\frac{F_{\max}}{4HT}\right),
+\label{eq:cascade-uniform-range-guard}
+\end{align}
+where $F_{\max}$ is the largest finite binary64 value. The guard costs $O(BT)$ family work and is shared by its candidate leaves. All upper operations retain $+\infty$ on overflow. In particular, no downward clipping helper is allowed to turn an overflowing intermediate into a finite exclusion witness.
+
+\begin{lemma}[Finite coarse-certificate domain]\label{lem:cascade-finite-domain}
+Under the nonnegative source, count and rounding assumptions already stated, Eqs.~\eqref{eq:cascade-uniform-load-upper}--\eqref{eq:cascade-uniform-range-guard} suffice to keep every covered candidate's canonical loads and native profile finite. If the guard cannot be proved, omitting only the coarse stage preserves the ordinary refined path.
+\end{lemma}
+\begin{proof}
+The positive-tree majorants also provide a sufficient no-overflow test without assuming the conclusion. Suppose an addition in a covered nonnegative tree were the first to overflow. Every child computation before it is finite, so its expanded exact input is bounded by the same positive majorant, using at most the global count's number of error factors. A partial tree has no more leaves and no larger exact input sum than the complete tree. The checked finite upward majorant is at least that input and at most $F_{\max}$. Monotonicity then gives a finite rounded result, contradicting a first overflow. The argument applies to the resident, peak and excess folds below.
+
+Equation~\eqref{eq:cascade-uniform-load-upper} bounds each changed load by a finite value; unchanged loads already belong to the finite canonical source views. Each changed stored peak is at most $K_b^+$, so the first guard bounds the canonical positive fold of all stored peaks, regardless of their canonical column order. To spell out the excess guard, the stored positive excess of a cell is at most its stored capacity ratio: monotonicity gives $\operatorname{RN}(r-1)\le\operatorname{RN}(r)=r$ for stored $r\ge1$, while clipping gives zero when $r<1$. Hence every excess operand is at most $\bar r$. Since $HT\le2^{50}$ and $u=2^{-53}$, the growth factors satisfy
+\begin{equation}
+1+\gamma_H\le8/7,\qquad 1+\gamma_T\le8/7,
+\qquad \bar r\le\frac{(1+u)F_{\max}}{4HT}+\eta.
+\end{equation}
+A worst-case time fold followed by a host fold is consequently at most
+\begin{align}
+&(1+\gamma_H)\bigl[H((1+\gamma_T)T\bar r+d_T)\bigr]+d_H\nonumber\\
+&\quad\le\frac{16(1+u)}{49}F_{\max}+5HT\eta<F_{\max}.
+\label{eq:cascade-finite-excess-fold}
+\end{align}
+Here $d_n\le(8/7)n\eta$; substituting these bounds makes the coefficient of $HT\eta$ less than four, so five is conservative. Division by positive integer time or count normalizers cannot increase a stored positive sum, because $\operatorname{RN}(x/d)\le\operatorname{RN}(x)=x$ for $d\ge1$. Thus Eq.~\eqref{eq:cascade-finite-excess-fold} also covers the affected-host severity fold and the implemented normalized excess folds. Boolean and frequency counts are finite under the exactly represented count normalizers.
+
+For completeness, let $P>0$ be the largest stored peak, $A\in[H]$ the active-host count and $S$ the finite canonical stored sum of peaks. Nonnegative rounded addition is monotone, so $S\ge P$. Every active peak is at least $\eta$. Since $A\le2^{50}$, all integer multiples $j\eta$ for $j\le A$ are exactly represented. Induction through the positive fold consequently gives $S\ge A\eta$, and its stored mean $\mu=\operatorname{RN}(S/A)$ is at least $\eta$. If $P\le2H\eta$, then $\mu\ge\eta\ge P/(2H)$. Otherwise $P/H>2\eta$, and rounding a positive value at least $\eta$ cannot decrease it by a factor greater than two. Hence
+\begin{equation}
+\mu\ge\operatorname{RN}(P/H)\ge P/(2H).
+\end{equation}
+Thus $\operatorname{RN}(P/\mu)\le\operatorname{RN}(2H)=2H$, which is finite and exactly represented. A zero-active-host scene uses the finite native sentinel instead. These arguments cover PAR as well as the other coordinates. When any guard is unavailable, the implementation acquires the original full bound or exact profile rather than issuing a coarse exclusion. Its previous numerical and query-preservation arguments therefore remain applicable.
+\end{proof}
+
+\begin{theorem}[Endpoint cascade preserves the retained answer]\label{thm:indicator-cascade}
+For each active candidate, derive an upper key $U_{\rm ind}(a)$ from the coarse profiles in Eq.~\eqref{eq:indicator-cascade-profile} by the fixed native gain circuit and exact movement count. Exclude a candidate only when its finite upper key is strictly below the worst key $c$ of the exact full pool. Refine every remaining candidate using the original six-coordinate bounds and progressive acquisition. This cascade preserves the complete retained result, physical outputs and continuing seen state.
+\end{theorem}
+\begin{proof}
+The profile inequality proved above and the stored-gain monotonicity argument imply
+\begin{equation}
+C^-\le L(a)\quad\Longrightarrow\quad
+g(C^-)\ge g(L(a))\quad\Longrightarrow\quad
+U_{\rm ind}(a)\ge K(a).
+\label{eq:cascade-key-domination}
+\end{equation}
+The second implication uses monotonicity of positive quantization, floor and ascending order statistics, and appends the same exact movement objective. A coarse exclusion therefore satisfies
+\begin{equation}
+K(a)\le U_{\rm ind}(a)<c.
+\end{equation}
+Already $P$ distinct exactly evaluated identities precede $a$. Subsequent exact retention can only improve the cutoff, so $a$ cannot belong to the final top-$P$. For a group $D$ of excluded leaves, $\max_{a\in D}U_{\rm ind}(a)<c$ is a valid joint witness by the same inequalities. The remaining full-bound exclusions satisfy the original proof. No coarse field replaces an exact stored profile in a retained record. Every forecast-feasible identity is still inserted into the seen set, including movement- and score-excluded candidates, and physical output construction still uses its unique-matching certificate or the reference matcher. Lemma~\ref{lem:top-p}, Proposition~\ref{prop:progressive} and Theorem~\ref{thm:family-semantics} then establish the stated retained-record and continuation equivalence.
+\end{proof}
+
+Both stages require valid bounds, but their separately computed upper keys need not be numerically identical or nested. The theorem also makes no universal CPU or profile-count reduction claim. Its advantage is that an excluded candidate need not acquire its more expensive six-coordinate bound profile at all.
+
+\subsection{Aggregate and peak profile certificates}
+\label{sec:aggregate-peak-acquisition}
+
+Fix the immutable source, capacity, reference profile, incumbent, two edited resident groups, and complete-family retention contract of Section~\ref{sec:family-score-certificates}. The following bounds apply separately to each scene and to every complete descendant of an aligned mask interval. They concern the canonical stored profile, rather than a real-arithmetic surrogate. Write $\operatorname{RN}$ for the prescribed binary64 round-to-nearest operation, $u=2^{-53}$, and $\eta=2^{-1074}$. All counts, including $HT$, obey the existing $2^{50}$ bound. The capacity $C$ is finite and strictly positive. The family source and its saved reference operands are finite, nonnegative where required, and immutable.
+
+We reuse resident-load endpoints $L_{ht}\le x_{ht}\le U_{ht}$ for the two edited groups $h\in\{0,1\}$, and the conserved-pair endpoint $D_t^-\le x_{0t}+x_{1t}$ from Eq.~\eqref{eq:family-pair-conservation}. The original outward path supplies these endpoints for its supported ranges. On supported uniform-radius leaves, Proposition~\ref{prop:uniform-load-enclosure} supplies endpoints for the same canonical stored targets; a nonleaf batch or unavailable radius uses the original outward path. Here $x_{ht}$ is the canonical stored load in a particular descendant, and the addition in the conserved-pair inequality is an exact-real addition of those two stored values. Existing common-group summaries provide exact active, tolerant-violating, affected and native overloaded-cell counts, denoted $A_{\rm c}$, $Q_{\rm c}$, $M_{\rm c}$ and $N_{\rm c}$. They also provide lower endpoints $E_{\rm c}^-$ and $S_{\rm c}^-$ for the real sums of the common groups' canonical stored mean-excess and severity projections. Peak summaries and all enclosure operations retain their existing definitions.
+
+Let $a\oplus_\downarrow b$ and $a\oplus_\uparrow b$ denote the implementation's nonnegative outward lower and upper additions. Let $\operatorname{Down}(z)=\max\{\operatorname{nextafter}(z,-\infty),0\}$ for a stored nonnegative value or stored arithmetic result. For any nonnegative real-sum lower endpoint $z$, write $\mathcal S_n^-(z)$ for its transfer through a canonical reduction of at most $n$ nonnegative stored operands. Equation~\eqref{eq:family-positive-tree}, evaluated outwards, gives
+\begin{equation}
+\mathcal S_n^-(z)\le \max\{0,(1-\gamma_n)z-d_n\}\le \operatorname{sum}^{\rm can}_{i=1,\ldots,n} v_i
+\quad\text{whenever}\quad z\le\sum_{i=1}^n v_i.
+\label{eq:aggregate-stored-transfer}
+\end{equation}
+The first inequality allows the outward implementation to be more conservative than the exact displayed expression. The construction of $\gamma_n,d_n$ and the validity under arbitrary supported nonnegative reduction trees are unchanged.
+
+\paragraph{Denominators and extrema.}
+Define $c_\tau=\operatorname{RN}(C+10^{-12})$, $p_h^-=\max_tL_{ht}$ and $p_h^+=\max_tU_{ht}$. Since $C$ is representable and the added tolerance is nonnegative, $c_\tau\ge C$. The existing active-host endpoints are
+\begin{align}
+A^+&=A_{\rm c}+\sum_{h=0}^1\mathbf 1[p_h^+>0],\\
+A^-&=A_{\rm c}+\max\left\{\sum_{h=0}^1\mathbf 1[p_h^->0],\ \kappa\right\},
+\label{eq:aggregate-active-counts}
+\end{align}
+where $\kappa$ is the indicator that the conserved edited pair contains positive demand in this scene. A positive source operand remains positive under every nonnegative canonical resident reduction, so $\kappa=1$ forces at least one active edited group. Thus $A^-\le A\le A^+$. The affected-host upper endpoint is
+\begin{equation}
+M^+=M_{\rm c}+\sum_{h=0}^1\mathbf 1[p_h^+>C]\ge M.
+\label{eq:aggregate-affected-count}
+\end{equation}
+For each side, $\mathbf 1[p_h^+>C]=\mathbf 1[\exists t:U_{ht}>C]$. Hence this affected-host endpoint requires no additional time-by-host Boolean tensor once the upper peaks are available. These are upper denominator bounds for raw excess, VR and severity; replacing them by the counts observed in the lower-load array would not be sound.
+
+\paragraph{Occurrence and tolerant host fraction.}
+Put $b_{ht}=\mathbf 1[L_{ht}>c_\tau]$ and
+\begin{equation}
+Q^-=Q_{\rm c}+\max\left\{\sum_{h=0}^1\mathbf 1[\exists t:b_{ht}=1],\ \mathbf 1[\exists t:D_t^->2c_\tau]\right\}.
+\label{eq:aggregate-tolerant-count}
+\end{equation}
+Each individual test implies a tolerant violation by that edited group. The coupled test implies a violation by at least one edited group, because two loads at most $c_\tau$ have real sum at most $2c_\tau$. Taking the maximum avoids counting the same compulsory violation twice. Consequently
+\begin{equation}
+J^-=\mathbf 1[Q^->0]\le J,
+\qquad V^-=\operatorname{RN}(Q^-/H)\le V.
+\label{eq:aggregate-j-v}
+\end{equation}
+The last inequality follows from monotonicity of the same stored division used by the native tolerant host fraction.
+
+\paragraph{Native violation rate from tolerant Boolean counts.}
+Although $b_{ht}$ uses the tolerant threshold, it can safely lower-bound the strict native count: $b_{ht}=1$ implies $x_{ht}>c_\tau\ge C$. At each time set
+\begin{equation}
+q_t^-=\max\left\{b_{0t}+b_{1t},\ \mathbf 1[D_t^->2C]\right\},
+\qquad N^-=N_{\rm c}+\sum_{t=1}^Tq_t^-.
+\label{eq:aggregate-native-count}
+\end{equation}
+The first argument is bounded by the number of actually overloaded edited hosts at that time. The second is also bounded by that count, by pair conservation. Thus $q_t^-\le\sum_{h=0}^1\mathbf 1[x_{ht}>C]$, and $N^-\le N:=\sum_{h=1}^Hn_h$, where $n_h=\sum_t\mathbf 1[x_{ht}>C]$ is the descendant's strict native overload count. In particular, no tolerant count is asserted to equal a native count. The comparison with $C$ in the coupled test remains strict.
+
+If $T=2^k$, each $n_h/T$ is exactly representable. Every nonnegative partial sum of these frequencies is an integer multiple of $2^{-k}$ with numerator at most $HT\le2^{50}$, and is therefore exactly representable too. Hence the canonical host sum of the stored frequencies equals $N/T$ exactly, and
+\begin{equation}
+\mathrm{VR}^-=\operatorname{RN}\!\left((N^-/T)/A^+\right)\le\operatorname{RN}\!\left((N/T)/A\right)=\mathrm{VR}.
+\label{eq:aggregate-vr-dyadic}
+\end{equation}
+The division $N^-/T$ on the left is exact. The final stored division is monotone in its nonnegative numerator and antitone in its positive denominator.
+
+For other positive $T$, the elementary rounding model gives, for every host,
+\begin{equation}
+f_h:=\operatorname{RN}(n_h/T)\ge(1-u)n_h/T-\eta.
+\end{equation}
+Summing these inequalities as real inequalities and using $N^-\le N$ yields
+\begin{equation}
+\sum_{h=1}^Hf_h\ge(1-u)N/T-H\eta\ge(1-u)N^-/T-H\eta.
+\label{eq:aggregate-frequency-real}
+\end{equation}
+Let $F^-$ be a nonnegative outward lower evaluation of $\max\{0,(1-u)N^-/T-H\eta\}$. Clipping is valid because the real sum of the nonnegative stored frequencies is itself nonnegative. In the implementation this is obtained by downwardly enclosing $N^-/T$, multiplying downward by the exactly represented $1-u$, subtracting an upward representation of $H\eta$, and clipping the result downward at zero. Therefore $F^-\le\sum_hf_h$. Transferring to the canonical stored host reduction before dividing gives
+\begin{equation}
+\mathrm{VR}^-=\operatorname{RN}\!\left(\mathcal S_H^-(F^-)/A^+\right)\le\operatorname{RN}\!\left(\operatorname{sum}^{\rm can}_hf_h/A\right)=\mathrm{VR}.
+\label{eq:aggregate-vr-general}
+\end{equation}
+All integer counts and positive integer denominators used here are exactly represented in the supported range. The proof permits downward rounding to zero and does not presume that non-dyadic host frequencies are exact.
+
+\paragraph{A family-constant excess bound.}
+For a canonical stored load $x$ define its native stored excess by
+\begin{equation}
+e(x)=\max\{\operatorname{RN}(\operatorname{RN}(x/C)-1),0\}.
+\end{equation}
+Let $Z_h=\operatorname{sum}^{\rm can}_te(x_{ht})$ and $\mu_h=\operatorname{RN}(Z_h/T)$ be the canonical time sum and stored mean excess of an edited host. The existing coupled-excess derivation, Eq.~\eqref{eq:family-coupled-excess}, supplies a lower endpoint for each time,
+\begin{equation}
+a_t^-\le\max\left\{(1-2u)D_t^-/C-2,0\right\}\le e(x_{0t})+e(x_{1t}).
+\label{eq:aggregate-coupled-cell}
+\end{equation}
+The endpoint $a_t^-$ is evaluated entirely downwards. In particular, it does not require either edited host's per-time individual excess array. Lower-bound the real sum $\sum_ta_t^-$, transfer through the two time reductions with allowance $2d_T$, and then cover the two stored divisions by $T$ exactly as in the existing coupled raw-excess derivation. The resulting scene-wise value $c$ satisfies
+\begin{equation}
+0\le c\le\mu_0+\mu_1.
+\label{eq:aggregate-coupled-mean}
+\end{equation}
+For completeness, if $a^-\le\sum_ta_t^-$, a valid sequence of nonnegative downward evaluations is
+\begin{align}
+z^-&\le\max\{0,(1-\gamma_T)a^--2d_T\}\le Z_0+Z_1,\\
+c&\le\max\{0,(1-u)z^-/T-2\eta\}\le\operatorname{RN}(Z_0/T)+\operatorname{RN}(Z_1/T).
+\label{eq:aggregate-coupled-transfer}
+\end{align}
+These are the already established conservative coupled-mean operations, specialized by dropping the optional maximum with the per-time individual excess bounds. Dropping that maximum can weaken the result but cannot invalidate either inequality. Every operand depends only on the conserved edited pair and the source; thus $c$ is computed once per family and scene, rather than once per candidate. If a finite lower endpoint cannot be formed, $c=0$ is a valid conservative fallback.
+
+\paragraph{Peak-implied mean and severity bounds.}
+Define a stored peak-excess endpoint by the following downward operations,
+\begin{equation}
+e_h^-=\operatorname{Down}\!\left(\max\{\operatorname{RN}(\operatorname{Down}(\operatorname{RN}(p_h^-/C))-1),0\}\right).
+\label{eq:aggregate-peak-excess}
+\end{equation}
+All arguments in this expression are nonnegative where required. If the preliminary ratio is nonfinite, this particular refinement uses zero instead. Since $p_h^-\le\max_tx_{ht}$, monotonicity of correctly rounded division, subtraction and maximum proves
+\begin{equation}
+0\le e_h^-\le\max_te(x_{ht}).
+\label{eq:aggregate-peak-excess-domination}
+\end{equation}
+The outward steps only decrease the endpoint. In every supported nonnegative addition tree, the stored sum is at least each stored operand: if $a,b\ge0$ are representable, then $\operatorname{RN}(a+b)\ge a,b$, because the exact sum is at least each representable endpoint and round-to-nearest is monotone. Induction along the path from any leaf to the root gives
+\begin{equation}
+Z_h\ge\max_te(x_{ht})\ge e_h^-.
+\label{eq:aggregate-timefold-dominates-peak}
+\end{equation}
+This argument also covers subnormal operands and additions to exact zero. Therefore
+\begin{equation}
+\mu_h^-:=\operatorname{RN}(e_h^-/T)\le\operatorname{RN}(Z_h/T)=\mu_h.
+\label{eq:aggregate-peak-mean}
+\end{equation}
+
+Use the strict native threshold to define $n_h^+=\sum_t\mathbf 1[U_{ht}>C]$. Then $n_h\le n_h^+$. The native stored severity is $s_h=\operatorname{RN}(Z_h/n_h)$ if $n_h>0$, and zero otherwise. If $n_h>0$, monotonicity in the numerator and denominator gives
+\begin{equation}
+s_h^-:=\operatorname{RN}\!\left(e_h^-/\max\{1,n_h^+\}\right)\le\operatorname{RN}(Z_h/n_h)=s_h.
+\label{eq:aggregate-peak-severity}
+\end{equation}
+If $n_h=0$, then every $x_{ht}\le C$. Monotonicity gives $\operatorname{RN}(x_{ht}/C)\le1$, so every $e(x_{ht})=0$. Equation~\eqref{eq:aggregate-peak-excess-domination} implies $e_h^-=0$, and the displayed lower bound is zero as required, even when uncertain upper loads give $n_h^+>0$. Thus the use of $\max\{1,n_h^+\}$ introduces no false positive bound in the zero-overload case. Counts are exact integers, and both stored divisions in Eqs.~\eqref{eq:aggregate-peak-mean}--\eqref{eq:aggregate-peak-severity} may safely underflow to zero. No positive lower bound is inferred from a vanished subnormal result.
+
+The native severity is also at least the native mean excess. When $n_h>0$, $n_h\le T$ and both quantities use the same stored numerator $Z_h$, so $s_h=\operatorname{RN}(Z_h/n_h)\ge\operatorname{RN}(Z_h/T)=\mu_h$. When $n_h=0$, both quantities are zero. Consequently Eq.~\eqref{eq:aggregate-coupled-mean} lower-bounds the real sum of either the two stored means or the two stored severities. Combine the independent valid endpoints as
+\begin{align}
+B_\mu^-&=\max\{c,\mu_0^-\oplus_\downarrow\mu_1^-\}\le\mu_0+\mu_1,\\
+B_s^-&=\max\{c,s_0^-\oplus_\downarrow s_1^-\}\le s_0+s_1.
+\label{eq:aggregate-pair-projection}
+\end{align}
+The maximum is taken separately for the mean and severity bounds. It does not assert that the two per-host peak witnesses occur at the same time; each canonical host time sum separately dominates that host's own largest excess.
+
+\paragraph{Raw excess and severity.}
+The common summaries bound real sums of already stored host projections. Hence
+\begin{align}
+R^-&=\mathcal S_H^-\!\left(E_{\rm c}^-\oplus_\downarrow B_\mu^-\right)
+ \le\operatorname{sum}^{\rm can}_h\mu_h,\\
+S^-&=\mathcal S_H^-\!\left(S_{\rm c}^-\oplus_\downarrow B_s^-\right)
+ \le\operatorname{sum}^{\rm can}_hs_h.
+\label{eq:aggregate-profile-numerators}
+\end{align}
+Applying the native final divisions with upper denominators proves
+\begin{equation}
+\mathrm{raw}^-=\operatorname{RN}(R^-/A^+)\le\mathrm{raw},
+\qquad
+\mathrm{VS}^-=\begin{cases}\operatorname{RN}(S^-/M^+),&M^+>0,\\0,&M^+=0\end{cases}\le\mathrm{VS}.
+\label{eq:aggregate-raw-severity}
+\end{equation}
+If $M^+=0$, then $M=0$, every stored severity is zero and the zero branch agrees with the native definition. The active denominator is positive on the supported nonidle scene. This derivation avoids constructing a per-candidate time-by-host excess array or reducing such an array. It requires upper-load Boolean counts for the peak-severity denominator, as well as the already available peaks and common summaries.
+
+\paragraph{Peak-to-average ratio and numerical guards.}
+Both numerical paths use the maximum of the common peak, the edited lower peaks and half the conserved pair total as a lower endpoint for the largest stored peak. Their upper endpoints for the mean peak are formed according to the load-enclosure path. The original outward path uses the established minimum of the individual and conservation-based edited peak-sum upper endpoints, then combines the common peak-sum upper endpoint, the canonical host reduction allowance and $A^-$. Its PAR proof in Section~\ref{sec:family-score-certificates} is unchanged.
+
+The uniform-radius leaf path instead uses the plain stored-peak upper sum
+\begin{equation}
+P_{\rm pair}^+=p_0^+\oplus_\uparrow p_1^+
+\ge \max_tx_{0t}+\max_tx_{1t}.
+\label{eq:aggregate-uniform-peak-upper}
+\end{equation}
+Combine this with the common real sum of stored peaks, transfer through the canonical $H$-host upper reduction, and divide by $A^-$ to upper-bound the native stored mean peak. Equations~\eqref{eq:uniform-pair-peak}--\eqref{eq:uniform-par} prove the resulting PAR lower coordinate. This path requires no real mandatory-load upper endpoint. The plain sum is a sufficient valid upper endpoint even though it may be less tight than the conservation-refined minimum. The choice belongs to the numerical load-enclosure path: a uniform-radius leaf in either the partial or full-bound stage may use the plain stored-peak construction, whereas an original outward branch retains its conservation-refined minimum.
+
+Both paths retain the positive lower test for the stored mean peak. A nonzero scene may have a subnormal stored mean peak rounded to zero, in which case native PAR is $-1$; a positive PAR lower bound is unavailable and must not replace that sentinel.
+
+Availability of the full family enclosure is a prerequisite, not a replacement for the coarse family-wide finite-profile guard of Lemma~\ref{lem:cascade-finite-domain}. That guard, the saved-reference finite-scale checks, the finite resident and common-summary endpoints, and the original finite/overflow checks remain in force. A globally idle scene disables this family certificate and uses canonical evaluation. A failed local PAR positivity or finite check retains the universal lower value $-1$ for PAR. A failed VR refinement retains its universal lower value $-1$; a failed raw or severity refinement retains zero. If the family-wide guard or the required resident enclosure is unavailable, the complete partial certificate is unavailable. An unavailable key is formal $+\infty$ and cannot exclude any candidate. In particular, finite lower values from one coordinate do not justify ignoring a potentially nonfinite native profile in another coordinate.
+
+\begin{theorem}[Aggregate and peak lower profile]\label{thm:aggregate-peak-profile}
+Under the numerical and family guards above, the assembled scene-wise profile
+\begin{equation}
+L_{\rm ap}^-=(J^-,V^-,\mathrm{VR}^-,\mathrm{raw}^-,\mathrm{VS}^-,\mathrm{PAR}^-)
+\end{equation}
+is componentwise at most the canonical stored profile of every complete descendant covered by its range. Replacing any unavailable refinement by its stated universal lower value preserves this conclusion.
+\end{theorem}
+\begin{proof}
+Equations~\eqref{eq:aggregate-j-v}, \eqref{eq:aggregate-vr-dyadic}--\eqref{eq:aggregate-vr-general} and \eqref{eq:aggregate-raw-severity} establish the first five coordinates with their native comparison thresholds, time projections, host reductions and denominators. The guarded PAR construction for the selected numerical load path establishes the last: the original outward proof applies to its ranges, and Eqs.~\eqref{eq:aggregate-uniform-peak-upper} and \eqref{eq:uniform-par} apply to supported uniform-radius leaves. The universal values $-1$ for VR and PAR and zero for nonnegative raw excess and severity are lower bounds including their prescribed idle cases. The family guard excludes unsupported finite-arithmetic cases rather than interpreting their nonfinite results as ordinary losses. Every inequality holds for all completed descendants because the only descendant-dependent assumptions used were the common resident endpoints and conservation statements that already hold for the entire range.
+\end{proof}
+
+\paragraph{From partial profiles to optimistic keys.}
+Let $K(a)$ be the original balanced key of candidate $a$, including its unit-cost movement coordinates, and let $U_{\rm ap}(a)$ be the key obtained by applying the unchanged saved-reference gain circuit, quantization by $2^{40}$, floor and ascending coordinate sort to $L_{\rm ap}^-$. Append the same exact unit-cost movement count and cost for a leaf, or valid lower movement and cost bounds for a range. The stored gain-circuit monotonicity argument in Section~\ref{sec:family-score-certificates} yields
+\begin{equation}
+L_{\rm ap}^-\le L(a)
+\quad\Longrightarrow\quad
+g(L_{\rm ap}^-)\ge g(L(a))
+\quad\Longrightarrow\quad
+K(a)\le U_{\rm ap}(a).
+\label{eq:aggregate-key-domination}
+\end{equation}
+All reference operands and scales are those of the original circuit; neither a difference of means nor a differently ordered scene reduction replaces it. The final implication uses monotonicity of multiplication by a positive constant, floor and every ascending order statistic. It does not require the partial and full-bound optimistic keys to be nested, equal or computed in the same mask order.
+
+\subsection{Exact pilot acquisition and sampled execution-plan selection}
+\label{sec:aggregate-pilot-composition}
+
+Let $\mathcal R_0$ be the input retained pool, with size at most $P$, and let $\mathcal A$ be the distinct eligible canonical family identities absent from the input seen set. Forecast and movement eligibility retain their original exact predicates or sound existing certificates. Restrict this execution path to the original balanced gain order with unit movement cost, for which the same summary suffices for retention; coverage archives and other score modes retain their original path. The staged plan is considered after forecast, movement and seen filtering, for $q=|\mathcal A|>1024$; smaller families use the original execution plan. When the input pool is not full, the implemented pilot orders available identities by increasing exact movement count and then numeric mask, and acquires up to $P$ of them. Their canonical profiles, original exact keys and retained summaries are produced by the ordinary exact consumer. Each pilot identity is removed from pending acquisition after being scored once.
+
+After each completed pilot batch, read a score cutoff only from the actual retained pool. If fewer than $P$ distinct identities are retained, there is no score cutoff: continue exact acquisition or use the ordinary no-cutoff plan. If the family is exhausted, return the current pool. Otherwise, for a full pool $\mathcal R$, define $c=\min_{b\in\mathcal R}K(b)$. The argument does not assume that $P$ mask numbers imply $P$ distinct identities, and does not use a fictitious cutoff inferred from partial keys.
+
+Before acquiring an empty-pool pilot, the implementation checks the structural cost condition
+\begin{equation}
+qT\ge P(H+TR),
+\label{eq:aggregate-pilot-shape}
+\end{equation}
+where $R$ is the resident count of the two edited seed groups. A failed condition selects the original full-bound-first plan. If an exact input cutoff already exists, no pilot or pilot-shape check is needed: the staged plan may proceed directly to partial screening. The condition selects an execution plan and makes no score exclusion.
+
+After an exact cutoff exists, at most $64$ pending identities are sampled at deterministic evenly spaced positions of their current order. If fewer than $1/8$ of the inspected identities have a valid key strictly below the cutoff, the remaining identities proceed directly to full-bound acquisition. Otherwise their partial keys are acquired before full-bound refinement. Every sampled identity with $U_{\rm ap}(a)<c$ may still be excluded under either choice. An unsampled identity, a sampled equality, and a sampled unavailable key remain pending unless another sound predicate resolves them. A flat sample with no rejection consequently takes the full-bound path as well. Every additional partial exclusion passes its own valid strict comparison, and inspected keys can be reused. The surviving identities then acquire full-bound keys and enter the original progressive exact-profile consumer. These cost choices change acquisition only; they are not inferences about the keys of unchecked identities.
+
+\begin{theorem}[Pilot, sample and refined-stage composition]\label{thm:aggregate-pilot-composition}
+Fix the original query inputs, balanced total order, input pool and input seen set. Suppose that pilot profiles are canonical, every partial or full-bound key is a valid optimistic key or unavailable, and score exclusion uses only strict comparison with the cutoff of a full actual exact pool. Then any composition of exact pilot acquisition, sample-based plan selection, partial-key exclusions, original full-bound exclusions and progressive exact evaluation returns the same completed-family retained summaries, seen set and physical records as complete canonical enumeration. The internal candidate order and positive batch sizes may differ.
+\end{theorem}
+\begin{proof}
+First ignore every score exclusion. If $\mathcal E_t$ denotes all distinct identities exactly scored through any completed batch, ordinary retention and Lemma~\ref{lem:top-p} give
+\begin{equation}
+\mathcal R_t=T_P(\mathcal R_0\cup\mathcal E_t).
+\label{eq:aggregate-pilot-pool}
+\end{equation}
+Thus pilot order, sample inspection order and later exact batch partition cannot change the top-$P$ of the scored union. They also cannot create an exact summary without a canonical profile. If fewer than $P$ identities are ever available, all eligible identities are scored and the theorem follows already.
+
+Now consider any score-excluded identity $a$. At its exclusion time a full pool $\mathcal R_t$ of $P$ distinct exactly scored identities exists. By the relevant partial or full optimistic-key proof and the strict comparison,
+\begin{equation}
+K(a)\le U(a)<c_t:=\min_{b\in\mathcal R_t}K(b)\le K(b)\qquad(b\in\mathcal R_t).
+\label{eq:aggregate-strict-exclusion}
+\end{equation}
+These $P$ identities all precede $a$ in the prescribed total order. They belong to the union used by complete enumeration even if a later candidate evicts some of them. Hence $a$ cannot enter the top-$P$ of that complete union. An unavailable key supplies no such inequality and never excludes. Equality is retained for exact evaluation because the canonical-assignment tie-break may still favor $a$.
+
+The same argument applies independently to an exclusion found in the sample, an exclusion from scanning the unsampled remainder, an original full-bound exclusion, and a progressive stopping witness bounding all pending keys. A sampled cost decision itself excludes nothing. In particular, a mistaken prediction of selectivity can change only which valid stage is executed, not the retained result. Cutoffs cannot decrease under exact top-$P$ retention, so a previously proved strict exclusion remains valid after later pilot or refinement batches. For a listed set $D$ of independently excluded identities, $\max_{a\in D}U(a)<c_t$ is a valid compressed witness for precisely that set; it asserts nothing about unsampled identities between their mask numbers.
+
+Removing all such strict losers leaves the complete union's top-$P$ unchanged. Apply Lemma~\ref{lem:top-p} to the remaining exact acquisitions and Eq.~\eqref{eq:aggregate-pilot-pool} to obtain the same completed summary pool as complete enumeration. Selecting pilot identities before the full-key ordering does not alter this conclusion. Removing them from pending acquisition avoids duplicate profiles while preserving the scored union.
+
+Seen bookkeeping remains independent of the acquisition plan. At the family boundary it is the input seen set union the original forecast-feasible canonical family identities, including movement-ineligible identities and every partial-, full- or progressive-score rejection; forecast-ineligible identities retain the original treatment. All identities are formed and marked through the original canonical membership contract. Hence the completed seen set equals complete enumeration, including when sample-based selection skipped most partial keys.
+
+Finally, retained exact summaries use the same canonical assignments, stored means, gain keys and exact movement counts. No partial profile is inserted into a retained record. Deferred physical materialization applies Proposition~\ref{prop:deferred}: each final retained identity receives the same deterministic physical matching record from its unique-matching certificate or the reference matcher. Its validity and tie handling are unaffected by the pilot or sampling order. No next seed or other consumer observes an unfinished family. Thus the completed rich pool is identical. The next operation therefore reads the same state; induction over completed families, with common external random draws and feedback, gives the same subsequent completed-family decisions.
+\end{proof}
+
+\paragraph{Work and the role of the sample.}
+After construction of the resident-sum views, forming mandatory/possible loads, tolerant counts, upper strict counts and peaks for $q_{\rm ap}$ inspected candidates costs $O(q_{\rm ap}BT)$ numeric work. The conserved mean-excess lower endpoint in Eq.~\eqref{eq:aggregate-coupled-mean} costs $O(BT)$ once per family. The additional common-summary, peak-mean and peak-severity arithmetic is $O(q_{\rm ap}B)$; the VR and upper-native-count Boolean time reductions are still $O(q_{\rm ap}BT)$, not $O(q_{\rm ap}B)$. If $q'$ survivors acquire full-bound keys, the bound-acquisition work is
+\begin{equation}
+O(BT)+O(q_{\rm ap}BT)+q'\,C_{\rm full}(B,T),\qquad 0\le q_{\rm ap},q'\le q,
+\label{eq:aggregate-acquisition-work}
+\end{equation}
+where $C_{\rm full}(B,T)=O(BT)$ denotes the original full-bound work with its larger collection of per-time numeric projections. Include separately the actual pilot and survivor canonical-profile costs, resident-sum index construction, scalar gain/key metadata, eligibility, matching, identity formation, complete seen bookkeeping and final physical outputs. Without indexed resident sums, the selected subset-sum backend contributes its original additional cost; Eq.~\eqref{eq:aggregate-acquisition-work} does not replace that cost by a constant lookup.
+
+If the sample skips the partial scan, $q_{\rm ap}$ may be only the sample size and $q'$ may be almost $q$. If it selects the scan, it may still reject no candidate. A small deterministic sample is a cost heuristic, not a statistical guarantee of unsampled selectivity, an optimal plan, lower total runtime, fewer exact profiles, or dominance over another execution plan. The bound is not output-sensitive: up to $q$ partial keys may be inspected regardless of how small the retained pool is, and source, identity and eligibility work need not shrink with $P$. Reported efficiency must therefore come from measured end-to-end execution and stage counts; it is not implied by the preservation theorem.
+
+
+\subsection{Tiling and bounded certificate caches}\label{sec:certificate-tiling}
+Each coarse or refined range query requests a fixed scene-by-coordinate lower profile. An unavailable field denotes the formal optimistic value $+\infty$ and never excludes a candidate. Tile these requests only along the outer candidate/range axis. Within a tile, each resident, time and scene reduction retains its prescribed logical operands or its valid outward enclosure. The native gain circuit still reduces the same contiguous length-$B$ row and uses its original saved reference scale; it is not recomputed from a differently packed reference.
+
+\begin{lemma}[Certificate tiling and eviction preserve semantics]\label{lem:certificate-tiling}
+Under the existing fixed-backend reduction contract, processing bound requests in finite outer tiles and using a bounded cache of independently owned lower profiles preserve validity of all upper keys. Recomputing evicted fields and sharing identical leaf mandatory/possible answers preserve the exact family result.
+\end{lemma}
+\begin{proof}
+For an index table, every tile looks up the same requested subsets of the immutable source. For the selector fallback, every resulting sum remains a tree over exactly its requested nonnegative operands; Eq.~\eqref{eq:family-positive-tree} and Theorem~\ref{thm:factorized-sum-enclosures} cover its possible reassociation. Thus tiling does not turn a lower endpoint into an overestimate or an upper endpoint into an underestimate. The native gain-circuit lemma preserves its row reduction after packing, since tiling changes only the number of adjacent rows. Equation~\eqref{eq:cascade-key-domination} and the original full-bound argument therefore remain valid in every tile.
+
+A cache hit returns a previously proved field for the same immutable source, seed/family identities and numerical parameters. Eviction removes only the lookup reference. Local references for the current request keep their independently owned arrays until the request completes. If an evicted field is requested again, either valid sum-view path reconstructs another valid lower profile; bitwise equality of a recomputed bound is unnecessary because every exclusion is justified anew. For a leaf, Eq.~\eqref{eq:half-subset-range-masks} proves equality of mandatory and possible sets. Reusing the same read-only computed answer for both cannot change either inequality. Finally, every omitted exact profile still has an upper key strictly below an exact full-pool cutoff. Theorem~\ref{thm:family-semantics} applies regardless of the order of bound requests or their cache history, proving equality of retained physical records and seen state.
+\end{proof}
+
+For a target tile budget $M$ of changed-load values, the tile length is at most $\max\{1,\lfloor M/(2BT)\rfloor\}$. Its numeric intermediate arrays therefore require $O(M+BT)$ workspace: one complete request is unavoidable even when $2BT>M$, and the profile dimension is fixed. With a lower-profile cache target of $C_{\rm cache}$ values, the refined cache stores at most $\max\{1,\lfloor C_{\rm cache}/(6B)\rfloor\}$ profiles and hence at most $\max\{C_{\rm cache},6B\}$ values; the coarse cache may instead decline to retain an oversized profile. Owning each cached profile separately prevents one small cache entry from pinning an entire discarded tile. The two-half tables have the storage in Proposition~\ref{prop:factorized-sum-work}. Scalar optimistic keys and active-mask descriptors require $O(q)$ additional fixed-dimensional metadata. These bounds concern numerical certificate arrays and key metadata. Explicit family identities, complete forecast-feasible seen bookkeeping, matching state and final physical outputs retain their separate space and work costs.
 
 \section{Complete-family preservation and deferred physical matching}
 \label{sec:family-preservation}
@@ -702,9 +1464,33 @@ Without exclusions, Lemma~\ref{lem:top-p} gives the exact top-$P$ of the input p
 The $P$ distinct identities in $\mathcal R$ therefore all precede $a$ in the total order. They belong to the full candidate union even if later evicted, so adding any remaining identities cannot place $a$ in its top-$P$. This argument applies to every omitted candidate and, under Eq.~\eqref{eq:progressive-stop}, to the entire remaining set. Removing these identities leaves the full union's top-$P$ unchanged. Lemma~\ref{lem:top-p} then proves equality with complete numeric-mask enumeration.
 \end{proof}
 
-Strict inequality is essential when only score keys are bounded: a candidate whose upper key equals the cutoff may win through its canonical assignment and must be scored. A missing bound remains $+\infty$ until exact scoring or another valid eligibility test resolves that candidate; it prevents the global stopping test. Descending-bound order tends to raise the cutoff sooner but is not required for preservation. The batch size $32$ is an execution parameter, not a premise of the proof. The static entry-cutoff plan is the special case that never tightens its cutoff. Where the native-profile score gate is disabled, exact scoring supplies the same result without this progressive filter.
+Strict inequality is essential when only score keys are bounded: a candidate whose upper key equals the cutoff may win through its canonical assignment and must be scored. A missing bound remains $+\infty$ until exact scoring or another valid eligibility test resolves that candidate; it prevents the global stopping test. Descending-bound order tends to raise the cutoff sooner but is not required for preservation. Any positive batch size is an execution parameter, not a premise of the proof; the reported query experiments use batches of at most $16$ profiles. The static entry-cutoff plan is the special case that never tightens its cutoff. Where the native-profile score gate is disabled, exact scoring supplies the same result without this progressive filter.
 
 Score exclusion never suppresses identity bookkeeping. Independently of which profiles are evaluated, form the same set of forecast-feasible canonical family identities and insert all of them into the seen set, including movement-ineligible and score-excluded identities. No next seed, selection query, or other consumer may inspect a provisional pool before family completion. Cache materialization and eviction may follow the scoring order, provided shared-query equivalence continues to hold.
+
+\subsection{Bootstrapping selective evaluation from an empty pool}
+The original full-bound-first bootstrap is also a valid plan when the input pool has fewer than $P$ entries. Let $\mathcal U_0$ be the finite eligible family identities not already seen, and let $U(a)\ge K(a)$ be a valid optimistic key, with an unavailable bound represented by $+\infty$. Order $\mathcal U_0$ by decreasing $U(a)$, using a deterministic assignment or mask order to resolve scheduling ties. This order concerns acquisition only; final retention still uses the prescribed exact score and canonical-assignment order. Theorem~\ref{thm:aggregate-pilot-composition} permits the movement-first exact pilot as an alternative without preacquiring every full-bound key.
+
+\begin{proposition}[Empty-pool bootstrap]\label{prop:bootstrap}
+Starting with any pool of size at most $P$, evaluate candidates exactly in optimistic order until the pool contains $P$ distinct identities or the family is exhausted. Once the pool is full, prune only candidates whose optimistic key is strictly below its current worst exact key. This procedure returns the same final retained pool and seen set as canonical complete enumeration, including when the input pool is empty.
+\end{proposition}
+\begin{proof}
+Let $\mathcal E_t$ be the set of identities exactly evaluated through batch $t$ and $\mathcal R_0$ the input pool. Before the first score exclusion, every eligible identity is either in $\mathcal E_t$ or remains pending. Top-$P$ composition gives
+\begin{equation}
+\mathcal R_t=T_P(\mathcal R_0\cup\mathcal E_t).
+\end{equation}
+If the family is exhausted while $|\mathcal R_t|<P$, this already equals complete enumeration. Otherwise let $t_0$ be the first completed batch with $|\mathcal R_{t_0}|=P$. For every later batch define the exact cutoff $c_t=K(\operatorname{worst}(\mathcal R_t))$. Since candidate union only grows, the cutoff cannot decrease:
+\begin{equation}
+c_{t+1}\ge c_t\qquad(t\ge t_0).
+\end{equation}
+For any identity $a$ excluded at time $t$, the test and the valid bound imply
+\begin{equation}
+K(a)\le U(a)<c_t\le K(b)\qquad\text{for every }b\in\mathcal R_t.
+\end{equation}
+Thus $P$ distinct identities in the complete candidate union precede $a$. No later evaluation can put $a$ in that union's top-$P$. Removing every such identity therefore preserves the final pool by Proposition~\ref{prop:progressive}. An upper key equal to $c_t$ is not excluded, so canonical-assignment ties are preserved. Identities with upper key $+\infty$ must be evaluated before the global stopping condition can hold. Finally, independently of profile acquisition, the seen set receives every forecast-feasible identity, including all movement and score rejections. Its final value is therefore the same as canonical enumeration.
+\end{proof}
+
+The proof permits any positive batch size. A batch can fill the pool past the first $P$ evaluations without affecting correctness. Optimistic ordering can discover a useful cutoff earlier; it introduces no new statistical observation and makes no assumption about its correlation with the exact keys.
 
 \subsection{Deferred physical materialization}
 \begin{proposition}[Deferred physical materialization]\label{prop:deferred}
@@ -725,10 +1511,10 @@ Induct over any chosen processing order, beginning from the common input pool an
 The implementation still forms a canonical assignment when an exact key can enter the pool or must resolve an assignment tie. Deferral removes the physical matching of transient entrants; it does not replace canonical assignment tie-breaking. For weighted movement, the secondary optimum can depend on workload identities beyond count signatures, so that path computes the complete matching before retention.
 
 \begin{theorem}[Complete-family semantics]\label{thm:family-semantics}
-Fix the source, numerical reduction program, balanced retention order, incumbent, family, input pool, and seen set. Count signatures, family-wide fixed-edge reduction, support-component factorization, exact two-column assignment replay, certified capacity and profile filters, shared canonical views, progressive evaluation, and deferred physical materialization return the same final pool, seen set, and physical records as full canonical enumeration. Candidate scoring order and batch partition may differ. Under common completed-family operations, random draws, and cost feedback, successive completed-family states and the selected action also agree.
+Fix the source, numerical reduction program, balanced retention order, incumbent, family, input pool, and seen set. Count signatures, family-wide fixed-edge reduction, support-component factorization, exact two-column assignment replay, certified capacity and profile filters, compiled load-radius enclosures, aggregate/peak bounds, shared canonical views, exact pilot and progressive acquisition, and deferred physical materialization return the same final pool, seen set, and physical records as full canonical enumeration. Candidate scoring order and batch partition may differ. Under common completed-family operations, random draws, and cost feedback, successive completed-family states and the selected action also agree.
 \end{theorem}
 \begin{proof}
-Count signatures identify identical overlap objectives. Equation~\eqref{eq:core-exact} preserves each objective after family-wide edge reduction, and Theorem~\ref{thm:component} preserves it under component decomposition. The tight primal-dual invariant~\eqref{eq:core-dual-state} proves that two-column replay returns the same residual optimum. Together these steps preserve each exact movement count; none substitutes its own tie matching for the final physical consumer. Capacity filtering rejects only masks whose canonical forecast violates the constraint. Shared views and the gain-circuit lemma preserve the exact stored profiles and keys of each scored candidate. Every profile-based exclusion satisfies the strict domination condition in Proposition~\ref{prop:progressive}, using either the full pool's entry cutoff or its current cutoff. That proposition and Lemma~\ref{lem:top-p} preserve the final summary pool despite different scoring orders, batch partitions, or omitted profiles. Every forecast-feasible identity enters the seen set, regardless of movement or score rejection, so the final seen set is also identical. Proposition~\ref{prop:deferred} restores precisely the same rich physical records at family completion. The next deterministic operation sees the same state; induction over completed-family operations gives the final assertion.
+Count signatures identify identical overlap objectives. Equation~\eqref{eq:core-exact} preserves each objective after family-wide edge reduction, and Theorem~\ref{thm:component} preserves it under component decomposition. The tight primal-dual invariant~\eqref{eq:core-dual-state} proves that two-column replay returns the same residual optimum. Together these steps preserve each exact movement count; none substitutes its own tie matching for the final physical consumer. Capacity filtering rejects only masks whose canonical forecast violates the constraint. Shared views and the gain-circuit lemma preserve the exact stored profiles and keys of each scored candidate. Proposition~\ref{prop:uniform-load-enclosure} gives valid compiled load endpoints, and Theorem~\ref{thm:aggregate-peak-profile} gives valid aggregate/peak loss lower bounds. Every resulting score exclusion satisfies the strict domination condition in Proposition~\ref{prop:progressive}, using either the full pool's entry cutoff or its current cutoff. Theorem~\ref{thm:aggregate-pilot-composition} preserves that condition under pilot acquisition and sampled execution-plan choices. These results and Lemma~\ref{lem:top-p} preserve the final summary pool despite different scoring orders, batch partitions, or omitted profiles. Every forecast-feasible identity enters the seen set, regardless of movement or score rejection, so the final seen set is also identical. Proposition~\ref{prop:deferred} restores precisely the same rich physical records at family completion. The next deterministic operation sees the same state; induction over completed-family operations gives the final assertion.
 \end{proof}
 
 CPU-limited executions may complete different families. The theorem concerns equivalence of the specified family query; measurements under a common time budget separately evaluate the additional search enabled by faster execution.
@@ -896,7 +1682,7 @@ The identity $[y_h-1]_+=y_h-\min(y_h,1)$ gives $\sum_h[y_h-1]_+=Q_0-s(y)$. Equal
 \end{align}
 After averaging time, both physical envelopes hold simultaneously:
 \begin{equation}
- |G_{u_H}|\le B_{u_H}^{\mathrm{phys}}:=\min\{U(G)/(HC),(H-1)/H\}.
+ |G_{u_H}|\le B_{u_H}^{\mathrm{global}}:=\min\{U(G)/(HC),(H-1)/H\}.
  \label{eq:combined-physical}
 \end{equation}
 The fixed denominator $H$ and conservation of every workload's demand are essential. This derivation does not replace $H$ by a placement-dependent active-host count.
@@ -904,6 +1690,74 @@ The fixed denominator $H$ and conservation of every workload's demand are essent
 The graph envelope can be attained. Take $H=2,C=1$, incumbent groups $\{0,1,2\},\{3,4,5\}$, candidate groups $\{0,1,3\},\{2,4,5\}$, and one-time demands $(1/2,0,1/2,0,1/2,1/2)$. Identity matching retains four workloads, while the exchanged matching retains two, so $m=2$. With common support $b_i=1/2$, the two edge directions each have weight $1/2$, hence $D_*=1/2$. Loads change from $(1,1)$ to $(1/2,3/2)$, attaining $|G_{u_H}|=1/4=D_*/(HC)$, half the count envelope.
 
 The combined envelope with exact $D_*$ is sharp as a function of $D_*,H,C$ over the allowed support class. Fix $H\ge2$ and any $D\ge0$. Put one stationary workload of demand $C$ at a hub and one stationary zero-demand anchor plus one moved workload at each of $H-1$ source hosts. Move every latter workload to the hub and give it support $D/(H-1)$. Each incumbent--candidate overlap is at most one; identity matching retains one workload at every host and therefore maximizes overlap, moving $H-1$ workloads. The graph is an inward star with $D_*=D$. For $D\le(H-1)C$, set each moved demand to $D/(H-1)$. Incumbent hosts do not overload, while candidate excess is $D$ at the hub, giving $|G_{u_H}|=D/(HC)$. For $D\ge(H-1)C$, set each moved demand to $C$, which its support permits. Loads change from $(C,\ldots,C)$ to $(HC,0,\ldots,0)$, attaining $(H-1)/H$. Source groups remain nonempty because their anchors stay. These constructions prove sharpness over this class, rather than attainment for every fixed action or correlated workload law.
+
+\subsection{Component conservation and selective evidence}
+Let $\mathcal C$ be the connected components of the undirected support of the physical migration graph after zero-demand-bound edges have been removed. Every component $C\in\mathcal C$ contains at least two hosts. Write $v_C=|C|$, let $D_C^*$ be its maximum incoming directed-cut weight, and let $\overline D_C\ge D_C^*$ be the corresponding computed upper bound. The fixed total number of physical hosts is $H$, and the common capacity is $c>0$ in this subsection. The positive support convention permits a migration with bound $b_i=0$ to be absent: its demand is zero almost surely and contributes no real load change.
+
+\begin{theorem}[Component-conservation support]\label{thm:component-conservation}
+For every scene whose workload demands satisfy the predeclared bounds, the real fixed-host excess gain satisfies
+\begin{equation}\label{eq:component-conservation-bound}
+|G_{u_H}|\le B_{\rm comp}:=\frac1H\sum_{C\in\mathcal C}\min\left\{\frac{\overline D_C}{c},v_C-1\right\}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:component-conservation-dominates}
+B_{\rm comp}\le\min\left\{\frac{\sum_C\overline D_C}{Hc},\frac{H-1}{H}\right\}.
+\end{equation}
+If the canonical stored loss of each placement differs from its real loss by at most $e_u$, then $\operatorname{up}(B_{\rm comp}+2e_u)$ is a valid bound for the exact difference of the two stored losses.
+\end{theorem}
+\begin{proof}
+Fix one time index and one component $C$. Write $\ell_h^I$ and $\ell_h^a$ for incumbent and repaired real loads. A positive-demand migration cannot enter or leave $C$, since its two endpoints would then be in the same support component. Zero-bound migrations carry zero demand. Hence the total normalized demand
+\begin{equation}
+Q_C:=\sum_{h\in C}\ell_h^I/c=\sum_{h\in C}\ell_h^a/c
+\end{equation}
+is conserved within the component. No host-load feasibility or upper bound by capacity is assumed.
+
+For nonnegative component loads $y=(y_h)_{h\in C}$ summing to $Q_C$, define $S(y)=\sum_{h\in C}\min(y_h,1)$. Each term is at most both $y_h$ and one, so $S(y)\le\min(Q_C,v_C)$. If $Q_C\le1$, every $y_h\le1$ and $S(y)=Q_C$. If $Q_C>1$, either some $y_h\ge1$, which gives $S(y)\ge1$, or all $y_h<1$, which gives $S(y)=Q_C>1$. Therefore
+\begin{equation}
+\min(Q_C,1)\le S(y)\le\min(Q_C,v_C).
+\end{equation}
+Since $[y_h-1]_+=y_h-\min(y_h,1)$, the total component excess is $Q_C-S(y)$. Its change between the two placements obeys
+\begin{align}
+\left|\sum_{h\in C}[\ell_h^a/c-1]_+-\sum_{h\in C}[\ell_h^I/c-1]_+\right|
+&=|S(\ell^I/c)-S(\ell^a/c)|\\
+&\le\min(Q_C,v_C)-\min(Q_C,1)\\
+&\le v_C-1.\label{eq:component-cap-proof}
+\end{align}
+
+Independently, let $d_h=\ell_h^a-\ell_h^I$. Conservation gives $\sum_{h\in C}d_h=0$, and the directed-cut identity gives
+\begin{align}
+\sum_{h\in C}[d_h]_+
+&=\max_{S\subseteq C}\sum_{h\in S}d_h\\
+&=\max_{S\subseteq C}\left(\sum_{i\in\partial^-S}x_i-\sum_{i\in\partial^+S}x_i\right)\\
+&\le\max_{S\subseteq C}\sum_{i\in\partial^-S}b_i=D_C^*\le\overline D_C.
+\end{align}
+For the increasing $1/c$-Lipschitz function $f(z)=[z/c-1]_+$,
+\begin{equation}
+f(\ell_h^I+d_h)-f(\ell_h^I)\le[d_h]_+/c.
+\end{equation}
+Summing over $C$ proves an upper change bound $\overline D_C/c$. Reversing the placements and using $\sum_h[-d_h]_+=\sum_h[d_h]_+$ proves the same bound for the negative change. Combining this with~\eqref{eq:component-cap-proof} gives
+\begin{equation}
+\left|\sum_{h\in C}f(\ell_h^a)-\sum_{h\in C}f(\ell_h^I)\right|\le\min\{\overline D_C/c,v_C-1\}.
+\end{equation}
+Hosts outside the positive migration support have zero real load change. Summing the component absolute bounds and averaging over the $H$ hosts and all time indices proves~\eqref{eq:component-conservation-bound}.
+
+Every summand is at most $\overline D_C/c$, proving the first bound in~\eqref{eq:component-conservation-dominates}. If there are $r\ge1$ components touching $k\le H$ hosts, every summand is also at most $v_C-1$, and
+\begin{equation}
+\sum_C(v_C-1)=k-r\le H-1.
+\end{equation}
+If $r=0$, the component sum is zero and the same conclusion holds. Finally, with stored losses $\widehat u^I,\widehat u^a$,
+\begin{align}
+|\widehat u^I-\widehat u^a|
+&\le|u^I-u^a|+|\widehat u^I-u^I|+|\widehat u^a-u^a|\\
+&\le B_{\rm comp}+2e_u.
+\end{align}
+Outward rounding preserves this inequality and proves the stored bound.
+\end{proof}
+
+The componentwise minimum matters. At capacity one, consider six hosts, two support components with $(v_C,\overline D_C)=(2,10)$ and $(3,1/2)$, and one unchanged host. The global bound is $\min(10.5/6,5/6)=5/6$, whereas~\eqref{eq:component-conservation-bound} is $(1+1/2)/6=1/4$. Both component contributions can be attained simultaneously: keep a unit-demand workload at each component's hub, give each other host a stationary zero-demand anchor, move demand one from the first component's source to its hub, and move demand $1/4$ from each of the second component's two sources to its hub. All groups remain nonempty. The first component uses its conservation cap and the second uses its directed-cut cap; their excess changes have the same sign. Maximum-overlap matching retains the stationary anchors and both hubs, so the specified physical migrations are feasible under the unrestricted host matching model.
+
+The new support is fixed after physical matching and before fresh evidence. It changes only the normalization of the same bounded-gain mixture and therefore retains the one-action false-admission guarantee. Through the normalized gap $\Delta_e/(B_e+|q_e|)$ it can improve the finite-sample evidence bound. It does not imply that every observed stopping time decreases: another coordinate can determine the joint crossing, and the wealth paths of two differently normalized bets need not be ordered.
+
 
 \section{A uniform allowance for stored excess replay}
 The preceding load conservation and graph arguments concern real arithmetic. The certificate consumes stored raw losses. Assume correctly rounded binary64 elementary operations, no intermediate overflow, a fixed positive binary64 capacity, and exactly represented normalization $Q=HT\le2^{53}$. Let $\epsilon=2^{-53}$ and $\zeta=2^{-1075}$. A finite elementary result obeys
@@ -950,14 +1804,14 @@ For the paired stored losses, the triangle inequality now yields
 \begin{align}
  |\widehat u_H^I-\widehat u_H^a|
  &\le |u_H^I-u_H^a|+|\widehat u_H^I-u_H^I|+|\widehat u_H^a-u_H^a|\\
- &\le B_{u_H}^{\mathrm{phys}}+2e_u.
+ &\le B_{\rm comp}+2e_u.
 \end{align}
 Consequently a valid predeclared stored bound is
 \begin{equation}
- B_{u_H}=\up\!\left(\min\{U(G)/(HC),(H-1)/H\}+2e_u\right).
+ B_{u_H}=\up\!\left(B_{\rm comp}+2e_u\right).
  \label{eq:stored-raw-bound}
 \end{equation}
-The same error allowance belongs to both physical branches before outward rounding. One may also take the minimum of two separately valid outward-rounded bounds. A minimum with an uncorrected physical branch would not be justified. All support-weight and cut comparisons may use exact rationals; only the final declared binary64 bound needs outward rounding.
+The replay allowance is added after summing the component physical bounds. The global-cap control instead substitutes $B_{u_H}^{\mathrm{global}}$ for $B_{\rm comp}$ and uses the same allowance. Both bounds concern exact differences of the canonical stored losses. All support-weight and cut comparisons may use exact rationals; only the final declared binary64 bound needs outward rounding.
 
 \section{Fresh expected-gain admission}
 \subsection{Targets and bounded transformations}
@@ -1153,7 +2007,7 @@ Equation~\eqref{eq:normalization-interval} contains each exact normalized observ
 \end{proof}
 
 \subsection{Preserving the action-support calculation}
-The raw support calculation contains the exact nonnegative expression $2e_u$ and a rational physical support $p=\min\{U(G)/(HC),(H-1)/H\}$. Its stored output is defined by
+The raw support calculation contains the exact nonnegative expression $2e_u$ and the rational component support $p=B_{\rm comp}$. Its stored output is defined by
 \begin{equation}
 b_{\rm err}=\operatorname{nextUp}(\operatorname{RN}(2e_u)),\qquad
 B_u=\operatorname{nextUp}(\operatorname{RN}(p+\operatorname{dyad}(b_{\rm err}))).
@@ -1246,6 +2100,6 @@ Here $C+a$ is halfway between $C$ and its successor, so it rounds to $C$. The su
 \bibitem{millstettey2007dynamic} G.~A.~Mills-Tettey, A.~Stentz, and M.~B.~Dias, ``The dynamic Hungarian algorithm for the assignment problem with changing costs,'' Robotics Institute, Carnegie Mellon University, Tech. Rep. \href{https://www.cs.cmu.edu/~gertrude/dyn_assign_techreport.pdf}{CMU-RI-TR-07-27}, July 2007.
 \bibitem{korenwein2018reduction} V.~Korenwein, A.~Nichterlein, R.~Niedermeier, and P.~Zschoche, ``Data reduction for maximum matching on real-world graphs: Theory and experiments,'' in \emph{26th Annual European Symposium on Algorithms}, LIPIcs, vol.~112, pp.~53:1--53:13, 2018. doi: \href{https://doi.org/10.4230/LIPIcs.ESA.2018.53}{10.4230/LIPIcs.ESA.2018.53}.
 \bibitem{morita2024update} K.~Morita, S.~Shiroshita, Y.~Yamaguchi, and Y.~Yokoi, ``Fast primal-dual update against local weight update in linear assignment problem and its application,'' \emph{Information Processing Letters}, vol.~183, article~106432, 2024. doi: \href{https://doi.org/10.1016/j.ipl.2023.106432}{10.1016/j.ipl.2023.106432}.
-\bibitem{grossmann2026hypergraph} E.~Gro{\ss}mann, F.~Joos, H.~Reinst{\"a}dtler, and C.~Schulz, ``Engineering hypergraph $b$-matching algorithms, \emph{Journal of Graph Algorithms and Applications}, vol.~30, no.~1, pp.~1--24, 2026. doi: \href{https://doi.org/10.7155/jgaa.v30i1.3166}{10.7155/jgaa.v30i1.3166}.
+\bibitem{grossmann2026hypergraph} E.~Gro{\ss}mann, F.~Joos, H.~Reinst{\"a}dtler, and C.~Schulz, ``Engineering hypergraph $b$-matching algorithms,'' \emph{Journal of Graph Algorithms and Applications}, vol.~30, no.~1, pp.~1--24, 2026. doi: \href{https://doi.org/10.7155/jgaa.v30i1.3166}{10.7155/jgaa.v30i1.3166}.
 \end{thebibliography}
 \end{document}

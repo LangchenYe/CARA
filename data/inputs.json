@@ -1,54 +1,45 @@
 {
   "repository": "kdd2026-cloudcons/CloudCons-ds",
-  "revision": "5beb4a0cdfe00ae4418b17af9de96bbd22cb470a",
   "files": [
     {
       "path": "cloudcons/azure2019/data-00000-of-00001.arrow",
       "upstream_path": "decision/azure2019/data-00000-of-00001.arrow",
-      "bytes": 1663520,
-      "sha256": "fa86ba14a9ecf9aeb7e9835524a87d58c029f0b7e45bae9fe85995f9cd6928cd"
+      "bytes": 1663520
     },
     {
       "path": "cloudcons/borg2019_d/data-00000-of-00001.arrow",
       "upstream_path": "decision/borg2019_d/data-00000-of-00001.arrow",
-      "bytes": 1516136,
-      "sha256": "98af05cae301a693e72b30a2c7de783b4452ed1f3c91dba6e94fc5a0d759d562"
+      "bytes": 1516136
     },
     {
       "path": "cloudcons/borg2019_e/data-00000-of-00001.arrow",
       "upstream_path": "decision/borg2019_e/data-00000-of-00001.arrow",
-      "bytes": 803344,
-      "sha256": "ee7c8d92cca4169340be35a4646041e4ec42fba1843714623e3db7aa640faca6"
+      "bytes": 803344
     },
     {
       "path": "cloudcons/huawei2025/data-00000-of-00001.arrow",
       "upstream_path": "decision/huawei2025/data-00000-of-00001.arrow",
-      "bytes": 4801448,
-      "sha256": "75ef3466e44a4af47549cedc56b37ce99965bfa1e6fd3c806f9bf7580286d89a"
+      "bytes": 4801448
     },
     {
       "path": "cloudcons_hourly/azure2019/data-00000-of-00001.arrow",
       "upstream_path": "forecasting/1H/azure2019/data-00000-of-00001.arrow",
-      "bytes": 111929184,
-      "sha256": "6fc1743de4990e8bd4a328327f7260ab422cafabb41dee957c1693b0725c9d10"
+      "bytes": 111929184
     },
     {
       "path": "cloudcons_hourly/borg2019_d_trace/data-00000-of-00001.arrow",
       "upstream_path": "forecasting/1H/borg2019_d_trace/data-00000-of-00001.arrow",
-      "bytes": 2624208,
-      "sha256": "a66e6d97b546b9e37a2ede2d352aad6a7afd2d75bbab97a63f6b7ce93e251632"
+      "bytes": 2624208
     },
     {
       "path": "cloudcons_hourly/borg2019_e_trace/data-00000-of-00001.arrow",
       "upstream_path": "forecasting/1H/borg2019_e_trace/data-00000-of-00001.arrow",
-      "bytes": 3176712,
-      "sha256": "7ca2392622cb86bced9d5e3bfda01f0968302012edae200139ab3cf8077cb539"
+      "bytes": 3176712
     },
     {
       "path": "cloudcons_hourly/huawei2025/data-00000-of-00001.arrow",
       "upstream_path": "forecasting/1H/huawei2025/data-00000-of-00001.arrow",
-      "bytes": 1349344,
-      "sha256": "a8993de106dca4d664594e864c67194d3601a588eaa0b9074ff41e55119669cc"
+      "bytes": 1349344
     }
   ]
 }

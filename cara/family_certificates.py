@@ -43,7 +43,7 @@ class ResidualFamily:
 
     def __init__(self, incumbent, seed, pair, mutable, *, reuse_migration_signatures=True,
                  factor_matching=True, matching_backend=None, use_unique_physical=True,
-                 unique_physical_min_hosts=16):
+                 unique_physical_min_hosts=16, seed_matching_index=None):
         self.incumbent, self.seed = canonical_assignment(incumbent), canonical_assignment(seed)
         self.n_vms, self.hosts = len(self.seed), len(set(self.seed))
         self.pair, self.mutable = tuple(map(int, pair)), tuple(map(int, mutable))
@@ -53,7 +53,11 @@ class ResidualFamily:
                 or not self.mutable or self.mutable != tuple(sorted(set(self.mutable)))
                 or any(vm < 0 or vm >= self.n_vms or self.seed[vm] not in self.pair for vm in self.mutable)):
             raise ValueError("A residual family requires equal-host complete assignments and ordered mutable residents")
-        self.seed_groups = host_memberships(self.seed)
+        if seed_matching_index is not None and (seed_matching_index.incumbent != self.incumbent
+                                               or seed_matching_index.seed != self.seed):
+            raise ValueError("The seed compiler belongs to another placement")
+        self.seed_groups = (host_memberships(self.seed) if seed_matching_index is None
+                            else seed_matching_index.seed_groups)
         mutable_set = set(self.mutable)
         self.backgrounds = tuple(tuple(vm for vm in self.seed_groups[h] if vm not in mutable_set)
                                  for h in self.pair)
@@ -95,10 +99,13 @@ class ResidualFamily:
         self._unique_physical = None
         if backend != "dense":
             if backend in ("compiled", "replay", "locked"):
-                from .compiled_matching import FamilyMatching
-                self._factor = FamilyMatching(self.incumbent, self.seed, self.pair,
-                    self.mutable, self.symmetric, self.stats,
-                    lock_edges=backend != "replay", replay=backend != "locked")
+                if seed_matching_index is not None and backend == "compiled":
+                    self._factor = seed_matching_index.family(self.pair, self.mutable, self.symmetric, self.stats)
+                else:
+                    from .compiled_matching import FamilyMatching
+                    self._factor = FamilyMatching(self.incumbent, self.seed, self.pair,
+                        self.mutable, self.symmetric, self.stats,
+                        lock_edges=backend != "replay", replay=backend != "locked")
             elif backend == "sparse":
                 from .sparse_matching import FamilyMatching
             else:
@@ -445,12 +452,17 @@ class FamilyCertificates:
             raise ValueError("Family and forecast must identify the same VMs")
         self.exclusions = []
         self.leaf_upper_keys = {}
+        self._staged_state = None
         self.stats = {"forecast_nodes": 0, "forecast_bound_batches": 0,
                       "forecast_excluded_masks": 0,
                       "forecast_exact_masks": 0, "migration_nodes": 0,
                       "score_nodes": 0, "migration_excluded_masks": 0,
                       "score_excluded_masks": 0, "progressive_batches": 0,
                       "progressive_excluded_masks": 0}
+
+    @property
+    def has_score_schedule(self):
+        return bool(self.leaf_upper_keys) or self._staged_state is not None
 
     def _record(self, reason, start, stop, masks, observer, **details):
         witness = {"reason": reason, "start": int(start), "stop": int(stop),
@@ -471,10 +483,15 @@ class FamilyCertificates:
         if int(batch_size) != batch_size or batch_size < 1:
             raise ValueError("A positive integer profile batch size is required")
         batch_size = int(batch_size)
+        if self._staged_state is not None:
+            from .staged_acquisition import batches
+            yield from batches(self, masks, cutoff, batch_size=batch_size, observer=observer)
+            return
         pending = sorted(masks, key=lambda mask: (
             self.leaf_upper_keys.get(mask) is None,
             self.leaf_upper_keys.get(mask) or (), -mask), reverse=True)
-        for start in range(0, len(pending), batch_size):
+        start = 0
+        while start < len(pending):
             optimistic = self.leaf_upper_keys.get(pending[start])
             current = cutoff()
             if optimistic is not None and current is not None and optimistic < tuple(current):
@@ -485,7 +502,9 @@ class FamilyCertificates:
                 self.stats["progressive_excluded_masks"] += len(remaining)
                 return
             self.stats["progressive_batches"] += 1
-            yield tuple(pending[start:start + batch_size])
+            stop = min(start + batch_size, len(pending))
+            yield tuple(pending[start:stop])
+            start = stop
 
     def _forecast_leaf(self, masks, bounds, observer):
         rejected = bounds.impossible_masks(masks)
@@ -570,8 +589,10 @@ class FamilyCertificates:
 
     def prune(self, active_masks, *, migration_limit, cutoff=None, score_bounds=None,
               certify_migration=True, certify_score=True, score_min_leaves=8,
-              score_strategy="tree", migration_strategy="classes", observer=None):
+              score_strategy="tree", migration_strategy="classes", observer=None,
+              metric_cascade=False, staged_acquisition=False, top_p=16):
         self.leaf_upper_keys.clear()
+        self._staged_state = None
         masks = tuple(map(int, active_masks))
         if masks != tuple(sorted(set(masks))) or any(mask < 0 or mask >= self.family.mask_count for mask in masks):
             raise ValueError("Active masks must be unique and in original numeric order")
@@ -583,7 +604,12 @@ class FamilyCertificates:
             raise ValueError("A nonnegative unit-movement limit is required")
         if score_strategy not in ("tree", "leaf") or migration_strategy not in ("classes", "tree"):
             raise ValueError("Unknown certificate execution strategy")
-        scoring = bool(certify_score and cutoff is not None and score_bounds is not None)
+        if staged_acquisition and (int(top_p) != top_p or top_p < 1):
+            raise ValueError("Staged acquisition requires a positive retained-pool size")
+        # Leaf bounds can be prepared before the first exact batch fills the
+        # retained pool. No score exclusion is made until a cutoff exists.
+        scoring = bool(certify_score and score_bounds is not None
+                       and (cutoff is not None or score_strategy == "leaf"))
         migration = bool(certify_migration)
         counts, excluded = None, []
         if (migration and migration_strategy == "classes") or scoring:
@@ -606,6 +632,26 @@ class FamilyCertificates:
                 excluded.extend(rejected)
             if len(masks) < score_min_leaves:
                 return masks, tuple(excluded)
+            if staged_acquisition:
+                from .staged_acquisition import prepare
+                fine_options = dict(migration_limit=migration_limit, score_bounds=score_bounds,
+                    certify_migration=False, certify_score=True, score_min_leaves=1,
+                    score_strategy="leaf", migration_strategy=migration_strategy,
+                    metric_cascade=False, staged_acquisition=False, top_p=top_p)
+                staged = prepare(self, masks, counts, cutoff, score_bounds, top_p, fine_options, observer)
+                if staged is not None:
+                    masks, screened, delayed = staged
+                    excluded.extend(screened)
+                    if delayed or not masks:
+                        return tuple(masks), tuple(excluded)
+                    metric_cascade = False
+            if metric_cascade and cutoff is not None:
+                from .metric_cascade import screen_indicators
+                masks, screened = screen_indicators(self, score_bounds, masks, cutoff, observer,
+                    movement=[counts[mask] for mask in masks])
+                excluded.extend(screened)
+                if not masks:
+                    return (), tuple(excluded)
             movement = [counts[mask] for mask in masks]
             keys = score_bounds.upper_keys([(mask, mask + 1) for mask in masks],
                 movement_lower_bounds=movement, cost_lower_bounds=movement)
@@ -614,10 +660,10 @@ class FamilyCertificates:
             self.stats["score_nodes"] += len(masks)
             passing = []
             for mask, optimistic in zip(masks, keys):
-                if optimistic is not None and len(optimistic) != len(cutoff):
+                if optimistic is not None and cutoff is not None and len(optimistic) != len(cutoff):
                     raise ValueError("Optimistic and retained keys must use the same coordinates")
                 self.leaf_upper_keys[mask] = None if optimistic is None else tuple(optimistic)
-                if optimistic is not None and tuple(optimistic) < tuple(cutoff):
+                if optimistic is not None and cutoff is not None and tuple(optimistic) < tuple(cutoff):
                     excluded.append(self._record("score", mask, mask + 1, (mask,), observer,
                         movement_lower_bound=int(counts[mask]), optimistic_key=tuple(optimistic), cutoff=tuple(cutoff)))
                 else:

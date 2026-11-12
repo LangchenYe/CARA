@@ -12,11 +12,8 @@ for _name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "VEC
 import argparse
 from contextlib import contextmanager
 import gc
-from hashlib import sha256
-from importlib.metadata import version
 import json
 from pathlib import Path
-import platform
 from time import perf_counter, process_time
 
 import numpy as np
@@ -33,13 +30,15 @@ from benchmark_reference_oracle import CanonicalProfileOracle
 
 PLANS = {
     "components": {"family_execution": "certified", "family_matching_backend": "factorized"},
-    "static": {"family_execution": "certified", "family_matching_backend": "compiled", "family_unique_physical": False},
+    "static": {"family_execution": "certified", "family_matching_backend": "compiled", "family_unique_physical": False,
+               "family_seed_compilation": False},
     "replay": {"family_execution": "certified", "family_matching_backend": "replay"},
     "locked": {"family_execution": "certified", "family_matching_backend": "locked"},
     "compiled": {"family_execution": "certified", "family_matching_backend": "compiled"},
     "compiled_no_unique_maps": {"family_execution": "certified", "family_matching_backend": "compiled", "family_unique_physical": False},
     "sparse": {"family_execution": "certified", "family_matching_backend": "sparse"},
     "no_progressive": {"family_execution": "certified", "family_progressive": False},
+    "no_bootstrap": {"family_execution": "certified", "family_bootstrap_bounds": False},
     "eager": {"family_execution": "eager"},
     "compact": {"family_execution": "compact", "family_factor_matching": False,
                 "family_matching_backend": "dense", "family_defer_physical": False},
@@ -51,7 +50,34 @@ PLANS = {
     "no_migration": {"family_execution": "certified", "family_certificate_migration": False},
     "no_score": {"family_execution": "certified", "family_certificate_score": False},
     "no_matching_reuse": {"family_execution": "certified", "family_migration_reuse": False},
+    "family_only": {"family_execution": "certified", "family_matching_backend": "compiled",
+                    "family_seed_compilation": False, "family_bound_views": False, "family_metric_cascade": False, "family_subset_views": False, "family_structural_bound_gate": False},
+    "family_cost_gate": {"family_execution": "certified", "family_matching_backend": "compiled",
+                         "family_seed_compilation": False, "family_bound_views": False,
+                         "family_metric_cascade": False, "family_subset_views": False,
+                         "family_structural_bound_gate": True},
+    "indexed": {"family_execution": "certified", "family_matching_backend": "compiled",
+                "family_seed_compilation": True, "family_bound_views": True, "family_metric_cascade": True, "family_subset_views": True , "family_structural_bound_gate": True},
+    "no_seed_index": {"family_execution": "certified", "family_matching_backend": "compiled",
+                      "family_seed_compilation": False, "family_bound_views": True, "family_metric_cascade": True, "family_subset_views": True , "family_structural_bound_gate": True},
+    "no_bound_views": {"family_execution": "certified", "family_matching_backend": "compiled",
+                       "family_seed_compilation": True, "family_bound_views": False, "family_metric_cascade": True, "family_subset_views": True , "family_structural_bound_gate": True},
+    "no_metric_cascade": {"family_execution": "certified", "family_matching_backend": "compiled",
+                          "family_seed_compilation": True, "family_bound_views": True, "family_metric_cascade": False, "family_subset_views": True , "family_structural_bound_gate": True},
+    "no_subset_views": {"family_execution": "certified", "family_matching_backend": "compiled",
+                        "family_seed_compilation": True, "family_bound_views": True,
+                        "family_metric_cascade": True, "family_subset_views": False , "family_structural_bound_gate": True},
 }
+
+for _plan in ("family_only", "family_cost_gate"):
+    PLANS[_plan].update(family_compiled_bounds=False, family_staged_acquisition=False)
+for _plan in ("indexed", "no_seed_index", "no_bound_views", "no_subset_views"):
+    PLANS[_plan].update(family_compiled_bounds=True, family_staged_acquisition=True)
+PLANS["no_metric_cascade"].update(family_compiled_bounds=True, family_staged_acquisition=False)
+PLANS["recomputed_bounds"] = {**PLANS["indexed"], "family_compiled_bounds": False,
+                              "family_staged_acquisition": False}
+PLANS["full_uniform"] = {**PLANS["indexed"], "family_staged_acquisition": False}
+PLANS["no_compiled_bounds"] = {**PLANS["indexed"], "family_compiled_bounds": False}
 
 
 def encoded(value):
@@ -290,20 +316,15 @@ def run(args):
             or len(args.plans) != len(set(args.plans))):
         raise ValueError("Positive reference allowance, distinct plans and nonnegative repetitions required")
     origins = protocol["development"]["origins"] if args.phase == "development" else [288, 300, 312]
-    files = [Path(__file__).resolve(), ROOT / "benchmark_static_matching.py", ROOT / "benchmark_reference_oracle.py",
-             ROOT / "run_family_study.py", *sorted((ROOT / "cara").glob("*.py")),
-             *sorted((ROOT / "cara/kernels").glob("*.c"))]
     plan = {"study": "fixed_complete_family_execution", "phase": args.phase, "origins": origins,
             "cohorts": list(protocol["decision_cohorts"]), "protocol": protocol, "config": config,
             "plans": args.plans, "settings": {name: PLANS[name] for name in args.plans}, "repetitions": args.repetitions,
-            "implementation": {str(path.relative_to(ROOT)): sha256(path.read_bytes()).hexdigest() for path in files},
-            "inputs": {name: sha256((args.data_root / name / "data-00000-of-00001.arrow").read_bytes()).hexdigest()
-                       for name in protocol["decision_cohorts"]},
-            "environment": {"python": platform.python_version(), "platform": platform.platform(),
-                            "packages": {name: version(name) for name in ("numpy", "scipy", "pyarrow")}},
+            
+            "inputs": list(protocol["decision_cohorts"]),
+            
             "timing": "Serial process CPU includes complete search setup, candidate generation, matching, profiles, pool retention, Selection and canonical Audit. Immutable input panels, Arrow loading, forecast/FFD construction, freezing, verification, garbage collection and serialization are outside timing.",
             "correctness": "Exact materialized profile bytes, ordered pool and family continuation after every completed residual family, original rich physical movement, selected action, bets and historical admission. Every excluded active leaf is independently enumerated and canonically checked. Independent canonical answers are memoized across untimed plans within each immutable case and discarded before timing. Physical evaluation counters may differ by certified exclusion.",
-            "path": "New eager 121-window paths; replay freezes operation arms, frontier cooling progress and feedback costs. Original 24-window paths are not relabeled or reused."}
+            "path": "Complete eager paths over all 121 Build windows; replay fixes operation arms, frontier cooling progress and feedback costs."}
     path = args.output / "study_plan.json"
     if path.exists() and json.loads(path.read_text()) != serial(plan):
         raise ValueError("Use a new directory for a different fixed-work study")
@@ -346,7 +367,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--phase", choices=("development", "evaluation"), required=True)
     parser.add_argument("--protocol", type=Path, default=ROOT / "configs/release/family_protocol.json")
-    parser.add_argument("--config", type=Path, default=ROOT / "configs/release/main_frozen.json")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/release/family_frozen.json")
     parser.add_argument("--data-root", type=Path, default=ROOT / "data/raw/cloudcons")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--plans", choices=PLANS, nargs="+", default=list(PLANS))

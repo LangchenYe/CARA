@@ -1,0 +1,702 @@
+[
+  {
+    "top_p": 4,
+    "all_family_pools_exact": true,
+    "all_profiles_and_exclusions_checked": true,
+    "verification": {
+      "eager": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1
+      },
+      "compiled": {
+        "materialized_profiles": 65,
+        "scalar_profiles": 1,
+        "witnesses": 327,
+        "forecast_leaves": 308,
+        "score_leaves": 903
+      },
+      "no_score": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1,
+        "witnesses": 234,
+        "forecast_leaves": 308
+      }
+    },
+    "medians": {
+      "compiled": {
+        "cpu_seconds": 0.10082199999999908,
+        "wall_seconds": 0.10087254199606832,
+        "materialized_values": 3932160.0,
+        "profile_cpu_seconds": 0.02278000000000091,
+        "profiled_masks": 64.0,
+        "workload_materialized_values": 786432.0,
+        "host_group_queries": 33290.0,
+        "score_excluded_masks": 903.0,
+        "progressive_batches": 4.0
+      },
+      "no_score": {
+        "cpu_seconds": 0.31450899999999926,
+        "wall_seconds": 0.3146492920059245,
+        "materialized_values": 15028224.0,
+        "profile_cpu_seconds": 0.26424699999999746,
+        "profiled_masks": 967.0,
+        "workload_materialized_values": 11882496.0,
+        "host_group_queries": 495104.0,
+        "score_excluded_masks": 0.0,
+        "progressive_batches": 0.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.09940200000000132,
+            "wall_seconds": 0.09945008299837355,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.022200999999999027,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          },
+          "no_score": {
+            "cpu_seconds": 0.3046659999999992,
+            "wall_seconds": 0.30479704099707305,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.25622399999999956,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      },
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.31450899999999926,
+            "wall_seconds": 0.3146492920059245,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.26424699999999746,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.10118399999999994,
+            "wall_seconds": 0.10122616701119114,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.022826000000000235,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.10082199999999908,
+            "wall_seconds": 0.10087254199606832,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.02278000000000091,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          },
+          "no_score": {
+            "cpu_seconds": 0.319427000000001,
+            "wall_seconds": 0.3195698329946026,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.26816699999999827,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "top_p": 8,
+    "all_family_pools_exact": true,
+    "all_profiles_and_exclusions_checked": true,
+    "verification": {
+      "eager": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1
+      },
+      "compiled": {
+        "materialized_profiles": 65,
+        "scalar_profiles": 1,
+        "witnesses": 337,
+        "forecast_leaves": 308,
+        "score_leaves": 903
+      },
+      "no_score": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1,
+        "witnesses": 234,
+        "forecast_leaves": 308
+      }
+    },
+    "medians": {
+      "compiled": {
+        "cpu_seconds": 0.10794699999999935,
+        "wall_seconds": 0.10802479200356174,
+        "materialized_values": 3932160.0,
+        "profile_cpu_seconds": 0.021452999999997502,
+        "profiled_masks": 64.0,
+        "workload_materialized_values": 786432.0,
+        "host_group_queries": 33290.0,
+        "score_excluded_masks": 903.0,
+        "progressive_batches": 4.0
+      },
+      "no_score": {
+        "cpu_seconds": 0.33722900000000067,
+        "wall_seconds": 0.33740591700188816,
+        "materialized_values": 15028224.0,
+        "profile_cpu_seconds": 0.2665669999999949,
+        "profiled_masks": 967.0,
+        "workload_materialized_values": 11882496.0,
+        "host_group_queries": 495104.0,
+        "score_excluded_masks": 0.0,
+        "progressive_batches": 0.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.33074200000000076,
+            "wall_seconds": 0.33090058399830014,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.26071399999999656,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.10794699999999935,
+            "wall_seconds": 0.10802479200356174,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.021452999999997502,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.10623899999999864,
+            "wall_seconds": 0.10629387499648146,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.021363000000004462,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          },
+          "no_score": {
+            "cpu_seconds": 0.33722900000000067,
+            "wall_seconds": 0.33740591700188816,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.2665669999999949,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      },
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.33922000000000097,
+            "wall_seconds": 0.3393919999944046,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.26773399999999725,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.11273300000000219,
+            "wall_seconds": 0.11279379201005213,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.02268399999999815,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "top_p": 16,
+    "all_family_pools_exact": true,
+    "all_profiles_and_exclusions_checked": true,
+    "verification": {
+      "eager": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1
+      },
+      "compiled": {
+        "materialized_profiles": 65,
+        "scalar_profiles": 1,
+        "witnesses": 348,
+        "forecast_leaves": 308,
+        "score_leaves": 903
+      },
+      "no_score": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1,
+        "witnesses": 234,
+        "forecast_leaves": 308
+      }
+    },
+    "medians": {
+      "compiled": {
+        "cpu_seconds": 0.12882899999999609,
+        "wall_seconds": 0.12889216700568795,
+        "materialized_values": 3932160.0,
+        "profile_cpu_seconds": 0.021773999999986415,
+        "profiled_masks": 64.0,
+        "workload_materialized_values": 786432.0,
+        "host_group_queries": 33290.0,
+        "score_excluded_masks": 903.0,
+        "progressive_batches": 4.0
+      },
+      "no_score": {
+        "cpu_seconds": 0.3784769999999966,
+        "wall_seconds": 0.37864949999493547,
+        "materialized_values": 15028224.0,
+        "profile_cpu_seconds": 0.26406399999999763,
+        "profiled_masks": 967.0,
+        "workload_materialized_values": 11882496.0,
+        "host_group_queries": 495104.0,
+        "score_excluded_masks": 0.0,
+        "progressive_batches": 0.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.1266210000000001,
+            "wall_seconds": 0.12670062499819323,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.021376000000003614,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          },
+          "no_score": {
+            "cpu_seconds": 0.3642449999999968,
+            "wall_seconds": 0.36453604100097436,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.25418100000000976,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      },
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.3784769999999966,
+            "wall_seconds": 0.37864949999493547,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.26406399999999763,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.1323719999999966,
+            "wall_seconds": 0.13243375001184177,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.02227300000000554,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          }
+        }
+      },
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.12882899999999609,
+            "wall_seconds": 0.12889216700568795,
+            "materialized_values": 3932160,
+            "profile_cpu_seconds": 0.021773999999986415,
+            "profiled_masks": 64,
+            "workload_materialized_values": 786432,
+            "host_group_queries": 33290,
+            "score_excluded_masks": 903,
+            "progressive_batches": 4
+          },
+          "no_score": {
+            "cpu_seconds": 0.38300900000000127,
+            "wall_seconds": 0.3831883749953704,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.26734900000001005,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "top_p": 32,
+    "all_family_pools_exact": true,
+    "all_profiles_and_exclusions_checked": true,
+    "verification": {
+      "eager": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1
+      },
+      "compiled": {
+        "materialized_profiles": 129,
+        "scalar_profiles": 1,
+        "witnesses": 326,
+        "forecast_leaves": 308,
+        "score_leaves": 839
+      },
+      "no_score": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1,
+        "witnesses": 234,
+        "forecast_leaves": 308
+      }
+    },
+    "medians": {
+      "compiled": {
+        "cpu_seconds": 0.2024550000000005,
+        "wall_seconds": 0.20254983300401364,
+        "materialized_values": 4718592.0,
+        "profile_cpu_seconds": 0.0429719999999989,
+        "profiled_masks": 128.0,
+        "workload_materialized_values": 1572864.0,
+        "host_group_queries": 66058.0,
+        "score_excluded_masks": 839.0,
+        "progressive_batches": 8.0
+      },
+      "no_score": {
+        "cpu_seconds": 0.4695260000000019,
+        "wall_seconds": 0.4697569999989355,
+        "materialized_values": 15028224.0,
+        "profile_cpu_seconds": 0.25370299999999446,
+        "profiled_masks": 967.0,
+        "workload_materialized_values": 11882496.0,
+        "host_group_queries": 495104.0,
+        "score_excluded_masks": 0.0,
+        "progressive_batches": 0.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.4695040000000006,
+            "wall_seconds": 0.4697057500015944,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.25331799999999305,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.2024550000000005,
+            "wall_seconds": 0.20254983300401364,
+            "materialized_values": 4718592,
+            "profile_cpu_seconds": 0.0429719999999989,
+            "profiled_masks": 128,
+            "workload_materialized_values": 1572864,
+            "host_group_queries": 66058,
+            "score_excluded_masks": 839,
+            "progressive_batches": 8
+          }
+        }
+      },
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.20132799999999662,
+            "wall_seconds": 0.20142612500058021,
+            "materialized_values": 4718592,
+            "profile_cpu_seconds": 0.042680999999987534,
+            "profiled_masks": 128,
+            "workload_materialized_values": 1572864,
+            "host_group_queries": 66058,
+            "score_excluded_masks": 839,
+            "progressive_batches": 8
+          },
+          "no_score": {
+            "cpu_seconds": 0.4695260000000019,
+            "wall_seconds": 0.4697569999989355,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.25370299999999446,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      },
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.472372,
+            "wall_seconds": 0.47257366600388195,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.25540400000001284,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.20547399999999527,
+            "wall_seconds": 0.20556491700699553,
+            "materialized_values": 4718592,
+            "profile_cpu_seconds": 0.04380599999998935,
+            "profiled_masks": 128,
+            "workload_materialized_values": 1572864,
+            "host_group_queries": 66058,
+            "score_excluded_masks": 839,
+            "progressive_batches": 8
+          }
+        }
+      }
+    ]
+  },
+  {
+    "top_p": 64,
+    "all_family_pools_exact": true,
+    "all_profiles_and_exclusions_checked": true,
+    "verification": {
+      "eager": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1
+      },
+      "compiled": {
+        "materialized_profiles": 241,
+        "scalar_profiles": 1,
+        "witnesses": 306,
+        "forecast_leaves": 308,
+        "score_leaves": 727
+      },
+      "no_score": {
+        "materialized_profiles": 968,
+        "scalar_profiles": 1,
+        "witnesses": 234,
+        "forecast_leaves": 308
+      }
+    },
+    "medians": {
+      "compiled": {
+        "cpu_seconds": 0.39028599999999614,
+        "wall_seconds": 0.390472500002943,
+        "materialized_values": 6094848.0,
+        "profile_cpu_seconds": 0.07875199999999438,
+        "profiled_masks": 240.0,
+        "workload_materialized_values": 2949120.0,
+        "host_group_queries": 123402.0,
+        "score_excluded_masks": 727.0,
+        "progressive_batches": 15.0
+      },
+      "no_score": {
+        "cpu_seconds": 0.7229690000000062,
+        "wall_seconds": 0.7233167500089621,
+        "materialized_values": 15028224.0,
+        "profile_cpu_seconds": 0.25169199999998426,
+        "profiled_masks": 967.0,
+        "workload_materialized_values": 11882496.0,
+        "host_group_queries": 495104.0,
+        "score_excluded_masks": 0.0,
+        "progressive_batches": 0.0
+      }
+    },
+    "trials": [
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.38846800000000314,
+            "wall_seconds": 0.38866799999959767,
+            "materialized_values": 6094848,
+            "profile_cpu_seconds": 0.078645999999992,
+            "profiled_masks": 240,
+            "workload_materialized_values": 2949120,
+            "host_group_queries": 123402,
+            "score_excluded_masks": 727,
+            "progressive_batches": 15
+          },
+          "no_score": {
+            "cpu_seconds": 0.7226500000000016,
+            "wall_seconds": 0.7229644580074819,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.2522120000000001,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      },
+      {
+        "order": [
+          "no_score",
+          "compiled"
+        ],
+        "plans": {
+          "no_score": {
+            "cpu_seconds": 0.7255980000000051,
+            "wall_seconds": 0.7259543749969453,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.25169199999998426,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          },
+          "compiled": {
+            "cpu_seconds": 0.39111800000000585,
+            "wall_seconds": 0.39131437499599997,
+            "materialized_values": 6094848,
+            "profile_cpu_seconds": 0.07875199999999438,
+            "profiled_masks": 240,
+            "workload_materialized_values": 2949120,
+            "host_group_queries": 123402,
+            "score_excluded_masks": 727,
+            "progressive_batches": 15
+          }
+        }
+      },
+      {
+        "order": [
+          "compiled",
+          "no_score"
+        ],
+        "plans": {
+          "compiled": {
+            "cpu_seconds": 0.39028599999999614,
+            "wall_seconds": 0.390472500002943,
+            "materialized_values": 6094848,
+            "profile_cpu_seconds": 0.07948400000001499,
+            "profiled_masks": 240,
+            "workload_materialized_values": 2949120,
+            "host_group_queries": 123402,
+            "score_excluded_masks": 727,
+            "progressive_batches": 15
+          },
+          "no_score": {
+            "cpu_seconds": 0.7229690000000062,
+            "wall_seconds": 0.7233167500089621,
+            "materialized_values": 15028224,
+            "profile_cpu_seconds": 0.2505430000000217,
+            "profiled_masks": 967,
+            "workload_materialized_values": 11882496,
+            "host_group_queries": 495104,
+            "score_excluded_masks": 0,
+            "progressive_batches": 0
+          }
+        }
+      }
+    ]
+  }
+]

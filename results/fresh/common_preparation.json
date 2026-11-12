@@ -1,0 +1,30 @@
+{
+  "aggregate": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 0.0013101669974275865,
+    "build_and_load_parent_cpu_seconds": 0.0009659999999999669,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/var/folders/36/3b100jwn3t10g2mzwqp3c9lr0000gn/T/cara-native-aggregate/4d8a65b8591f3f1a3fb1.dylib"
+  },
+  "canonical": {
+    "cache_hit": true,
+    "build_and_load_wall_seconds": 0.0010450000045238994,
+    "build_and_load_parent_cpu_seconds": 0.0008070000000000022,
+    "compiler_child_cpu_seconds": 0.0,
+    "compiler": "/usr/bin/cc",
+    "flags": [
+      "-std=c99",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-fast-math"
+    ],
+    "library": "/var/folders/36/3b100jwn3t10g2mzwqp3c9lr0000gn/T/cara-paired-kernels/fused_canonical-69f67504ac719ea2664e.dylib"
+  }
+}

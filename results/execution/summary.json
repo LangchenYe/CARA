@@ -1,0 +1,21 @@
+{
+  "complete": true,
+  "cases": 12,
+  "all_exact": true,
+  "total_median_cpu_seconds": {
+    "eager": 11.500033999999971,
+    "compact": 8.58047700000003,
+    "components": 6.7893169999999685,
+    "sparse": 6.864173999999956,
+    "compiled": 6.764972000000114,
+    "family_only": 6.914521000000022
+  },
+  "speedup_over_eager": {
+    "eager": 1.0,
+    "compact": 1.340255792306177,
+    "components": 1.6938425470485505,
+    "sparse": 1.6753704087338177,
+    "compiled": 1.699938151998231,
+    "family_only": 1.6631714619132598
+  }
+}
